@@ -656,7 +656,7 @@ void show_help()
 
 void show_profile()
 {
-	cout << "FFP_compress\n";
+    cout << "FFP_compress\n";
 	cout << "Code by JaeJin Choi\n";
 	cout << "Load input file to memory(istringstream)\n";
 	cout << "Output format; [STR_key]|[Float/long long value][\\n]\n";
