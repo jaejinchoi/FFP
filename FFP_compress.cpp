@@ -64,7 +64,6 @@ using __gnu_cxx::hash;
 // Found this one here: http://panthema.net/2007/0328-ZLibString.html, author is Timo Bingmann
 /** Compress a STL string using zlib with given compression level and return
   * the binary data. */
-//std::string compress_deflate(const std::string& str, int compressionlevel = Z_BEST_COMPRESSION)
 std::string compress_deflate(const std::string& str, int compressionlevel = Z_BEST_COMPRESSION)
 {
     z_stream zs;                        // z_stream is zlib's control structure
@@ -657,14 +656,11 @@ void show_help()
 
 void show_profile()
 {
-    cout << "2014.12.22, pfp_helen_rec\n";
+	cout << "FFP_compress\n";
     cout << "Code by JaeJin Choi\n";
-    cout << "Support longer feature length using string key hash\n";
-    cout << "Out-format (STR key | float(or long long) value) TAB\n";
-    cout << "based on pfp_helen_rec, add RY code function\n";
-    cout << "2014.12.22; Load whole file to memory(istringstream)\n";
-    cout << "2015; add manual compression\n";
-    cout << "2015.8.31; add zlib compression\n";
+	cout << "Load input file to memory(istringstream)\n";
+    cout << "Output format; [STR_key]|[Float/long long value][\\n]\n";
+    cout << "Output and write zlib compressed Feature Frequency Profile\n";
     cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
 }
 
