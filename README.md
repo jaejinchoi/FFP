@@ -14,16 +14,16 @@ Run example: [Program path][options][input file path][output file path]
 
 [options(parameters)]
 
--h  show help, show options 
--s  [INT] feature size  
--a  take amino acids sequence 
+-h  show help, show options
+
+-s  [INT] feature size
+
+-a  take amino acids sequence
 
 -c  convert and accept nucleotide(AGCT) code to RY code
 
 -k  [STR] manual input of word alphabets: For example input 'HJKL' as ['H', 'J', 'K', 'L'] set
-
 -r  disable reverse complement counting
-
 -n  output ratio instead of frequency
 
 -u
