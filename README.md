@@ -13,7 +13,6 @@ Compile option: g++ -std=c++11 -o (execute name) (this script) -lz
 Run example: [Program path][options][input file path][output file path] 
 
 [options(parameters)]
-
 -h  show help, show options
 
 -s  [INT] feature size
@@ -47,8 +46,11 @@ Using [-a], amino acids, automatically turn [-r], disable reverse complement cou
 [input]
 FASTA format peptide or nucleotide sequence files. 
 
+
 [output]
 Data compressed Feature Frequency Profile
+
+
 
 
 2. JSD_matrix.cpp
@@ -58,19 +60,24 @@ Run example: [Program path][options][input files path] > [output file path(stand
 
 [options(parameters)]
 -h  show help, show options
+
 -c  [INT] specific integer code of single or escape character for delimiter
           default = TAB = char(9), integer 9
+          
 -t  [INT] set a number of thread for calculation(multiprocessing)
           adequate thread number is #of_cpu_cores - 1. Default is 1?
+          
 -r  [PATH]  Input reserved, previous, distance matrix
             Useful when adding more items without calculating prior pairs, thus saves overall time.
-            
+       
+       
 [note]
 [-r] input accept low triangular distance matrix, and it requires all pair-wise FF_Profiles
 
 
 [input]
 the output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
+
 
 [output]
 Standard output of low triangular distance matrix
