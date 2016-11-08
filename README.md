@@ -5,7 +5,7 @@ Feature Frequency Profile(FFP) two core programs
 Prerquirement
 A. GCC(g++) version 4.7.1+
 B. Google sparse hash library. Can be download here: https://github.com/sparsehash/sparsehash
-C. zlib version 1.2.8+. Can be download here: http://www.zlib.net/
+C.	zlib version 1.2.8+. Can be download here: http://www.zlib.net/
 
 
 1. FFP_compress.cpp
