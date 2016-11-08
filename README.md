@@ -28,26 +28,27 @@ Run example: [Program path][options][input file path][output file path]
 
 -n  output ratio instead of frequency
 
--u
+-u  letter case insensitive(default is case sensitive)
 
--V
+-V  brief version(or function)
+    count the number of features, those frequency limit by [-b] and [-t]
 
--b
+-b  [LONG LONG] bottom limit of feature frequency in vocabulary size measure
+    default = 2
 
--t
+-t  [LONG LONG] top limit of feature frequency in vocabulary size measure
+    default = 0 = maximum
 
 
 [note]
-Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequences have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement sequence but usually not shown in FASTA file.
+Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement strand.
 
 
 [input]
 FASTA format peptide or nucleotide sequence files. 
 
-
 [output]
 Data compressed Feature Frequency Profile
-
 
 
 2. JSD_matrix.cpp
@@ -56,10 +57,17 @@ Run example: [Program path][options][input files path] > [output file path(stand
 
 
 [options(parameters)]
--h
-
-
+-h  show help, show options
+-c  [INT] specific integer code of single or escape character for delimiter
+          default = TAB = char(9), integer 9
+-t  [INT] set a number of thread for calculation(multiprocessing)
+          adequate thread number is #of_cpu_cores - 1. Default is 1?
+-r  [PATH]  Input reserved, previous, distance matrix
+            Useful when adding more items without calculating prior pairs, thus saves overall time.
+            
 [note]
+[-r] input accept low triangular distance matrix, and it requires all pair-wise FF_Profiles
+
 
 [input]
 the output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
@@ -68,7 +76,6 @@ the output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
 Standard output of low triangular distance matrix
 
 
-
 Limitation:
-Generally longer feature length(l-mer) consume more memory.
-So far vocabulary size up to 20(amino acids) ^ 24(feature length) was used and available.
+Generally, longer feature lengths(l-mer) consume more memory and time.
+So far vocabulary size up to 20(amino acids) ^ 24(feature length) was used and tested.
