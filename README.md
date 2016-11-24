@@ -32,10 +32,10 @@ Run example: [Program path][options][input file path][output file path]
 * -V
     Measure vocabular size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
-    Bottom limit. Remove any feature count less than -b  
+    Bottom limit. Remove any feature that counts less than -b  
     Default = 1
 * -t [LONG LONG]  
-    Top limit. Remove any feature count larger than -t  
+    Top limit. Remove any feature that counts larger than -t  
     Default = 0 = maximum  
     
 
