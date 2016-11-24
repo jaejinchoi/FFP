@@ -14,7 +14,7 @@ Run example: [Program path][options][input file path][output file path]
 
 ### [Arguments]
 * -h
-    Show options  
+    - Show options  
 * -s [INT]  
     Feature size (l-mer)  
 * -a
