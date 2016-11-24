@@ -18,7 +18,7 @@ Run example: [Program path][options][input file path][output file path]
 * -s [INT]  
     Feature size (l-mer)  
 * -e [INT]  
-    Feature size (l-mer) range end. functional only when meauring vocabulary size using with -V  
+    Feature size (l-mer) range end. Functional only when measuring vocabulary size using with -V  
 * -a
     Takes 20 amino acids sequences as inputs  
 * -c
