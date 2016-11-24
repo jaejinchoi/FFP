@@ -13,8 +13,8 @@ Compile: g++ -std=c++11 -o (execute name) (this script) -lz
 Run example: [Program path][options][input file path][output file path]  
 
 ### [Arguments]
-* -h
-    - Show options  
+* -h  
+    Show options  
 * -s [INT]  
     Feature size (l-mer)  
 * -a
@@ -23,13 +23,13 @@ Run example: [Program path][options][input file path][output file path]
     Convert and accept nucleotide bases into RY bases 
 * -k [STR]  
     Manual input of alphabet bases string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
-* -r
+* -r  
     Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement  
-* -n
+* -n  
     Output frequency into ratio. A feature count / Total feature count  
-* -u
+* -u  
     Accept masked letters which are lower cases. FASTA format generally represent masked bases into lower cases  
-* -V
+* -V  
     Measure vocabular size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
     Bottom limit. Remove any feature that counts less than -b  
@@ -57,15 +57,15 @@ Run example: [Program path][options][input files path] > [output file path(stand
 
 ### [Arguments]
 
-* -h
+* -h  
     Show options  
-* -c [INT]
+* -c [INT]  
     Specific integer code of single or escape character for delimiter in bewteen a set of [Feature|Value]  
     Default is 13, '\n', linebreak
-* -t [INT]
+* -t [INT]  
     Number of tread for mulriprocessing  
     Heuristically, an adequate thread number is the number of cpu cores - 1. Default is 5
-* -r [PATH]
+* -r [PATH]  
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
     Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default
