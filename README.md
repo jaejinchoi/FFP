@@ -4,17 +4,15 @@ Feature Frequency Profile(FFP) two core programs
 
 ## Requirements  
 A. GCC(g++) version 4.7.1+  
-B. Google sparse hash library. Can be download here: https://github.com/sparsehash/sparsehash  
-C. zlib version 1.2.8+. Can be download here: http://www.zlib.net/  
+B. Google sparse hash library. Look here: https://github.com/sparsehash/sparsehash  
+C. zlib version 1.2.8+. Look here: http://www.zlib.net/  
 
 
 ## 1. FFP_compress.cpp
-Compile option: g++ -std=c++11 -o (execute name) (this script) -lz
-Run example: [Program path][options][input file path][output file path] 
+Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
+Run example: [Program path][options][input file path][output file path]  
 
-
-### [options(parameters)]
-
+### [Arguments]
 * -h
     Show options  
 * -s [INT]  
@@ -41,26 +39,23 @@ Run example: [Program path][options][input file path][output file path]
     Default = 0 = maximum  
     
 
-### [note]
+### [Note]
 Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement strand.
 
 
-### [input]
-FASTA format peptide or nucleotide sequence files. 
+### [Input]
+FASTA format peptide or nucleotide sequences file. 
 
 
-### [output]
+### [Output]
 Data compressed Feature Frequency Profile
 
 
-
-
 ## 2. JSD_matrix.cpp
-Compile option: g++ -std=c++11 -pthread -o (execute name) (this script) -lz
-Run example: [Program path][options][input files path] > [output file path(standard output)]
+Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
+Run example: [Program path][options][input files path] > [output file path(standard output)]  
 
-
-### [options(parameters)]
+### [Arguments]
 
 * -h
     Show options  
@@ -74,16 +69,17 @@ Run example: [Program path][options][input files path] > [output file path(stand
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
     Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default
-    
-### [note]
+
+
+### [Note]
 [-r] input accept low triangular distance matrix, and it requires all pair-wise FF_Profiles
 
 
-### [input]
+### [Input]
 the output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
 
 
-### [output]
+### [Output]
 Standard output of low triangular Jensen-Shannon divergence, or distance, matrix
 Square root(JS divergence) = JS distance
 
