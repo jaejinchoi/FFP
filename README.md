@@ -10,11 +10,13 @@ C. zlib version 1.2.8+. Can be download here: http://www.zlib.net/
 
 
 
-1. FFP_compress.cpp
+## 1. FFP_compress.cpp
 Compile option: g++ -std=c++11 -o (execute name) (this script) -lz
 Run example: [Program path][options][input file path][output file path] 
 
+
 [options(parameters)]
+-
 -h  show help, show options  
 -s  [INT] feature size  
 -a  take amino acids sequence  
@@ -29,7 +31,7 @@ Run example: [Program path][options][input file path][output file path]
     default = 2  
 -t  [LONG LONG] top limit of feature frequency in vocabulary size measure  
     default = 0 = maximum  
-
+-
 
 [note]
 Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement strand.
@@ -45,7 +47,7 @@ Data compressed Feature Frequency Profile
 
 
 
-2. JSD_matrix.cpp
+## 2. JSD_matrix.cpp
 Compile option: g++ -std=c++11 -pthread -o (execute name) (this script) -lz
 Run example: [Program path][options][input files path] > [output file path(standard output)]
 
