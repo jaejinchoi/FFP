@@ -28,7 +28,7 @@ Run example: [Program path][options][input file path][output file path]
 * -n
     Output frequency into ratio. A feature count / Total feature count  
 * -u
-    Accept masked letters which are lower cases. FASTA format generally expresses masked bases into lower cases  
+    Accept masked letters which are lower cases. FASTA format generally represent masked bases into lower cases  
 * -V
     Measure vocabular size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
