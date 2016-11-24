@@ -65,7 +65,7 @@ Run example: [Program path][options][input files path] > [output file path(stand
     Specific integer code of single or escape character for delimiter in bewteen a set of [Feature|Value]  
     Default is 13, '\n', linebreak
 * -t [INT]  
-    Number of tread for mulriprocessing  
+    Number of threads for multiprocessing  
     Heuristically, an adequate thread number is the number of cpu cores - 1. Default is 5
 * -r [PATH]  
     Input previous matrix, and add more items to the matrix without calculating a whole    
