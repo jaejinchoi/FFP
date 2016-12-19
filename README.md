@@ -97,5 +97,4 @@ Standard output of low triangular Jensen-Shannon divergence, or distance, matrix
 
 ## Limitation:
 Generally, longer feature lengths(l-mer) consume more memory and time.  
-So far vocabulary size up to 20(amino acids) ^ 24(feature length) in fungi proteomes study, maximum 35274 proteins of 10,866,611 amino acids, was used and worked.  
-Although 20^24 is huge number, actual vocabular size is much smaller in non-random sequences such as peptide sequences.
+So far vocabulary size up to 20(amino acids) ^ 24(feature length) in fungi proteomes study, maximum 35274 proteins of 10,866,611 amino acids, was used and worked. Although 20^24 is huge number, actual vocabular size is much smaller in non-random sequences such as peptide sequences.
