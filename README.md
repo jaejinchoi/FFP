@@ -70,7 +70,7 @@ Run example: [Program path][options][input files path] > [output file path(stand
 * -r [PATH]  
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
-    Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default
+    Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default  
     Square root(JS divergence) = JS distance  
     
 
