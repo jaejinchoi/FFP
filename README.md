@@ -19,9 +19,9 @@ Run example: [Program path][options][input file path][output file path]
     Feature size (l-mer)  
 * -e [INT]  
     Feature size (l-mer) range end. Functional only when measuring vocabulary size using with -V  
-* -a
+* -a  
     Takes 20 amino acids sequences as inputs  
-* -c
+* -c  
     Convert and accept nucleotide bases into RY bases 
 * -k [STR]  
     Manual input of alphabet bases string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
