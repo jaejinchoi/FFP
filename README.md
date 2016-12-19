@@ -46,7 +46,7 @@ Using [-a], amino acids, automatically turn [-r], disable reverse complement cou
 
 
 ### [Input]
-FASTA format peptide or nucleotide sequences file. 
+FASTA format peptide or nucleotide sequence files. 
 
 
 ### [Output]
@@ -71,19 +71,19 @@ Run example: [Program path][options][input files path] > [output file path(stand
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
     Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default
-
+    Square root(JS divergence) = JS distance  
+    
 
 ### [Note]
-[-r] input accept low triangular distance matrix, and it requires all pair-wise FF_Profiles
+[-r] input low triangular matrix, and it requires all pair-wise FF_Profiles
 
 
 ### [Input]
-the output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
+The output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
 
 
 ### [Output]
 Standard output of low triangular Jensen-Shannon divergence, or distance, matrix
-Square root(JS divergence) = JS distance
 
 
 ## Limitation:
