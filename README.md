@@ -26,7 +26,7 @@ Run example: [Program path][options][input file path][output file path]
 * -k [STR]  
     Manual input of alphabet bases string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
-    Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement  
+    Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement counting  
 * -n  
     Output frequency into ratio. A feature count / Total feature count  
 * -u  
@@ -43,6 +43,15 @@ Run example: [Program path][options][input file path][output file path]
 
 ### [Note]
 Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement strand.
+
+
+Reverse complement counting actually do picking one 'forward' or 'backward' feature of sequence that is lexically prior than another, because couting number of all forward and backward feature is equal to reverse complement counting x 2.
+
+For example,
+In DNA double helix,
+
+AAAATTT -> lexically prior, so pick this one  
+TTTTAAA -> even if actual readen feature is this!  
 
 
 ### [Input]
