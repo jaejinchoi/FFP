@@ -24,7 +24,7 @@ Run example: [Program path][options][input file path][output file path]
 * -c  
     Convert and accept nucleotide bases into RY bases 
 * -k [STR]  
-    Manual input of alphabet bases string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
+    Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
     Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement counting  
 * -n  
@@ -34,10 +34,10 @@ Run example: [Program path][options][input file path][output file path]
 * -V  
     Measure vocabular size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
-    Bottom limit. Remove any feature that counts less than -b  
+    Bottom limit. Remove any feature that counts less than [-b]  
     Default = 1
 * -t [LONG LONG]  
-    Top limit. Remove any feature that counts larger than -t  
+    Top limit. Remove any feature that counts larger than [-t]  
     Default = 0 = maximum  
     
 
