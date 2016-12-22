@@ -42,10 +42,10 @@ Run example: [Program path][options][input file path][output file path]
     
 
 ### [Note]
-Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction(start code -> stop codon), however, nucleotide(genome) sequence actually is double helix that has reverse complement strand.
+Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction (start code -> stop codon), however, nucleotide (eg. genome and transcriptome) sequence actually is double helix that has reverse complement strand.
 
 
-Reverse complement counting actually do picking one 'forward' or 'backward' feature of sequence that is lexically prior than another, because couting number of all forward and backward feature is equal to reverse complement counting x 2.
+Reverse complement counting pick one 'forward' or 'backward' feature of sequence that is lexically prior than another, because couting number of all forward and backward feature is equal to reverse complement counting x 2.
 
 For example,
 In DNA double helix,
@@ -79,7 +79,7 @@ Run example: [Program path][options][input files path] > [output file path(stand
 * -r [PATH]  
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
-    Output Jensen-Shannon distance matrix instead of Jsensen-Shannon divergence matrix which is default  
+    Output Jensen-Shannon distance matrix instead of Jensen-Shannon divergence matrix which is default  
     Square root(JS divergence) = JS distance  
     
 
@@ -88,7 +88,7 @@ Run example: [Program path][options][input files path] > [output file path(stand
 
 
 ### [Input]
-The output files of 'FFP_compress' which are Feature Frequency Profile(FFP)s
+The output files of 'FFP_compress' which are Feature Frequency Profiles (FFPs)
 
 
 ### [Output]
@@ -96,5 +96,5 @@ Standard output of low triangular Jensen-Shannon divergence, or distance, matrix
 
 
 ## Limitation:
-Generally, longer feature lengths(l-mer) consume more memory and time.  
-So far vocabulary size up to 20(amino acids) ^ 24(feature length) in fungi proteomes study, maximum 35,274 proteins of 10,866,611 amino acids, was used and worked. Although 20^24 is huge number, actual vocabulary size is much smaller in non-random sequences such as peptide sequences.
+Generally, longer feature lengths (l-mer) consume more memory and time.  
+So far vocabulary size up to 20 (amino acids) ^ 24 (feature length) in fungi proteomes study, maximum 35,274 proteins of 10,866,611 amino acids, was used and worked. Although 20^24 is huge number, actual vocabulary size is much smaller in non-random sequences such as peptide sequences.
