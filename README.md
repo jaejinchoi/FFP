@@ -1,5 +1,5 @@
 # FFP
-Feature Frequency Profile(FFP) two core programs
+Feature Frequency Profile (FFP); two core programs
 
 
 ## Requirements  
@@ -22,28 +22,32 @@ Run example: [Program path][options][input file path][output file path]
 * -a  
     Takes 20 amino acids sequences as inputs  
 * -c  
-    Convert and accept nucleotide bases into RY bases 
+    Convert and accept nucleotide bases (A, G, C, T) into RY bases (Purine, Pyrimidine)
 * -k [STR]  
     Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
     Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement counting  
 * -n  
-    Output frequency into ratio. A feature count / Total feature count  
+    Output frequency, i.e., feature count / total feature count  
 * -u  
-    Accept masked letters which are lower cases. FASTA format generally represent masked bases into lower cases  
+    Accept masked (lower confidence) letters which are in lower cases in FASTA format  
 * -V  
-    Measure vocabular size at given range of feature length (l-mer)  
+    Count vocabulary size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
-    Bottom limit. Remove any feature that counts less than [-b]  
+    Bottom limit. Remove features that have the count less than [-b]  
     Default = 1
 * -t [LONG LONG]  
-    Top limit. Remove any feature that counts larger than [-t]  
+    Top limit. Remove features that have the count larger than [-t]  
     Default = 0 = maximum  
     
 
 ### [Note]
-Using [-a], amino acids, automatically turn [-r], disable reverse complement counting, becase peptide sequence have direction (start code -> stop codon), however, nucleotide (eg. genome and transcriptome) sequence actually is double helix that has reverse complement strand.
 
+/*
+When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, when using nucleotide (eg. genome and transcriptome) sequences as an input (default option) the sequence may be  can be either forward or reverse complement of double helix.
+
+
+Use [-r] option which turn off reverse compliment counting when an input is a single strand nucleotide sequence.
 
 Reverse complement counting pick one 'forward' or 'backward' feature of sequence that is lexically prior than another, because couting number of all forward and backward feature is equal to reverse complement counting x 2.
 
@@ -51,7 +55,8 @@ For example,
 In DNA double helix,
 
 AAAATTT -> lexically prior, so pick this one  
-TTTTAAA -> even if actual readen feature is this!  
+TTTTAAA -> even if actual readen feature is this! 
+*/
 
 
 ### [Input]
@@ -59,12 +64,12 @@ FASTA format peptide or nucleotide sequence files.
 
 
 ### [Output]
-Data compressed Feature Frequency Profile
+zlib compressed Feature Frequency Profile
 
 
 ## 2. JSD_matrix.cpp
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
-Run example: [Program path][options][input files path] > [output file path(standard output)]  
+Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
 ### [Arguments]
 
@@ -79,22 +84,22 @@ Run example: [Program path][options][input files path] > [output file path(stand
 * -r [PATH]  
     Input previous matrix, and add more items to the matrix without calculating a whole    
 * -d  
-    Output Jensen-Shannon distance matrix instead of Jensen-Shannon divergence matrix which is default  
+    Output Jensen-Shannon distance matrix instead of Jensen-Shannon divergence matrix which is default option.  
     Square root(JS divergence) = JS distance  
     
 
 ### [Note]
-[-r] input low triangular matrix, and it requires all pair-wise FF_Profiles
+[-r] input low triangular divergence or distance matrix. This requires all pair-wise output of 'FFP_compress'
 
 
 ### [Input]
-The output files of 'FFP_compress' which are Feature Frequency Profiles (FFPs)
+The output files of 'FFP_compress' which are zlib compressed Feature Frequency Profiles (FFPs)
 
 
 ### [Output]
-Standard output of low triangular Jensen-Shannon divergence, or distance, matrix
+Standard output of low triangular Jensen-Shannon divergence or distance matrix
 
 
 ## Limitation:
 Generally, longer feature lengths (l-mer) consume more memory and time.  
-So far vocabulary size up to 20 (amino acids) ^ 24 (feature length) in fungi proteomes study, maximum 35,274 proteins of 10,866,611 amino acids, was used and worked. Although 20^24 is huge number, actual vocabulary size is much smaller in non-random sequences such as peptide sequences.
+In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
