@@ -88,6 +88,6 @@ The output files of 'FFP_compress' which are zlib compressed Feature Frequency P
 Standard output of low triangular Jensen-Shannon divergence or distance matrix
 
 
-## Limitation:
+## Limitation
 Generally, longer feature lengths (l-mer) consume more memory and time.  
 In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
