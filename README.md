@@ -26,7 +26,7 @@ Run example: [Program path][options][input file path][output file path]
 * -k [STR]  
     Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
-    Disable reverse complement counting. Any bases set other than AGCT code will disable reverse complement counting  
+    Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement counting  
 * -n  
     Output frequency, i.e., feature count / total feature count  
 * -u  
@@ -43,21 +43,9 @@ Run example: [Program path][options][input file path][output file path]
 
 ### [Note]
 
-/*
-When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, when using nucleotide (eg. genome and transcriptome) sequences as an input (default option) the sequence may be  can be either forward or reverse complement of double helix.
+When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, nucleotide sequences are double helix either can be 'forward' or 'backward', reverse compliment.  
 
-
-Use [-r] option which turn off reverse compliment counting when an input is a single strand nucleotide sequence.
-
-Reverse complement counting pick one 'forward' or 'backward' feature of sequence that is lexically prior than another, because couting number of all forward and backward feature is equal to reverse complement counting x 2.
-
-For example,
-In DNA double helix,
-
-AAAATTT -> lexically prior, so pick this one  
-TTTTAAA -> even if actual readen feature is this! 
-*/
-
+Use [-r] option that turn off reverse compliment accounting if input is single strand nucleotide sequences such as ribosomal DNAs.  
 
 ### [Input]
 FASTA format peptide or nucleotide sequence files. 
