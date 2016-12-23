@@ -26,7 +26,7 @@ Run example: [Program path][options][input file path][output file path]
 * -k [STR]  
     Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
-    Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement counting  
+    Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement accounting  
 * -n  
     Output frequency, i.e., feature count / total feature count  
 * -u  
@@ -43,7 +43,7 @@ Run example: [Program path][options][input file path][output file path]
 
 ### [Note]
 
-When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, nucleotide sequences input are considered as a double helix and account reverse compliment as default option.
+When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement accounting, because peptide sequences have direction (start code -> stop codon). However, nucleotide sequences input are considered as a double helix and account reverse compliment as default option.
 
 Use [-r] option that turn off reverse compliment accounting if input is single strand nucleotide sequences such as ribosomal DNAs.  
 
