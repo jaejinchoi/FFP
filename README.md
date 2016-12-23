@@ -43,7 +43,7 @@ Run example: [Program path][options][input file path][output file path]
 
 ### [Note]
 
-When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, nucleotide sequences are double helix either can be 'forward' or 'backward', reverse compliment.  
+When using option [-a], amino acids input, [-r] turns on automatically that disable reverse complement counting, because peptide sequences have direction (start code -> stop codon). However, nucleotide sequences input are considered as a double helix and account reverse compliment as default option.
 
 Use [-r] option that turn off reverse compliment accounting if input is single strand nucleotide sequences such as ribosomal DNAs.  
 
