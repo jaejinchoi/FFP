@@ -53,12 +53,14 @@ FASTA format peptide or nucleotide sequence files.
 
 
 ### [Output]
-zlib compressed Feature Frequency Profile
+zlib compressed Feature Frequency Profile.
 
 
 ## 2. JSD_matrix.cpp
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
-Run example: [Program path][options][input files path] > [output file path (standard output)]  
+Run example: [Program path][options][input files path] > [output file path (standard output)]
+
+* Input files are FF Profiles of 'FFP_compress' outputs
 
 ### [Arguments]
 
@@ -71,7 +73,7 @@ Run example: [Program path][options][input files path] > [output file path (stan
     Number of threads for multiprocessing  
     Heuristically, an adequate thread number is the number of cpu cores - 1. Default is 5
 * -r [PATH]  
-    Input previous matrix, and add more items to the matrix without calculating a whole    
+    Input previous matrix, and add more items to the matrix without calculating a whole. File name is used as an item name but no longer than 10 characters.
 * -d  
     Output Jensen-Shannon distance matrix instead of Jensen-Shannon divergence matrix which is default option.  
     Square root(JS divergence) = JS distance  
