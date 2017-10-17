@@ -97,6 +97,6 @@ In fungi proteome study the largest proteome has 35,274 proteins containing 10,8
 
 
 ## Usage / Workflow
-![image](/FFP/FFP_flowchart.jpg?raw=true)
+![image](https://github.com/jaejinchoi/FFP/FFP_flowchart.jpg)
 
   
