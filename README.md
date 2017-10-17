@@ -8,7 +8,7 @@ Feature Frequency Profile (FFP); two core programs
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
 
 
-## 1. FFP_compress.cpp
+## 1. FF Profiler; FFP_compress.cpp
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 
@@ -56,7 +56,7 @@ FASTA format peptide or nucleotide sequence files.
 zlib compressed Feature Frequency Profile.
 
 
-## 2. JSD_matrix.cpp
+## 2. JSD Calculator; JSD_matrix.cpp
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]
 
@@ -94,3 +94,9 @@ Standard output of low triangular Jensen-Shannon divergence or distance matrix
 ## Limitation
 Generally, longer feature lengths (l-mer) consume more memory and time.  
 In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
+
+
+## Usage / Workflow
+![alt text](FFP/FFP_flowchart.jpg)
+
+  
