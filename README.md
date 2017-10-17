@@ -60,7 +60,7 @@ zlib compressed Feature Frequency Profile.
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]
 
-* Input files are FF Profiles of 'FFP_compress' outputs
+* Input is FF Profiles of 'FFP_compress' outputs
 
 ### [Arguments]
 
