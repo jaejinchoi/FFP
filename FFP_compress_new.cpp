@@ -614,7 +614,6 @@ int read_sliding_process(stringstream &read_f, int feature_length, bool backward
 }
 
 
-
 void filter_frequency(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string>  &prim_index_hash, long long bottom_limit, long long top_limit, double &feature_hit_cnt)
 {
     for (sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string>::iterator it=prim_index_hash.begin(); it!=prim_index_hash.end(); ++it)
@@ -629,13 +628,12 @@ void filter_frequency(sparse_hash_map<string, sparse_hash_map<string, long long,
                 feature_hit_cnt-=(sub_it->second); //substract selected feature count
                 (it->second).erase(sub_it); //erase by iterator position?, also available and not invalidate iteration
 
-
             }
-
+			
         }
 
         (it->second).clear_deleted_key(); //off delete key call
-        (it->second).resize(0); //compact the hashtable because erase doesn't remove(element) nor reduce hashtable.
+        (it->second).resize(0); //compact the hashtable because erase do not remove(element) or reduce hashtable.
 
     }
     prim_index_hash.resize(0);
@@ -679,7 +677,7 @@ void show_help()
 
     cout << endl << "Vocabulary size measure;" << endl;
     cout << "-V, max vocab size measure" << endl;
-    cout << "-b [long], bottom_limit(default = 2), minimum=0" << endl;
+    cout << "-b [long], bottom_limit(default = 1), minimum=0" << endl;
     cout << "-t [long], top_limit(default = 0 = maximum)" << endl;
 
 }
@@ -902,46 +900,6 @@ int main(int argc, char** argv)
                             write_f << output_stream.str(); //<< '\n'; //additional linebreak un necessary
 
                         }
-
-                    /* ///theoretically, max_vocab point is where vocab size begin to decrease
-                    if (max_vocab_find_flag==true)
-                    {
-                        recent_vocab_size = vocab_size_measure(prim_index_hash, bottom_limit, top_limit);
-
-                        stream_size_t = snprintf(NULL, 0, "l-mer; %d, vocab_size; %lld\n", feature_length, recent_vocab_size); //find string(c) size
-                        ///formated size larger than given stream_buff?
-                        stream_buf = (char*)realloc(stream_buf, (stream_size_t + 1)*sizeof(char *)); //+1 at the end(/0)
-                        snprintf(stream_buf, size_t(stream_buf), "l-mer; %d, vocab_size; %lld\n", feature_length, recent_vocab_size); //format char*
-
-                        output_stream << stream_buf;
-
-                        if (past_vocab_size==0 || ((past_vocab_size <= recent_vocab_size && recent_vocab_size > 0) || (feature_length_end==0 || feature_length <= feature_length_end))) //not support part_output
-                        {
-                            past_vocab_size=recent_vocab_size;
-
-                            ///clear and than seekg(clear procedure should be first)
-                            read_str_f.clear(); //reset flag
-                            read_str_f.seekg(0, ios_base::beg);
-
-                            feature_length++;
-
-                        } else
-                        {
-
-                            stream_size_t =  snprintf(NULL, 0, "#Point of MAX vocabulary size(%lld <= frequency <= %lld); %d\n", bottom_limit, top_limit, feature_length-1);
-                            ///formated size larger than given stream_buff?
-                            stream_buf = (char*)realloc(stream_buf, (stream_size_t+ 1)*sizeof(char *)); //+1 at the end(/0)
-                            snprintf(stream_buf, size_t(stream_buf),"#Point of MAX vocabulary size(%lld <= frequency <= %lld); %d\n", bottom_limit, top_limit, feature_length-1);
-
-                            output_stream << stream_buf;
-
-                            write_f << output_stream.str(); //<< '\n'; //additional linebreak un necessary
-
-                            //break; //is this required?
-
-                        }
-                        */
-
 
                     } else if (max_vocab_find_flag==false)
                     {
