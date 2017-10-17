@@ -418,6 +418,7 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
         } ///give more time to finish any task below, meanwhile do independent work
 
 
+	///inital job input
         for (int cy1=0; cy1!=thread_n_limit; ++cy1)
         {
             if (fut_struct[cy1].in_act==true)
@@ -706,6 +707,7 @@ int main(int argc, char** argv) //in case of output JSD distance(incomplete)
         {
             ///print reserved matrix(or given), replace original load_path_vector order and element
             start_item_n = reserve_matrix_item_analyze(output_stream, load_path_vector, reserve_matrix_path);
+		//start_item_n==-1 if given list is unmatching
 
         }
 
