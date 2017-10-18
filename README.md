@@ -1,5 +1,6 @@
 # FFP
 Feature Frequency Profile (FFP); two core programs
+A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.
 
 
 ## Requirements  
