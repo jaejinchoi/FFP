@@ -59,9 +59,7 @@ zlib compressed Feature Frequency Profile.
 
 ## 2. JSD Calculator; JSD_matrix.cpp
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
-Run example: [Program path][options][input files path] > [output file path (standard output)]
-
-* Input is FF Profiles of 'FFP_compress' outputs
+Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
 ### [Arguments]
 
