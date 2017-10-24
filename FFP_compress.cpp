@@ -203,6 +203,7 @@ string rev_comp_str_convert(string &forward_index_str)
 
             case 'Y':
                 rev_comp_str+="R";
+		break;
 
         }
 
@@ -291,7 +292,6 @@ void multi_hash_container_input(sparse_hash_map<string, sparse_hash_map<string, 
 
 
 }
-
 
 
 
