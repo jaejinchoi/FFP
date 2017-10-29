@@ -243,9 +243,8 @@ void multi_hash_container_input(sparse_hash_map<string, sparse_hash_map<string, 
 
     for (deque<string>::iterator it=max_index_key_deque.begin(); it!=max_index_key_deque.end(); ++it)
     {
-        if ((str_key == *it) || (str_key < *it && prim_index_hash[*it].size() < prim_index_hash[*it].max_size()))
+        if ((str_key == *it) || (str_key < *it && prim_index_hash[*it].size() < prim_index_hash[*it].max_size())) //speed or memory?; INT_MAX, prim_index_hash{*it].max_size()
         {
-
             prim_index_hash[*it][str_key]++;
             str_key_input_flag=true;
             //cout << str_key << "\t" << max_index_key_vector.size() << endl;
@@ -253,9 +252,9 @@ void multi_hash_container_input(sparse_hash_map<string, sparse_hash_map<string, 
 
         } else if (str_key < *it) // && prim_index_hash[*it].size()==prim_index_hash[*it].max_size())
         {
-            prim_index_hash[str_key][str_key]=1;
             //prim_index_hash[str_key].resize(100); //prepare comtainer?
-
+			prim_index_hash[str_key][str_key]=1;
+            
             prim_index_hash[*it].set_deleted_key(string());
 
             for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
@@ -286,7 +285,7 @@ void multi_hash_container_input(sparse_hash_map<string, sparse_hash_map<string, 
     if (str_key_input_flag==false) //sub_str > *it, add new
     {
         //prim_index_hash[str_key].resize(2); //prepare container?
-        prim_index_hash[str_key][str_key]++; //<string, long long>
+        prim_index_hash[str_key][str_key]=1; //<string, long long>
         max_index_key_deque.push_back(str_key);
     }
 
