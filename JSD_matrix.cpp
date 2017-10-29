@@ -596,7 +596,7 @@ void show_help()
 {
     cout << "Parameter, [option][load_paths(require full path)]\n";
     cout << "-h, show help\n"; //<< endl;
-    cout << "-c [int], specific integer code of single or escape character (default = TAB = char(9))\n";
+    cout << "-c [int], specific integer code of single or escape character (default = linebreak = char(10))\n";
     //cout << "-k, disable input file which have key and value pair, format='key|value(ratio), but key should be in-order'\n";
     cout << " KEY | VALUE, align output\n";
     //cout << "-l, enable full matrix, default is lower trianglar matrix\n";
