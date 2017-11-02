@@ -50,7 +50,7 @@ Use [-r] option that turn off reverse compliment accounting if input is single s
 
 Use [-V] option along with [-s], [-e], [-b] to estimate a range of optimal l-mer In general, use [-b 2], remove any feature frequency less than 2, to determine a l-mer where vocabulary complexity started to maximize.
 * FF Profiler will determine and stop when find a peak point where vocabular size drops in range of [-s] and [-e].
-	Heuristically, an optimal l-mer for protein was 13 and for nucleotide was 23 or 24.
+	Heuristically, an optimal l-mer for protein was 13 and for nucleotide was 23 or 24 (but indefinitive).
 	A population's optimal l-mer likely follow the majority optmal l-mer.
 	
 	
