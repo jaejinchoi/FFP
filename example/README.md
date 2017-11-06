@@ -18,21 +18,10 @@
 
 
 * Run JSD Caculator. Here, using "16_items_13.matrix" as an output  
-./JSD_maxtrix -t [number of thread] ./FFP_13/* > 16_items_13.matrix  
+./JSD_maxtrix -t [number of threads] ./FFP_13/* > 16_items_13.matrix  
 
 
-*
-
-
-## Requirements  
-- GCC(g++) version 4.7.1+  
-- Google sparse hash library. Look here: https://github.com/sparsehash/sparsehash  
-- zlib version 1.2.8+. Look here: http://www.zlib.net/  
-
-
-## 1. FF Profiler; FFP_compress.cpp
-Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
-Run example: [Program path][options][input file path][output file path]  
+* Contstruct a tree using BIONJ and the JS-Divergence matrix
 
 
 
