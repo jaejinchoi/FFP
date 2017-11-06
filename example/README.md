@@ -2,7 +2,7 @@
 
 ## See requirements from main page  
 - All proteome data used obtained from NCBI refseqDB, both fungi and non-fungi proteomes as given TAXIDs.  
-- Two randoms used as a root made by shuffling the residue order of each peptide sequences in proteome.    
+- Two randoms used as a root made by shuffling the residue order of each protein sequence in proteome.    
 
 ### Arguments  
 
