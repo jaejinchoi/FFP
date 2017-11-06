@@ -1,10 +1,10 @@
 # Example; Tutorial  
 
-## See requirements from main page  
+### See requirements from main page  
 - All proteome data used obtained from NCBI refseqDB, both fungi and non-fungi proteomes as given TAXIDs.  
 - Two randoms used as a root made by shuffling the residue order of each protein sequence in proteome.    
 
-### Arguments  
+### Follow
 
 * Run FF Profiler. Here, using feature length 13 and "FFP_13" as a FF Profiler's output folder  
 ./FFP_compress -a -s 13 -n 931890 ./FFP_13/931890  
