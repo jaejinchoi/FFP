@@ -26,7 +26,7 @@
 ### 2. Run JSD Caculator
 * Using 3 threads, -t 3  
 * Standard output to "16_items_13.matrix", is asymmetric matrix  
-* Use a python script, "to_symmetrix.py", provided to convert asymmetric to symmemtric matrix
+* Use a python script, "![to_symmetrix.py](to_symmetrix.py)", provided to convert asymmetric to symmemtric matrix
 
 ./JSD_maxtrix -t 3 ./FFP_13/* > 16_items_13.matrix  
 
