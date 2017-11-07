@@ -1,4 +1,4 @@
-# Example; Tutorial  
+# Example / Tutorial  
 
 ## Test set  
 * 14 proteome data used obtained from NCBI refseqDB which are enlisted in "![16_items_list.ods](16_items_list.ods)" and "![16_items_list.xlsx](16_items_list.xlsx)"  
