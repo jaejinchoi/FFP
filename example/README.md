@@ -30,9 +30,8 @@
 
 ./JSD_maxtrix -t 3 ./FFP_13/* > 16_items_13.matrix  
 
-* Sample output: "16_items_13.matrix" (pre-converted to symmetic matrix for BIONJ input)  
+* Sample output: "![16_items_13.matrix](16_items_13.matrix)" (pre-converted to symmetic matrix for BIONJ input)  
 
-![divergence_matrix](16_items_13.matrix)
 
 ### 3. Construct a tree (newick) from the divergence matrix 
 * You can use either BIONJ or NJ. However, BIONJ requires to input a symmetric matrix  
@@ -40,12 +39,9 @@
 
 ./BIONJ 16_items_13.matrix 16_items_tree.newick  
 
-* Sample output: "16_items_tree.newick"  
-
-![newick](16_items_tree.newick)
+* Sample output: "![16_items_tree.newick](16_items_tree.newick)"  
 
 
 ### 4. Tree Visualization
 * For this example, we use ITOL (http://itol.embl.de/)
-
-![sample_tree](Tutorial-16_items_tree.png)
+* Sample output: ![Tutorial-16_items_tree.png](Tutorial-16_items_tree.png)
