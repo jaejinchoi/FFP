@@ -9,7 +9,7 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
 
 
-## 1. FF Profiler; FFP_compress.cpp
+## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 
@@ -62,7 +62,7 @@ FASTA format peptide or nucleotide sequence files.
 zlib compressed Feature Frequency Profile.
 
 
-## 2. JSD Calculator; JSD_matrix.cpp
+## 2. JSD Calculator; ![JSD_matrix.cpp](JSD_matrix.cpp)
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
