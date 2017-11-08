@@ -47,7 +47,9 @@
 * Sample output: ![Tutorial-16_items_tree.png](Tutorial-16_items_tree.png)  
 
 
+
 ## Workflow  
+* Repeat the cycle above per feature length and tree  
 ![Workflow](FFP_flowchart3.jpg)  
  
   
