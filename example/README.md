@@ -44,4 +44,10 @@
 
 ### 4. Tree Visualization
 * For this example, we use ITOL (http://itol.embl.de/)
-* Sample output: ![Tutorial-16_items_tree.png](Tutorial-16_items_tree.png)
+* Sample output: ![Tutorial-16_items_tree.png](Tutorial-16_items_tree.png)  
+
+
+## Workflow  
+![Workflow](FFP_flowchart3.jpg)  
+ 
+  
