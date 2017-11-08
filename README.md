@@ -9,8 +9,10 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
 
 
+
 ## Tutorial / Example
-* A Tutorial you can walkthrough here: ![Tutorial](example)
+* A tutorial you can walkthrough here: ![Tutorial](example)
+
 
 
 ## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
@@ -64,6 +66,7 @@ FASTA format peptide or nucleotide sequence files.
 
 ### [Output]
 zlib compressed Feature Frequency Profile.
+
 
 
 ## 2. JSD Calculator; ![JSD_matrix.cpp](JSD_matrix.cpp)
