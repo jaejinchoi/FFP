@@ -11,7 +11,7 @@
 * Input is proteome (amino acids), -a  
 * Feature length (l-mer) is 13, -s 13  
 * Normalize output (frequency), -n  
-* Output folder is "./FFP_13"  
+* Output folder is "./FFP_13", manually created  
 
 ./FFP_compress -a -s 13 -n 931890 ./FFP_13/931890  
 ./FFP_compress -a -s 13 -n 332648 ./FFP_13/332648  
@@ -23,19 +23,19 @@
 ./FFP_compress -a -s 13 -n R990650 ./FFP_13/R990650  
 
 
-### 2. Run JSD Caculator
+### 2. Run JSD Calculator
 * Using 3 threads, -t 3  
 * Standard output to "16_items_13.matrix", is asymmetric matrix  
 * Use a python script, "![to_symmetrix.py](to_symmetrix.py)", provided to convert asymmetric to symmetric matrix
 
 ./JSD_maxtrix -t 3 ./FFP_13/* > 16_items_13.matrix  
 
-* Sample output: "![16_items_13.matrix](16_items_13.matrix)" (pre-converted to symmetic matrix for BIONJ input)  
+* Sample output: "![16_items_13.matrix](16_items_13.matrix)" (pre-converted to symmetric matrix for BIONJ input)  
 
 
 ### 3. Construct a tree (newick) from the divergence matrix 
 * You can use either BIONJ or NJ. However, BIONJ requires to input a symmetric matrix  
-* For this example, we use BIONJ provided here (http://www.atgc-montpellier.fr/bionj/) but any method that takes distance matrix works  
+* For this example, we use BIONJ provided here (http://www.atgc-montpellier.fr/bionj/) but any method that takes distance/divergence matrix works  
 
 ./BIONJ 16_items_13.matrix 16_items_tree.newick  
 
