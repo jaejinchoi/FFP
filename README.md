@@ -9,6 +9,10 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
 
 
+## Tutorial / Example
+* A Tutorial you can walkthrough here: ![Tutorial](example)
+
+
 ## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
@@ -99,10 +103,3 @@ Standard output of low triangular Jensen-Shannon divergence or distance matrix
 Generally, longer feature lengths (l-mer) consume more memory and time.  
 In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
 
-
-## Usage / Workflow
-* A turtorial you can walkthrough here: "![Tutorial](example)"
-
-![Workflow](FFP_flowchart3.jpg)
- 
-  
