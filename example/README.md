@@ -49,7 +49,7 @@
 
 
 ## Workflow  
-* Repeat the cycle above per feature length (l-mer) and tree  
+* Repeat the "Follow" cycle above per feature length (l-mer) and tree  
 ![Workflow](FFP_flowchart3.jpg)  
  
   
