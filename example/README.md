@@ -50,6 +50,6 @@
 
 ## Workflow  
 * Repeat the "Follow" cycle above per feature length (l-mer) and tree  
-![Workflow](FFP_flowchart_v4.eps)  
+![Workflow](FFP_flowchart_v4.jpg)  
  
   
