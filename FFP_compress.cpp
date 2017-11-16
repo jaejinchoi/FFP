@@ -534,7 +534,6 @@ int read_sliding_process(stringstream &read_f, int feature_length, bool backward
             fasta_head_flag=true;
             forward_index_str.clear();
 
-
         } else if (fasta_head_flag==true && read_char=='\n')
         {
             fasta_head_flag=false;
