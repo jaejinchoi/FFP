@@ -1,6 +1,6 @@
 # FFP
 Feature Frequency Profile (FFP); two core programs  
-A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.
+A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.  
 
 
 ## Requirements  
@@ -10,10 +10,9 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 
 
 
-## Tutorial / Example
+## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
-
-
+* Additional supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
 
 ## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
