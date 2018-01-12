@@ -10,4 +10,5 @@ Built using BIONJ, a Neighbor-Joining(NJ) variant.
 ![Tree_newick](Fungi_319.newick)  
 
 ### Note  
-Leaf IDs are NCBI TaxonIDs. Four leaf IDs start with 'M' or 'm' are randomied taxons used as a root (See, Materials and Methods).  
+Leaf IDs are NCBI TaxonIDs.  
+Four leaf IDs start with 'M' or 'm' are randomied taxons used as a root (See, Materials and Methods).  
