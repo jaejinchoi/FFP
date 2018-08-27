@@ -37,7 +37,7 @@ When preparing input files save different taxons in separated files
 * -n  
     Output frequency, i.e., feature count / total feature count  
 * -u  
-    Accept masked (lower confidence) letters which are in lower cases in FASTA format  
+    Accept masked (lower confidence; softmasked) letters which are in lower cases in FASTA format  
 * -V  
     Count vocabulary size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
