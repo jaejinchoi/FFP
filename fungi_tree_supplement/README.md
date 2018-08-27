@@ -11,4 +11,4 @@ Built using BIONJ, a Neighbor-Joining(NJ) variant.
 
 ### Note  
 Leaf IDs are NCBI TaxonIDs.  
-Four leaf IDs start with 'M' or 'm' are randomied taxons used as a root (See, Materials and Methods).  
+Four leaf IDs start with 'M' or 'm' are randomized taxons used as an outgroup (See, Materials and Methods).  
