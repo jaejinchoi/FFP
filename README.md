@@ -17,6 +17,7 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 ## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
+When preparing input files save different taxons in separated files  
 
 ### [Arguments]
 * -h  
