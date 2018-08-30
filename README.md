@@ -16,14 +16,16 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
   
 ## Two versions avilable: Binary, and Text(string)  
 ### 2018-8, major update; adding more functions, a script optimization, and renaming functions  
-* Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another: disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
+* Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
 * Provide two way feature filtering: feature count and feature string entropy.  
 
 FFP_text version; ![FFP_txt](FFP_txt)  
 FFP_binary version; ![FFP_bin](FFP_bin)  
+
+Older text based FFP; ![old_FFP](old_version)  
+
   
-  
-## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
+## 1. FF Profiler; ![FFP_bin.cpp](FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](FFP_txt/FFP_txt.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 When preparing input files save different taxons in separated files  
@@ -84,7 +86,7 @@ zlib compressed Feature Frequency Profile.
 
 
 
-## 2. JSD Calculator; ![JSD_matrix.cpp](JSD_matrix.cpp)
+## 2. JSD Calculator; ![JSD_matrix_bin.cpp](FFP_bin/JSD_matrix_bin.cpp), ![JSD_matrix_txt.cpp](FFP_txt/JSD_matrix_txt.cpp)
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
