@@ -277,6 +277,7 @@ void to_square_matrix_output(stringstream &output_stream) ///convert a low trian
 
 
     output_stream.clear();
+    output_stream.str(""); //clear previous contents
     output_stream.seekg(0, ios::beg);
 
     output_stream << item_count_str << endl; ///a number of items
