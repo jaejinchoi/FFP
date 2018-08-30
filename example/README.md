@@ -25,12 +25,11 @@
 
 ### 2. Run JSD Calculator
 * Using 3 threads, -t 3  
-* Standard output to "16_items_13.matrix", is asymmetric matrix  
-* Use a python script, "![to_symmetrix.py](to_symmetrix.py)", provided to convert asymmetric to symmetric matrix
+* Standard output to "16_items_13.matrix", is asymmetric matrix (So use [-s] for symmetric matrix output)
 
-./JSD_maxtrix -t 3 ./FFP_13/* > 16_items_13.matrix  
+./JSD_maxtrix -s -t 3 ./FFP_13/* > 16_items_13.matrix  
 
-* Sample output: "![16_items_13.matrix](16_items_13.matrix)" (pre-converted to symmetric matrix for BIONJ input)  
+* Sample output: "![16_items_13.matrix](16_items_13.matrix)" (the symmetric matrix input for BIONJ input)  
 
 
 ### 3. Construct a tree (newick) from the divergence matrix 
