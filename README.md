@@ -116,7 +116,7 @@ The output files of 'FFP_compress' which are zlib compressed Feature Frequency P
 
 
 ### [Output]
-Standard output of low triangular Jensen-Shannon divergence or distance matrix in PHYLIP format (not .tsv).
+Standard output of a low triangular Jensen-Shannon divergence or distance matrix in PHYLIP format (not .tsv).  
 Support a symmetric matrix output using [-s].
 
 ## Limitation
