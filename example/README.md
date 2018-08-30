@@ -26,6 +26,7 @@
 ### 2. Run JSD Calculator
 * Using 3 threads, -t 3  
 * Standard output to "16_items_13.matrix", is asymmetric matrix (So use [-s] for symmetric matrix output)
+* This script convert a low triangular asymmetric matrix to a symmetric matrix; ![to_symmetrix.py](to_symmetrix.py)
 
 ./JSD_maxtrix -s -t 3 ./FFP_13/* > 16_items_13.matrix  
 
