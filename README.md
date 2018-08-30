@@ -22,7 +22,7 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 FFP_text version; ![FFP_txt](FFP_txt)  
 FFP_binary version; ![FFP_bin](FFP_bin)  
 
-Older text based FFP; ![old_FFP](old_version)  
+Old-previous text based FFP; ![old_FFP](old_FFP)  
 
   
 ## 1. FF Profiler; ![FFP_bin.cpp](FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](FFP_txt/FFP_txt.cpp)
