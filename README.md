@@ -14,6 +14,16 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 * A tutorial you can walkthrough here: ![Tutorial](example)
 * Additional supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
 
+
+## Two versions avilable: Binary, and Text(string)  
+### 2018-8, major update; adding more functions, a script optimization, and renaming functions  
+* Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another: disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
+* Provide two way feature filtering: feature count and feature string entropy.  
+
+FFP_text version; ![FF_txt](FFP_txt)  
+FFP_binary version; ![FF_bin](FFP_bin)  
+
+
 ## 1. FF Profiler; ![FFP_compress.cpp](FFP_compress.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
@@ -41,11 +51,17 @@ When preparing input files save different taxons in separated files
 * -V  
     Count vocabulary size at given range of feature length (l-mer)  
 * -b [LONG LONG]  
-    Bottom limit. Remove features that have the count less than [-b]  
+    Bottom count limit. Remove features, the count below [-b]  
     Default = 1
 * -t [LONG LONG]  
-    Top limit. Remove features that have the count larger than [-t]  
+    Top count limit. Remove features, the count above [-t]  
     Default = 0 = maximum  
+* -B [Double]  
+    Bottom entropy limit. Remove features, the string entropy below [-B]  
+    Default = 0.0
+* -T [Double]  
+    Top entropy limit. Remove features, the string entropy above [-T]  
+    Default = 1.0 = maximum
     
 
 ### [Note]
@@ -88,7 +104,8 @@ Run example: [Program path][options][input files path] > [output file path (stan
 * -d  
     Output Jensen-Shannon distance matrix instead of Jensen-Shannon divergence matrix which is default option.  
     Square root(JS divergence) = JS distance  
-    
+* -s  
+    Output a symmetric matrix instead of a low triangular matrix which is default output.  
 
 ### [Note]
 [-r] input low triangular divergence or distance matrix. This requires all pair-wise output of 'FFP_compress'
@@ -99,8 +116,8 @@ The output files of 'FFP_compress' which are zlib compressed Feature Frequency P
 
 
 ### [Output]
-Standard output of low triangular Jensen-Shannon divergence or distance matrix
-
+Standard output of low triangular Jensen-Shannon divergence or distance matrix in PHYLIP format (not .tsv).
+Support a symmetric matrix output using [-s].
 
 ## Limitation
 Generally, longer feature lengths (l-mer) consume more memory and time.  
