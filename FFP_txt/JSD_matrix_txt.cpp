@@ -426,17 +426,17 @@ void print_value_vector_str(stringstream &output_stream, vector< vector<double> 
             ///print, a point below 8 decimal places
             if (js_distance_flag==true) ///sqrt(JS divergence)=JS distance; output JS distance instead of JS divergence
             {
-                stream_size_t = snprintf(NULL, 0, "%.8g\t", sqrt(fut_value_vector[r_it][c_it]));
+                stream_size_t = snprintf(NULL, 0, "%.4e\t", sqrt(fut_value_vector[r_it][c_it]));
                 stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
 
-                snprintf(stream_buf, size_t(stream_buf), "%.8g\t", sqrt(fut_value_vector[r_it][c_it]));
+                snprintf(stream_buf, size_t(stream_buf), "%.4e\t", sqrt(fut_value_vector[r_it][c_it]));
 
             } else
             {
-                stream_size_t = snprintf(NULL, 0, "%.8g\t", fut_value_vector[r_it][c_it]);
+                stream_size_t = snprintf(NULL, 0, "%.4e\t", fut_value_vector[r_it][c_it]);
                 stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
 
-                snprintf(stream_buf, size_t(stream_buf), "%.8g\t", fut_value_vector[r_it][c_it]);
+                snprintf(stream_buf, size_t(stream_buf), "%.4e\t", fut_value_vector[r_it][c_it]);
 
             }
 
@@ -444,10 +444,10 @@ void print_value_vector_str(stringstream &output_stream, vector< vector<double> 
 
         }
 
-        stream_size_t = snprintf(NULL, 0, "%.8g\n", 0.0);
+        stream_size_t = snprintf(NULL, 0, "%.4e\n", 0.0);
         stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
 
-        snprintf(stream_buf, size_t(stream_buf), "%.8g\n", 0.0);
+        snprintf(stream_buf, size_t(stream_buf), "%.4e\n", 0.0);
         output_stream << stream_buf;
 
         fut_value_vector[r_it].clear(); //empty vector
