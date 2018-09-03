@@ -11,7 +11,7 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
   
 ## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
-* Additional supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
+* Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
   
   
 ## Two versions avilable: Binary, and Text(string)  
