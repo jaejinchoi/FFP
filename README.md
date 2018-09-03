@@ -71,7 +71,7 @@ When using option [-a], amino acids input, [-r] turns on automatically that disa
 
 Use [-r] option that turn off reverse compliment accounting if input is single strand nucleotide sequences such as ribosomal DNAs.
 
-Use [-V] option along with [-s], [-e], [-b] to estimate a range of optimal l-mer. In general, use [-b 2], remove any feature frequency less than 2, to determine a l-mer where vocabulary complexity started to maximize.  
+Use [-V] option along with [-s], [-e], [-b] to estimate a range of optimal l-mer. In general, use [-b 2], remove any feature count less than 2, to determine a l-mer where vocabulary complexity started to maximize.  
 * FF Profiler will determine and stop when find a peak point where vocabular size drops in range of [-s] and [-e].  
 	Heuristically, an optimal l-mer for amino acids was 13 and for nucleotides was 23 or 24 (but indefinitive).  
 	A population's optimal l-mer likely follow the majority optmal l-mer.  
@@ -109,7 +109,7 @@ Run example: [Program path][options][input files path] > [output file path (stan
     Output a symmetric matrix instead of a low triangular matrix which is default output.  
 
 ### [Note]
-[-r] input low triangular divergence or distance matrix. This requires all pair-wise output of 'FFP_compress'
+[-r] input low triangular divergence or distance matrix. This requires all pair-wise output of 'FF Profiler'
 
 
 ### [Input]
