@@ -94,9 +94,6 @@ Run example: [Program path][options][input files path] > [output file path (stan
 
 * -h  
     Show options  
-* -c [INT]  
-    Specific integer code of single or escape character for delimiter in bewteen a set of [Feature|Value]  
-    Default is '\n', linebreak, char(10)
 * -t [INT]  
     Number of threads for multiprocessing  
     Heuristically, an adequate thread number is the number of cpu cores - 1. Default is 5
