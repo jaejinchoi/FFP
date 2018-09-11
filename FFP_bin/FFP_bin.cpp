@@ -951,7 +951,7 @@ int main(int argc, char** argv)
 
                     }
 
-                } else if (max_vocab_find_flag==false) ///write FFP to file
+                } else if (max_vocab_find_flag==false && !prim_index_hash.empty()) ///write FFP to file
                 {
                     feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, output_stream);
 
