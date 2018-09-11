@@ -1016,7 +1016,7 @@ int main(int argc, char** argv)
 
                     }
 
-                } else if (max_vocab_find_flag==false) ///write FFP to file
+                } else if (max_vocab_find_flag==false && !prim_index_hash.empty()) ///write FFP to file
                 {
                     compress_word_token(prim_index_hash, compress_token_hash, ratio_output_flag, feature_hit_cnt, str_token_size, output_stream); ///create tokens to reduce overall data size
 
