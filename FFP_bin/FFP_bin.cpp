@@ -962,7 +962,7 @@ int main(int argc, char** argv)
                 } else ///no output
                 {
                     cout << "Empty FFP output: " << argv[optind] << endl;
-                    break;	
+                    break;
 		}
         
             }
