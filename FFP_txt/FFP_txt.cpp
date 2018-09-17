@@ -1025,9 +1025,13 @@ int main(int argc, char** argv)
                     write_f << compress_deflate(output_stream.str(), Z_BEST_COMPRESSION);
                     //write_f << output_stream.str(); //<< '\n'; //without zlib compression
                     break; //break while(1)
-
+                    
+                } else
+                {
+                    cout << "Empty FFP ouput: " << argv[optind] << endl;
+                    break;
+                    
                 }
-
 
             }
 
@@ -1052,6 +1056,7 @@ int main(int argc, char** argv)
         cout << "Please input load_path, and then save_path" << endl;
         exit(EXIT_SUCCESS);
 
+					
     }
 
     free(stream_buf);
