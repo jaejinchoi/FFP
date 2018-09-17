@@ -960,11 +960,11 @@ int main(int argc, char** argv)
                     break; //break while(1)
 
                 } else ///no output
-				{
-					cout << "Empty FFP output: " << argv[optind] << endl;
-					break;
-				
-				}
+                {
+                    cout << "Empty FFP output: " << argv[optind] << endl;
+                    break;
+                
+                }
 				
             }
 
