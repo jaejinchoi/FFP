@@ -954,14 +954,17 @@ int main(int argc, char** argv)
                 } else if (max_vocab_find_flag==false && !prim_index_hash.empty()) ///write FFP to file
                 {
                     feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, output_stream);
-
+					
                     write_f << compress_deflate(output_stream.str(), Z_BEST_COMPRESSION);
                     //write_f << output_stream.str(); //<< '\n'; //without zlib compression
                     break; //break while(1)
 
-                }
-
-
+                } else ///no output
+                {
+                    cout << "Empty FFP output: " << argv[optind] << endl;
+                    break;	
+				}
+        
             }
 
             ///clear containers/initialize
