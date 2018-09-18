@@ -391,8 +391,9 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
 
         } else if (str_key < *it)
         {
+			prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity; was not particularly useful
             prim_index_hash[str_key][str_key]=1;
-            //prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity; was not particularly useful
+            
             prim_index_hash[*it].set_deleted_key(string()); //or string()
 
             for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
@@ -422,8 +423,9 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
 
     if (key_insert_flag==false) ///new feature
     {
+		prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity; was not particularly useful
         prim_index_hash[str_key][str_key]=1; //<string, long long>
-        //prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity; was not particularly useful
+        
         max_index_key_vector.push_back(str_key); //in vector, push_back does not invalidate iterator
 
     }
