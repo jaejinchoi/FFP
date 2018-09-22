@@ -35,6 +35,8 @@ When preparing input files save different taxons in separated files
 ### [Arguments]
 * -h  
     Show options  
+* -v  
+    Show version 
 * -s [INT]  
     Feature size (l-mer)  
 * -e [INT]  
