@@ -73,11 +73,8 @@ When using option [-a], amino acids input, [-r] turns on automatically that disa
 
 Use [-r] option that turn off reverse compliment accounting if input is single strand nucleotide sequences such as ribosomal DNAs.
 
-Use [-V] option along with [-s], [-e], [-b] to estimate a range of optimal l-mer. In general, use [-b 2], remove any feature count less than 2, to determine a l-mer where vocabulary complexity started to maximize.  
-* FF Profiler will determine and stop when find a peak point where vocabular size drops in range of [-s] and [-e].  
-	Heuristically, an optimal l-mer for amino acids was 13 and for nucleotides was 23 or 24 (but indefinitive).  
-	A population's optimal l-mer likely follow the majority optmal l-mer.  
-	
+Use [-V] option along with [-s], [-e] and feature filtering options to estimate a range of optimal l-mer. In general, use [-b 2], remove any feature count less than 2, to determine a l-mer where vocabulary complexity started to maximize. FF Profiler will determine and stop when find a peak point where vocabular size drops in range of [-s] and [-e], or without giving [-e] it will keep search by incrementing the feathre length until the condition.  
+* Heuristically, an optimal l-mer for amino acids was 13 and for nucleotides was 23 or 24 (but indefinitive). A population's optimal l-mer likely follow the majority optimal l-mer.  
 
 ### [Input]
 FASTA format peptide or nucleotide sequence files. 
