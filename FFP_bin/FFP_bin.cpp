@@ -925,7 +925,7 @@ int main(int argc, char** argv)
                 }
 
 
-                if (max_vocab_find_flag==true && feature_length <= feature_length_end && feature_length_end!=0)
+                if (max_vocab_find_flag==true && (feature_length <= feature_length_end || feature_length_end==0))
                 {
                     recent_vocab_size = vocab_size_measure(prim_index_hash);
 
@@ -935,7 +935,7 @@ int main(int argc, char** argv)
 
                     output_stream << stream_buf;
 
-                    if (feature_length < feature_length_end)
+                    if (feature_length <= feature_length_end || past_vocab_size <= recent_vocab_size)
                     {
                         ///prepare and clear variables and containers for next cycle
                         max_index_key_vector.clear();
@@ -945,6 +945,8 @@ int main(int argc, char** argv)
 
                         feature_length++;
                         bits_per_feature = (unsigned long)(ceil(((double)(bits_per_alphabet*feature_length) / 8)) * 8); //recalculate
+                        
+                        past_vocab_size = recent_vocab_size;
 
                     } else
                     {
