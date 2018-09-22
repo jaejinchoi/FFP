@@ -935,7 +935,7 @@ int main(int argc, char** argv)
 
                     output_stream << stream_buf;
 
-                    if (feature_length < feature_length_end || (past_vocab_size <= recent_vocab_size && feature_length_end==0))
+                    if ((feature_length < feature_length_end || feature_length_end==0) && past_vocab_size <= recent_vocab_size)
                     {
                         ///prepare and clear variables and containers for next cycle
                         max_index_key_vector.clear();
