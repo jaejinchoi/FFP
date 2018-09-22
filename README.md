@@ -14,7 +14,7 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
   
   
-## Two versions avilable: Binary, and Text(string)  
+## Two versions available: Binary, and Text(string)  
 ### 2018-8, major update; adding more functions, a script optimization, and renaming functions  
 * Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
 * Provide two way feature filtering: feature count and feature string entropy.
