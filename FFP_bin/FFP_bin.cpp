@@ -690,6 +690,7 @@ void show_help()
 {
     cout << "Parameter usage [option][load_path][save_path]" << endl;
     cout << "-h, show_help()" << endl;
+    cout << "-v, show_version()" << endl;
     cout << "-s [INT], feature size(dependency on memory size and bit size)" << endl;
     cout << "-e [INT], feature size end, limit feature_length++ while measuring vocabulary size" << endl;
 
@@ -717,7 +718,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "FFP binary version; update 2018-9-21";
+    cout << "FFP binary version; update 2018-9-21\n";
     cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
