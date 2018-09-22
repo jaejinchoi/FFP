@@ -717,7 +717,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "FFP binary version; update 2018-8";
+    cout << "FFP binary version; update 2018-9-21";
     cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
@@ -885,7 +885,7 @@ int main(int argc, char** argv)
     size_t stream_size_t=0;
 
 
-    if (argc  - optind == 2) ///[input file path][save file path]
+    if (argc - optind == 2) ///[input file path][save file path]
     {
         read_f.open(argv[optind], ios::in); ///load fasta input path
         write_f.open(argv[optind+1], ios::out|ios::binary); ///save output path
@@ -925,7 +925,7 @@ int main(int argc, char** argv)
                 }
 
 
-                if (max_vocab_find_flag==true && (feature_length <= feature_length_end || feature_length_end==0))
+                if (max_vocab_find_flag==true && !prim_index_hash.empty())
                 {
                     recent_vocab_size = vocab_size_measure(prim_index_hash);
 
@@ -935,7 +935,7 @@ int main(int argc, char** argv)
 
                     output_stream << stream_buf;
 
-                    if (feature_length < feature_length_end || past_vocab_size <= recent_vocab_size)
+                    if (feature_length < feature_length_end || (past_vocab_size <= recent_vocab_size && feature_length_end==0))
                     {
                         ///prepare and clear variables and containers for next cycle
                         max_index_key_vector.clear();
