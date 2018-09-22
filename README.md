@@ -18,9 +18,8 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
 ### 2018-8, major update; adding more functions, a script optimization, and renaming functions  
 * Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
 * Provide two way feature filtering: feature count and feature string entropy.
-### 2018-9, fix the vocabular measuring loop condition.
+### 2018-9-21, fix the vocabular measuring loop function.
 * Patch; infinite loop when measuring vocabular size without input [-e]
-
 
 FFP_text version; ![FFP_txt](FFP_txt)  
 FFP_binary version; ![FFP_bin](FFP_bin)  
