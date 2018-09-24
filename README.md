@@ -15,17 +15,13 @@ A code deposit for "A genome Tree of Life for the fungal kingdom", JaeJin Choi a
   
   
 ## Two versions available: Binary, and Text(string)  
-### 2018-8, major update; adding more functions, a script optimization, and renaming functions  
-* Two versions share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
-* Provide two way feature filtering: feature count and feature string entropy.
-### 2018-9-21, update the vocabulary size measure function [-V].
-* Support range search using [-s] and [-e], and recursive search without specifying [-e] (default value = 0)
+* Latest version: 2018-9-21
+* See the ![version history](version_history)  
 
 FFP_text version; ![FFP_txt](FFP_txt)  
 FFP_binary version; ![FFP_bin](FFP_bin)  
 
 Old-previous text based FFP (before 2018-8); ![old_FFP](old_FFP)  
-
   
 ## 1. FF Profiler; ![FFP_bin.cpp](FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](FFP_txt/FFP_txt.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
