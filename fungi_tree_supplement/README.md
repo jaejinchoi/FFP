@@ -1,5 +1,5 @@
 # Fungi Tree Supplement section
-For "A genome Tree of Life for the fungal kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.  
+For "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.  
 
 ## Divergence matrix file  
 Using FFP method at optimal length 13 (l-mer 13) and Jensen-Shannon divergence as a metric, and it is a symmetric matrix.  
