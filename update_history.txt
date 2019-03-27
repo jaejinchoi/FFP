@@ -1,9 +1,9 @@
-###Latest version: 2018-9-12  
+###Latest version: 2018-9-12; 2v.2.1  
 
 
-## 2018-8, major update; adding more functions, a script optimization, and renaming functions  
+## 2018-8; 2v.2.0 major update; adding more functions, a script optimization, and renaming functions  
 * Two versions availble and share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
 * Provide two way feature filtering: feature count and feature string entropy.  
 
-## 2018-9-21, update the vocabulary size measure function [-V].
+## 2018-9-21; 2v.2.1 update the vocabulary size measure function [-V].
 * Support range search using [-s] and [-e], and recursive search without specifying [-e] (default value = 0)
