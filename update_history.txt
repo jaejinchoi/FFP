@@ -1,9 +1,14 @@
 ###Latest version: 2v.2.1 (2018-9-12);   
+Note, in version, the first and second numbering indicate compatibility (e.g., 2v.2.x).  
+
+## 2v.3.0 (upcoming)  
+* Future proof and fully support user defined alphabets string [-k]. However, incompatible with previous versions.    
 
 ## 2v.2.1 (2018-9-21);  update the vocabulary size measure function [-V].
-* Support range search using [-s] and [-e], and recursive search without specifying [-e] (default value = 0)  
+* Support range search using [-s] and [-e], and recursive search without specifying [-e] (default value = 0).  
+* Limited user defined alphabets string support, [-k] option not recommended.
 
 ## 2v.2.0 (2018-8); major update; adding more functions, a script optimization, and renaming functions  
-* Two versions availble and share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
+* Two versions available and share same arguments and options, but the method of packing FF Profile is different and so they are not compatible. Each version has unique advantage over another, such as disk storage usage (FFP_txt) versus memory usage (FFP_bin).  
 * Provide two way feature filtering: feature count and feature string entropy.  
 
