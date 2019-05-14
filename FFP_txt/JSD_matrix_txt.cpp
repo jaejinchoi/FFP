@@ -688,7 +688,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculate; FFP string input version; update 2018-8\n";
+    cout << "JSD distance calculate; FFP string input version 2v.2.1 (2018-8)\n";
     cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
