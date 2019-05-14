@@ -619,7 +619,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculate; FFP binary input version; update 2018-8\n";
+    cout << "JSD distance calculate; FFP binary input version 2v.2.1 (2018-8)\n";
     cout << "Value presentation: a poin below 8 decimal places (%.8g)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
