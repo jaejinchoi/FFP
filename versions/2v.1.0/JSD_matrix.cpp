@@ -609,13 +609,13 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculation-in matrix(thread support), 2014.11.10" << endl;
+    cout << "JSD distance calculation-in matrix(thread support), 2v.1.0 (2014.11.10)" << endl;
     cout << "Code by JaeJin Choi\n";
     cout << "compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
     cout << "string key, double value\n";
     cout << "lower trianglar matrix-without redundant calculation" << endl;
     cout << "need caution in item name should be less than 10 characters(maximum 9), to prevent output error-trim at the end of string length 10" << endl;
-    cout << "require '-std=c++11 -lpthread' for correct compile, !may not work if g++ version not support c++11" << endl;
+    cout << "require '-std=c++11 -lpthread' for correct compile, !may not work if g++ version not support c++11" << endl;  
 	cout << "2014-11-10, diagonal cell calculation to avoid HDD over-read" << endl;
 	cout << "2015-4-20, avoid data race by independently through-out each calculation(independent memory load)\n";
     cout << "2016-1-25; latest zlib acquired; 1.2.8.(May, 2013)\n";
