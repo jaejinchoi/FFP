@@ -22,7 +22,7 @@ FFP_binary version; ![FFP_bin](versions/2v.2.1/FFP_bin)
 
 Old-previous text based FFP (before 2018-8); ![old_FFP](old_FFP)  
   
-## 1. FF Profiler; ![FFP_bin.cpp](versions/2v.2.1/FFP_bin/FFP_bin.cpp), ![FFP_txt](versions/2v.2.1/FFP_txt/FFP_txt.cpp)
+## 1. FF Profiler; ![FFP_bin.cpp](versions/2v.2.1/FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](versions/2v.2.1/FFP_txt/FFP_txt.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 When preparing input files save different taxons in separated files  
