@@ -683,7 +683,8 @@ void show_help()
 
 void show_profile()
 {
-    cout << "Code by JaeJin Choi\n";
+	cout << "FFP compress, 2v.1.0 (2014.11.10)\n";
+    cout << "Code by JaeJin Choi, cout << "JSD distance calculation-in matrix(thread support), 2v.1.0 (2014.11.10)" << endl;2v.1.0\n";
     cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
     cout << "Google sparsehash\n";
     cout << "zlib 1.2.8+";
