@@ -15,7 +15,7 @@ A code deposit for "A genome Tree of Life for the Fungi kingdom", JaeJin Choi an
   
   
 ## Two versions available: Binary, and Text(string)  
-* Latest update: 2v.2.1 (2018-9-21); see the ![update history](update_history.txt)  
+* Latest update: 2v.2.1 (2018-9-21); see the ![update history](versions/update_history.txt)  
 
 FFP_text version; ![FFP_txt](FFP_txt)  
 FFP_binary version; ![FFP_bin](FFP_bin)  
