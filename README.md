@@ -17,12 +17,12 @@ A code deposit for "A genome Tree of Life for the Fungi kingdom", JaeJin Choi an
 ## Two versions available: Binary, and Text(string)  
 * Latest update: 2v.2.1 (2018-9-21); see the ![update history](versions/update_history.txt)  
 
-FFP_text version; ![FFP_txt](FFP_txt)  
-FFP_binary version; ![FFP_bin](FFP_bin)  
+FFP_text version; ![FFP_txt](versions/2v.2.1/FFP_txt)  
+FFP_binary version; ![FFP_bin](versions/2v.2.1/FFP_bin)  
 
 Old-previous text based FFP (before 2018-8); ![old_FFP](old_FFP)  
   
-## 1. FF Profiler; ![FFP_bin.cpp](FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](FFP_txt/FFP_txt.cpp)
+## 1. FF Profiler; ![FFP_bin.cpp](versions/2v.2.1/FFP_bin/FFP_bin.cpp), ![FFP_txt](versions/2v.2.1/FFP_txt/FFP_txt.cpp)
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 When preparing input files save different taxons in separated files  
@@ -82,7 +82,7 @@ zlib compressed Feature Frequency Profile.
 
 
 
-## 2. JSD Calculator; ![JSD_matrix_bin.cpp](FFP_bin/JSD_matrix_bin.cpp), ![JSD_matrix_txt.cpp](FFP_txt/JSD_matrix_txt.cpp)
+## 2. JSD Calculator; ![JSD_matrix_bin.cpp](versions/2v.2.1/FFP_bin/JSD_matrix_bin.cpp), ![JSD_matrix_txt.cpp](versions/2v.2.1/FFP_txt/JSD_matrix_txt.cpp)
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
