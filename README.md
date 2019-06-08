@@ -14,15 +14,15 @@ A code deposit for "A genome Tree of Life for the Fungi kingdom", JaeJin Choi an
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
   
   
-## Two versions available: Binary, and Text(string)  
-* Latest update: 2v.2.1 (2018-9-21); see the ![update history](versions/update_history.txt)  
+## Two versions available: Binary, and Text(string)    
+* Latest update: 2v.3.0 (2019-2-28); see the ![update history](versions/update_history.txt)  
 
-FFP_text version; ![FFP_txt](versions/2v.2.1/FFP_txt)  
-FFP_binary version; ![FFP_bin](versions/2v.2.1/FFP_bin)  
+FFP_binary version; ![FFP_bin, 2v.3.0](versions/2v.3jaejinchoi@outlook.com.1/FFP_bin)  
+FFP_text version; ![FFP_txt, 2v.2.1](versions/2v.2.1/FFP_txt)  
 
-Old-previous text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)  
+Old text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)  
   
-## 1. FF Profiler; ![FFP_bin.cpp](versions/2v.2.1/FFP_bin/FFP_bin.cpp), ![FFP_txt.cpp](versions/2v.2.1/FFP_txt/FFP_txt.cpp)
+## 1. FF Profiler  
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 When preparing input files save different taxons in separated files  
@@ -82,7 +82,7 @@ zlib compressed Feature Frequency Profile.
 
 
 
-## 2. JSD Calculator; ![JSD_matrix_bin.cpp](versions/2v.2.1/FFP_bin/JSD_matrix_bin.cpp), ![JSD_matrix_txt.cpp](versions/2v.2.1/FFP_txt/JSD_matrix_txt.cpp)
+## 2. JSD Calculator  
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
