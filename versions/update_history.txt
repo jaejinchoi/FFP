@@ -1,9 +1,9 @@
-###Latest version: 2v.2.1 (2018-9-12);   
+###Latest version: 2v.3.0 (2019-2-28);   
 Note, in version, the first and second numbering indicate compatibility (e.g., 2v.2.x).  
 
-## 2v.3.0 (upcoming)  
+## 2v.3.0 (2019-2-28)  
 * Future proof and fully support user defined alphabets string [-k]. However, incompatible with previous versions.  
-* Only binary version will be plan to continued and supported
+* Only binary version will be continued and supported, and the latest string version remain 2v.2.1
 
 ## 2v.2.1 (2018-9-21);  update the vocabulary size measure function [-V].
 * Support range search using [-s] and [-e], and recursive search without specifying [-e] (default value = 0).  
