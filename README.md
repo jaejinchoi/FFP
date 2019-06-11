@@ -22,7 +22,7 @@ FFP_text version; ![FFP_txt, 2v.2.1](versions/2v.2.1/FFP_txt)
 
 Old text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)  
   
-## 1. FF Profiler  
+## 1. FF Profiler; FFP_x.cpp  
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 When preparing input files save different taxons in separated files  
@@ -82,7 +82,7 @@ zlib compressed Feature Frequency Profile.
 
 
 
-## 2. JSD Calculator  
+## 2. JSD Calculator; JSD_matrix_x.cpp  
 Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
