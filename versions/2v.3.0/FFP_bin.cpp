@@ -400,8 +400,7 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
 
         } else if (str_key < *it)
         {
-            prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity
-            prim_index_hash[str_key][str_key]=1;
+            prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
 
             prim_index_hash[*it].set_deleted_key(string()); //or string()
 
@@ -420,19 +419,25 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
             prim_index_hash[*it].clear_deleted_key(); //off delete key call
             prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element
 
+            prim_index_hash[str_key][str_key]=1;
+         
             max_index_key_vector.push_back(str_key); ///add new represent key to front, and deque iteration become invalid? and invalid after all?
 
             key_insert_flag=true;
             break;
 
+        } else
+        {
+            prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element; compact as much as possible
+            
         }
 
     }
 
-
+    
     if (key_insert_flag==false) ///new feature
     {
-        prim_index_hash[str_key].resize(INT_MAX); ///reserve max capacity
+        prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
         prim_index_hash[str_key][str_key]=1; //<string, long long>
 
         max_index_key_vector.push_back(str_key); //in vector, push_back does not invalidate iterator
@@ -442,7 +447,6 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
     sort(max_index_key_vector.begin(), max_index_key_vector.end()); //sorting invalidate iterator
 
     //cout << "index_key" << "\t" << str_key << "\t" << max_index_key_vector.size() << endl;
-
 }
 
 
