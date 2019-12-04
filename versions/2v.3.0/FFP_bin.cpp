@@ -734,7 +734,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "FFP binary version; 2v.3.0 (2019-2-28)\n";
+    cout << "FFP binary version; 2v.3.1 (2019-12-3)\n";
     cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
