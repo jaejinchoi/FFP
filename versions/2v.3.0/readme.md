@@ -4,4 +4,8 @@
   A variable byte definition dependent on platforms because it is byte based.    
 * JSD_matrix_bin's value presentation is a point below 8 decimal places (%.8g)  
 * Option [-v] shows a program profile  
-* 2v.3.0 fully supports user-defined option [-k]  
+* 2v.3.0 fully supports user-defined option [-k] 
+
+
+2020-1-13
+* Unadvised to input large genome files. It shown to loss/malfunction during zlib compression.
