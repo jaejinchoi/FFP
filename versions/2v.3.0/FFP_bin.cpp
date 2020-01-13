@@ -40,7 +40,6 @@ using google::sparse_hash_map;
 
 #include <zlib.h>
 #include <stdexcept>
-#include <bitset>
 #include <climits>
 
 
@@ -68,13 +67,14 @@ std::string compress_deflate(const std::string& str, int compressionlevel = Z_BE
     z_stream zs;                        // z_stream is zlib's control structure
     memset(&zs, 0, sizeof(zs));
 
-    if (deflateInit(&zs, compressionlevel) != Z_OK)
-        throw(std::runtime_error("deflateInit failed while compressing."));
+    if (deflateInit(&zs, compressionlevel) != Z_OK) {
+        cerr << ""deflateInit failed while compressing" < endl;
+    }
 
     zs.next_in = (Bytef*)str.data();
     zs.avail_in = str.size();           // set the z_stream's input
 
-    int ret=0;
+    int ret;
     char outbuffer[32768];
     std::string outstring;
 
@@ -95,9 +95,8 @@ std::string compress_deflate(const std::string& str, int compressionlevel = Z_BE
     deflateEnd(&zs);
 
     if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
-        std::ostringstream oss;
-        oss << "Exception during zlib compression: (" << ret << ") " << zs.msg;
-        throw(std::runtime_error(oss.str()));
+        cerr << "Exception during zlib compression: (" << ret << ") " << zs.msg << endl;
+        outstring.clear()
     }
 
     //cout << outstring.size() << endl;
@@ -273,7 +272,6 @@ void key_hash_register(string &key_str, sparse_hash_map<char, string, hash<char>
 
 }
 
-
 ///advanced; flip replace
 ///bits_per_feature should be 7 multiple
 string feature_string_binary_compact(string str_feature, unsigned long &bits_per_feature,
@@ -292,11 +290,6 @@ string feature_string_binary_compact(string str_feature, unsigned long &bits_per
 
     key_bit_string.resize(bits_per_feature, '0'); ///filling empty spaces with '0'
 
-    //cout << str_feature << endl;
-    //cout << "resize:" << key_bit_string.length() << '\t' << key_bit_string << endl;
-    //cout << key_bit_string.length() / 7 << endl;
-
-    //for (size_t it=0; it<key_bit_string.length()-1; it+=7) ///0 base
     for (size_t it=0; it<key_bit_string.length(); it+=7) ///0 base
     {
         //char_bit.reset(); //unnecessary, replace
@@ -308,15 +301,13 @@ string feature_string_binary_compact(string str_feature, unsigned long &bits_per
             char_bit[7]=1; //spacer for 0 base
 
         }
-        //cout << it << '\t' << char_bit.to_string() << endl;
-        //cout << char_bit.to_string() << endl;
+
         converted_key_string+=char(char_bit.to_ulong());
 
     }
+    
     //cout << "converted: " << converted_key_string << endl;
-
     return converted_key_string;
-
 }
 
 
@@ -400,8 +391,7 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
 
         } else if (str_key < *it)
         {
-            prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
-
+            //prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
             prim_index_hash[*it].set_deleted_key(string()); //or string()
 
             for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
@@ -419,7 +409,7 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
             prim_index_hash[*it].clear_deleted_key(); //off delete key call
             prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element
 
-            prim_index_hash[str_key][str_key]=1;
+            prim_index_hash[str_key][str_key]+=1;
          
             max_index_key_vector.push_back(str_key); ///add new represent key to front, and deque iteration become invalid? and invalid after all?
 
@@ -437,15 +427,13 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
     
     if (key_insert_flag==false) ///new feature
     {
-        prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
+        //prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
         prim_index_hash[str_key][str_key]=1; //<string, long long>
-
         max_index_key_vector.push_back(str_key); //in vector, push_back does not invalidate iterator
 
     }
 
     sort(max_index_key_vector.begin(), max_index_key_vector.end()); //sorting invalidate iterator
-
     //cout << "index_key" << "\t" << str_key << "\t" << max_index_key_vector.size() << endl;
 }
 
@@ -457,19 +445,10 @@ void feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lo
     ///first byte define the length of feature(as bits)
     unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
     unsigned long bytes_per_value = 0;
-
-    if (ratio_flag==true)
-    {
-        ///double = 8 bytes (xe-308 ~ xe+308, 15 digit precision), float = 4 bytes (xe-38 ~ xe+38, 6 digit precision)
-        bytes_per_value = sizeof(double); ///print feature frequency
-
-
-    } else
-    {
-        bytes_per_value = sizeof(long long); ///print feature count
-
-    }
-
+    
+    
+    bytes_per_value = (ratio==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
+    
     if (!prim_index_hash.empty())
     {
         output_stream << static_cast<unsigned char>(bytes_per_feature); //feature bytes size, 1 byte
