@@ -68,7 +68,7 @@ std::string compress_deflate(const std::string& str, int compressionlevel = Z_BE
     memset(&zs, 0, sizeof(zs));
 
     if (deflateInit(&zs, compressionlevel) != Z_OK) {
-        cerr << ""deflateInit failed while compressing" < endl;
+        cerr << ""deflateInit failed while compressing" << endl;
     }
 
     zs.next_in = (Bytef*)str.data();
