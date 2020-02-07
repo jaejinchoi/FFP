@@ -96,7 +96,7 @@ std::string compress_deflate(const std::string& str, int compressionlevel = Z_BE
 
     if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
         cerr << "Exception during zlib compression: (" << ret << ") " << zs.msg << endl;
-        outstring.clear()
+        outstring.clear();
     }
 
     //cout << outstring.size() << endl;
@@ -447,7 +447,7 @@ void feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lo
     unsigned long bytes_per_value = 0;
     
     
-    bytes_per_value = (ratio==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
+    bytes_per_value = (ratio_flag==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
     
     if (!prim_index_hash.empty())
     {
