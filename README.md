@@ -8,11 +8,12 @@ Feature Frequency Profile (FFP); two core programs' codes deposit for,
 - GCC(g++) version 4.7.1+  
 - Google sparse hash library. Look here: https://github.com/sparsehash/sparsehash  
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
-
-
-Welcome to have questions regarding the program codes, bug report, and usage; please contact JaeJin Choi (jaejinchoi@berkeley.edu) 
-
-
+  
+  
+Welcome to have questions regarding the program codes, bug report, and usage. 
+* Please contact JaeJin Choi (jaejinchoi@berkeley.edu) 
+  
+  
 ## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
