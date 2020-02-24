@@ -1,14 +1,18 @@
 # FFP
-Feature Frequency Profile (FFP); two core programs  
-A code deposit for "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.  
+Feature Frequency Profile (FFP); two core programs' codes deposit for,   
+"A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS. 
+"Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS. 
 
 
 ## Requirements  
 - GCC(g++) version 4.7.1+  
 - Google sparse hash library. Look here: https://github.com/sparsehash/sparsehash  
 - zlib version 1.2.8+. Look here: http://www.zlib.net/  
-  
-  
+
+
+Welcome to have questions regarding the program codes, bug report, and usage; please contact JaeJin Choi (jaejinchoi@berkeley.edu) 
+
+
 ## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
