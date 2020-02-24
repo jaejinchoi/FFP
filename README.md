@@ -1,7 +1,6 @@
 # FFP
 Feature Frequency Profile (FFP); two core programs' codes deposit for,   
 "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS. 
-
 "Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS. 
 
 
