@@ -519,9 +519,23 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
             }
 
         }
+        
+        //vary q_f_buf valid-time can cause unwanted consequences, so the position moved to the current position.
+        for (int cy1=0; cy1!=thread_n_limit; ++cy1)
+        {
+            if (fut_struct[cy1].in_act==true)
+            {
+                n_row=fut_struct[cy1].n_row;
+                n_col=fut_struct[cy1].n_col;
+                fut_value_vector[n_row][n_col]=fut_struct[cy1].n_fut.get();
 
+                fut_struct[cy1].in_act=false;
+            }
+
+        }
     }
 
+    /*
     ///final check to finsih remaining running thread
     for (int cy1=0; cy1!=thread_n_limit; ++cy1)
     {
@@ -535,6 +549,7 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
         }
 
     }
+    */
 
     q_decompress_buf.clear();
     //print_value_vector(fut_value_vector, load_path_vector);
