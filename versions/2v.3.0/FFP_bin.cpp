@@ -87,8 +87,7 @@ std::string compress_deflate(const std::string& str, int compressionlevel = Z_BE
 
         if (outstring.size() < zs.total_out) {
             // append the block to the output string
-            outstring.append(outbuffer,
-                             zs.total_out - outstring.size());
+            outstring.append(outbuffer, zs.total_out - outstring.size());
         }
     } while (ret == Z_OK);
 
@@ -445,7 +444,6 @@ void feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lo
     ///first byte define the length of feature(as bits)
     unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
     unsigned long bytes_per_value = 0;
-    
     
     bytes_per_value = (ratio_flag==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
     
