@@ -29,14 +29,14 @@ Old text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)
 
 
 ## Limitation
-- Currently, the maximum feature length (l-mer) supported is up to  
+- Currently, the maximum feature length (l-mer) is supported up to  
 1785 for Purine-Pyrimidine (RY) encoded sequences (2 letters),  
 892 for Nucleotide sequences (4 letters) and 0,1,2 genotype sequences (3 letters), and  
 357 for Amino acids sequences (20 letters).  
 
 The maximum l-mer is calculated by two steps, include a number of customized letters (parameter -k).  
 a. Estimate bits_per_letter, for instance, 2 bits (2^2=4) required for 4 letters and 5 bits (2^5=32) required for 20 letters  
-b. 1,785 / bits_per_letter >= your maximum l-mer  
+b. floor(1,785 / bits_per_letter) >= your maximum l-mer  
   
 - Typically, longer feature lengths (l-mer) consume more memory and time.  
 In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
