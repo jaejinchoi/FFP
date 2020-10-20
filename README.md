@@ -13,7 +13,7 @@ Feature Frequency Profile (FFP); two core programs' codes deposit for,
 Welcome to have questions regarding the program codes, bug report, and usage. 
 * Please contact JaeJin Choi (jaejinchoi@berkeley.edu) 
   
-  
+
 ## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
@@ -26,11 +26,26 @@ FFP_binary version; ![FFP_bin, 2v.3.0](versions/2v.3.0/)
 FFP_text version; ![FFP_txt, 2v.2.1](versions/2v.2.1/FFP_txt)  
 
 Old text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)  
-  
+
+
+## Limitation
+- Currently, the maximum feature length (l-mer) supported is up to
+1785 for Purine-Pyrimidine (RY) encoded sequences (2 letters),
+892 for Nucleotide sequences (4 letters) and 0,1,2 genotype sequences (3 letters),
+and 357 for Amino acids sequences (20 letter).
+
+The maximum l-mer is calculated by two steps, include a number of customized letters (parameter -k).  
+a. Estimate bits_per_letter, for instance, 2 bits (2^2=4) required for 4 letters and 5 bits (2^5=32) required for 20 letters  
+b. 1,785 / bits_per_letter >= your maximum l-mer  
+
+- Typically, longer feature lengths (l-mer) consume more memory and time.  
+In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
+
+
 ## 1. FF Profiler; FFP_x.cpp  
 Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
-When preparing input files save different taxons in separated files  
+Each input file represent one operational taxon unit (OTU)  
 
 ### [Arguments]
 * -h  
@@ -118,7 +133,5 @@ The output files of 'FFP_compress' which are zlib compressed Feature Frequency P
 Standard output of a low triangular Jensen-Shannon divergence or distance matrix in PHYLIP format (not .tsv).  
 Support a symmetric matrix output using [-s].
 
-## Limitation
-Generally, longer feature lengths (l-mer) consume more memory and time.  
-In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
+
 
