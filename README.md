@@ -39,11 +39,11 @@ a. Estimate bits_per_letter, for instance, 2 bits (2^2=4) required for 4 letters
 b. floor(1,785 / bits_per_letter) >= your maximum l-mer  
   
 - Typically, longer feature lengths (l-mer) consume more memory and time.  
-In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.
+In fungi proteome study the largest proteome has 35,274 proteins containing 10,866,611 amino acids, this program worked for feature length up to 24 amino acids.  
   
 
 ## 1. FF Profiler; FFP_x.cpp  
-Compile: g++ -std=c++11 -o (execute name) (this script) -lz  
+**Compile:** g++ -std=c++11 -o (execute name) (this script) -lz  
 Run example: [Program path][options][input file path][output file path]  
 Each input file represent one operational taxon unit (OTU)  
 
@@ -103,7 +103,7 @@ zlib compressed Feature Frequency Profile.
 
 
 ## 2. JSD Calculator; JSD_matrix_x.cpp  
-Compile: g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
+**Compile:** g++ -std=c++11 -pthread -o (execute name) (this script) -lz  
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
 
 ### [Arguments]

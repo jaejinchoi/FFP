@@ -1,10 +1,9 @@
 ###Latest version: 2v.3.0 (2019-2-28);   
 Note, in version, the first and second numbering indicate compatibility (e.g., 2v.2.x).  
 
-## 2v.3.1-unrelease (2020-)  
-* Partial zlib compress and decompress approach
-* Code cleanup
-* Capsulize functions or break into files
+## 2v.4.0-unreleased (2020-)  
+* Reduced a point of maximum memory use: fractional zlib compress and decompress process
+* Code cleanup and simplify conditions
 
 ## 2v.3.0 (2020-1-13)  
 * Minor sparse hash and memory usage optimization
