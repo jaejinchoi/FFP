@@ -519,7 +519,7 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
             }
 
         }
-        
+
         //vary q_f_buf valid-time can cause unwanted consequences, so the position moved to the current position.
         for (int cy1=0; cy1!=thread_n_limit; ++cy1)
         {
@@ -644,7 +644,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculate; FFP binary input version; 2v.3.0 (2019-2-28)\n";
+    cout << "JSD distance calculate; FFP binary input version; 2v.3.1 (2020-01-13)\n";
     cout << "Value presentation: a poin below 8 decimal places (%.8g)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";

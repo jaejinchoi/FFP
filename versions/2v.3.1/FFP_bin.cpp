@@ -304,7 +304,7 @@ string feature_string_binary_compact(string str_feature, unsigned long &bits_per
         converted_key_string+=char(char_bit.to_ulong());
 
     }
-    
+
     //cout << "converted: " << converted_key_string << endl;
     return converted_key_string;
 }
@@ -409,7 +409,7 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
             prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element
 
             prim_index_hash[str_key][str_key]+=1;
-         
+
             max_index_key_vector.push_back(str_key); ///add new represent key to front, and deque iteration become invalid? and invalid after all?
 
             key_insert_flag=true;
@@ -418,12 +418,12 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
         } else
         {
             prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element; compact as much as possible
-            
+
         }
 
     }
 
-    
+
     if (key_insert_flag==false) ///new feature
     {
         //prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
@@ -444,9 +444,9 @@ void feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lo
     ///first byte define the length of feature(as bits)
     unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
     unsigned long bytes_per_value = 0;
-    
+
     bytes_per_value = (ratio_flag==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
-    
+
     if (!prim_index_hash.empty())
     {
         output_stream << static_cast<unsigned char>(bytes_per_feature); //feature bytes size, 1 byte
@@ -711,7 +711,7 @@ void show_help()
 
 void show_profile()
 {
-    cout << "FFP binary version; 2v.3.0 (2019-12-3)\n";
+    cout << "FFP binary version; 2v.3.1 (2020-01-13)\n";
     cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
 
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
