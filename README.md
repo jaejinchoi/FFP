@@ -20,9 +20,9 @@ Welcome to have questions regarding the program codes, bug report, and usage.
   
   
 ## Two versions available: Binary, and Text(string)    
-* Latest update: 2v.3.0 (2019-12-3); see the ![update history](versions/update_history.txt), list all versions ![versions](versions)  
+* Latest update: 2v.3.1 (2020-1-13); see the ![update history](versions/update_history.txt), list all versions ![versions](versions)  
 
-FFP_binary version; ![FFP_bin, 2v.3.0](versions/2v.3.0/)  
+FFP_binary version; ![FFP_bin, 2v.3.1](versions/2v.3.1/)  
 FFP_text version; ![FFP_txt, 2v.2.1](versions/2v.2.1/FFP_txt)  
 
 Old text based FFP 2v.1.0 (before 2018-8); ![2v.1.0](versions/2v.1.0)  
