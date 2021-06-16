@@ -1,8 +1,8 @@
-###Latest version: 2v.3.0 (2019-2-28);   
+###Latest released version: 2v.3.1   
 Note, in version, the first and second numbering indicate compatibility (e.g., 2v.2.x).  
 
 ## 2v.4.0-unreleased (2021)  
-* Reduced a point of maximum memory use: fractional zlib compress and decompress process
+* Support much longer feature lengths, depends on machine structure (e.g., 32 or 64 bits)
 * Code cleanup and simplify conditions
 * Supports Jaccard distance
 
