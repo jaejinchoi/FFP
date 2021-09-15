@@ -570,21 +570,6 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
 
         }
 
-        ///independent per thread
-        for (int cy1=0; cy1!=thread_n_limit; ++cy1)
-        {
-            if (fut_struct[cy1].in_act==true)
-            {
-                n_row=fut_struct[cy1].n_row;
-                n_col=fut_struct[cy1].n_col;
-                fut_value_vector[n_row][n_col]=fut_struct[cy1].n_fut.get();
-
-                fut_struct[cy1].in_act=false;
-
-            }
-
-        }
-
         if (!q_f_buf.empty()) ///clear a constant reference
         {
             q_decompress_buf = decompress_deflate(q_f_buf, q_zs_ret);
