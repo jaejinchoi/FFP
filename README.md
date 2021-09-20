@@ -13,12 +13,15 @@ Program codes deposit for
 Welcome to have questions regarding the program codes, bug report, and usage. 
 * Please contact JaeJin Choi (jaejinchoi@berkeley.edu) 
   
-
 ## Tutorial / Supplement
 * A tutorial you can walkthrough here: ![Tutorial](example)
 * Additional fungi study supplement files (e.g., tree newick and divergence matrix) are here: ![Supplement](fungi_tree_supplement)  
   
-  
+## Version compatibility
+* In versions, the first and the second numbering indicate program compatibility. For instance, 2v.2.x and 2v3.x are not compatible, but between the last numberings are compatible (e.g., 2v.3.0, 2v.3.1, etc). 
+* This incompatibility issue is due to updating how to write and read FF_profile files during large improvement, which is difficult to resolve. 
+* Mismatched compatibility can results malfunction and erroneous values such as NAs or Inf (infinite) 
+
 ## Two versions available: Binary, and Text(string)    
 * Latest update: 2v.3.1 (2020-1-13); see the ![update history](versions/update_history.txt), list all versions ![versions](versions)  
 
