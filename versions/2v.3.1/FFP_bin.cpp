@@ -711,13 +711,12 @@ void show_help()
 
 void show_profile()
 {
-    cout << "FFP binary version; 2v.3.1 (2020-01-13)\n";
-    cout << "Value presentation: a point below 4 decimal places (%.4e)\n";
-
+    cout << "FFP_Profiler binary version; 2v.3.1\n";
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
-    cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
-    cout << "Required; google-sparse-hash\n";
-    cout << "Required; zlib 1.2.8+\n";
+    //cout << "Value presentation: a point below 4 decimal places (%.4e)\n"; //stored in double binary format
+    //cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
+    //cout << "Required; google-sparse-hash\n";
+    //cout << "Required; zlib 1.2.8+\n";
 }
 
 

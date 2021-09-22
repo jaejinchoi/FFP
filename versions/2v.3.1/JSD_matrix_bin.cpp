@@ -618,7 +618,7 @@ int read_reserved_matrix(stringstream &output_stream, vector<string> &load_path_
 
 void show_help()
 {
-    cout << "Parameter, [option][load_paths(require full path)]\n";
+    cout << "Parameter usage, [option][load_paths]\n";
     cout << "-h, show help\n";
     cout << "-t [int], set number of threads (default=5)\n";
     cout << "-r [path], input reserved distance matrix\n";
@@ -630,13 +630,12 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculate; FFP binary input version; 2v.3.1 (2020-01-13)\n";
+    cout << "FFP distance calculate; 2v.3.1\n";
+    cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
     cout << "Value presentation: a point below 8 decimal places (%.8g)\n";
 
-    cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
-    cout << "Compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
-    cout << "Required; zlib 1.2.8+\n";
-
+    //cout << "Compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
+    //cout << "Required; zlib 1.2.8+\n";
 }
 
 
