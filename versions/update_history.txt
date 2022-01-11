@@ -1,5 +1,8 @@
-###Latest released version: 2v.3.1   
-Note, in version, the first and second numbering indicate compatibility (e.g., 2v.2.x).  
+###The latest release version: 2v.3.1   
+Note, in version, the first and second numbering indicate compatibility, for instance 2v.2.x and 2v.3.x are not compatible.
+
+## 2v.4.1-unreleased
+* Reduce a point of maximum memory use by partial decompress of zlib, in trade-off of speed. Expect to be applicable in memory limited conditions
 
 ## 2v.4.0-unreleased (2021)  
 * Support much longer feature lengths, depends on machine structure (e.g., 32 or 64 bits)
