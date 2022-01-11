@@ -78,6 +78,7 @@ std::string decompress_deflate(const std::string& str, int &zs_ret)
         oss << "Exception during zlib decompression: (" << zs_ret << ") "
             << zs.msg;
         throw(std::runtime_error(oss.str()));
+        exit(0); //exit when error occur during decompression
 
     }
 
@@ -243,6 +244,26 @@ double calculate_distance(string p_path, string q_f_buf
     stringstream read_q_f(q_f_buf, ios::in|ios::out|ios::binary);
     read_q_f.seekg(0, ios::beg);
 
+    ///check feature length
+    read_binary_block(read_p_f, p_bytes_per_feature, p_bytes_per_value, p_feature_length, p_key, p_value);
+    read_binary_block(read_q_f, q_bytes_per_feature, q_bytes_per_value, q_feature_length, q_key, q_value);
+
+    ///anything wrong during inflation/decompression step, or comparing with different feature lengths, should output an error value (-1)
+    if (p_feature_length!=q_feature_length) //fool proof
+    {
+        cerr << "Different feature_lengths compared: " << p_feature_length << " vs. " << q_feature_length << endl;
+
+        read_p_f.str(string());
+        read_p_f.clear(); //clear flag
+        p_f_buf.clear();
+
+        read_q_f.str(string());
+        read_q_f.clear(); //clear flag
+
+        //r_value=-1.0;
+        exit(0);
+
+    }
 
     while (!read_p_f.eof() || !read_q_f.eof()) ///run until both files reach EOF()
     {
@@ -258,32 +279,21 @@ double calculate_distance(string p_path, string q_f_buf
 
         }
 
-		///anything wrong during inflation/decompression step, or comparing with different feature lengths, should output an error value (-1)
-		if (p_feature_length!=q_feature_length) //fool proof
-		{
-            cerr << "Different feature_lengths compared: " << p_feature_length << " vs. " << q_feature_length << endl;
-			r_value=-1.0;
-			exit(0);
+        if (p_value!=0 || q_value!=0) //requires to avoid nan
+        {
+            ///support various distances (or dissimilarity); can add more in future
+            switch(distance_type)
+            {
+                case 0: //case 0 and 1 are using JSD_divergence metric (case 1 for JSD_distance)
+                case 1:
+                    JSD_divergence(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
+                    break;
 
-		} else if (p_zs_ret!=Z_STREAM_END) //p_file decompress sanity check
-		{
-		    cerr << "Z_STREAM | decompression unsuccessful: " << p_path << endl;
-		    r_value=-1.0;
-			exit(0);
-		}
+                case 2:
+                    JACCARD_distance(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
+                    break;
 
-
-		///support various distances (or dissimilarity); can add more in future
-		switch(distance_type)
-		{
-            case 0: //case 0 and 1 are using JSD_divergence metric (case 1 for JSD_distance)
-            case 1:
-                JSD_divergence(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
-                break;
-
-            case 2:
-                JACCARD_distance(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
-                break;
+            }
 		}
 
     }
@@ -570,6 +580,21 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
 
         }
 
+        ///independent per thread
+        for (int cy1=0; cy1!=thread_n_limit; ++cy1)
+        {
+            if (fut_struct[cy1].in_act==true)
+            {
+                n_row=fut_struct[cy1].n_row;
+                n_col=fut_struct[cy1].n_col;
+                fut_value_vector[n_row][n_col]=fut_struct[cy1].n_fut.get();
+
+                fut_struct[cy1].in_act=false;
+
+            }
+
+        }
+
         if (!q_f_buf.empty()) ///clear a constant reference
         {
             q_decompress_buf = decompress_deflate(q_f_buf, q_zs_ret);
@@ -757,12 +782,11 @@ void show_help()
 
 void show_profile()
 {
-    cout << "JSD distance calculate; FFP binary input version; update 2018-8\n";
+    cout << "JSD distance calculate; 2v.4.0\n";
     cout << "Value presentation: a poin below 8 decimal places (%.8g)\n";
-
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
-    cout << "Compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
-    cout << "Required; zlib 1.2.8+\n";
+    // cout << "Compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
+    cout << "Require; zlib 1.2.8+\n";
 
 }
 

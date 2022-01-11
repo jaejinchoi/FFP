@@ -1,34 +1,13 @@
-### 2v.3.x  
+### 2v.4.x
 
 ## [Change]
-* From version 2v.3.0, only binary FFP will be continued and supported (for text-based FFP the latest version is 2v.2.1)
-* FFP_bin's value presentation is Long Long (for feature count) or Double (for feature frequency).  
-  A variable byte definition dependent on platforms because it is byte based.    
-* JSD_matrix_bin's value presentation is up to 8 significant figures below a decimal point (%.8g)  
-* Option [-v] shows a program profile  
-* 2v.3.0 fully supports user-defined option [-k] 
-
-2020-2-24  
-* In JSD_matrix calculation, a valid-time of 'q_f_buf' may cause adverse consequences and so there was a code rearrangement.  
-
-2020-1-13  
-* Unadvised to input large genome files. It shown to loss/malfunction during zlib compression.  
-
-
-## [Limitation]
-By the design the maximum feature length (l-mer) is supported up to  
-1785 for Purine-Pyrimidine (RY) encoded sequences (2 letters),  
-892 for Nucleotide sequences (4 letters) and 0,1,2 genotype sequences (3 letters), and  
-357 for Amino acids sequences (20 letters).  
-
-The maximum l-mer is calculated by two steps, include a number of customized letters (parameter -k).  
-a. Estimate bits_per_letter, for instance, 2 bits (2^2=4) required for 4 letters and 5 bits (2^5=32) required for 20 letters  
-b. floor(1,785 / bits_per_letter) >= your maximum l-mer  
-
+* Maximum feature length (l-mer) now depends on machine's maximum integer size (e.g., 32 or 64 bits).  
+* FFP distance calculate option [-d] supports various distances. See the manual below.  
+* Add the option [-t] to choose tab separated OTU labels, in addition to PHYLIP style OTU labels that limits up to 9 characters.  
 
 ## FF Profile(FFP); FFP_x.cpp
 **Compile:** g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz  
-May replace 'x' with a corresponding version.  
+May replace 'x' with corresponding version.  
 
 Run example: [Program path][options][input file path][output file path]  
 Each input file represent one operational taxon unit (OTU) in a tree.  
@@ -85,9 +64,10 @@ zlib compressed Feature Frequency Profile.
 
 ## FFP distance calculate; JSD_matrix_x.cpp  
 **Compile:** g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4.x JSD_matrix_bin.2v.4.x.cpp -lz  
-May replace 'x' with a corresponding version.  
+May replace 'x' with corresponding version.  
 
 Run example: [Program path][options][input files path] > [output file path (standard output)]  
+
 ### [Arguments]
 * -h  
     Show options  
@@ -95,13 +75,17 @@ Run example: [Program path][options][input files path] > [output file path (stan
     Number of threads for multiprocessing. An adequate thread number is a total cpu thread - 1. Default is set to 5.    
 * -r [PATH]  
     Input previous matrix and append more items. Should match previous matrix format (e.g., PHYLIP or tab)  
-* -d  
-    Convert Jensen-Shannon Divergence to Jensen-Shannon Distance, which is equivalent to square root of Jesen-Shannon Divergence.  
+* -T 
+    Use TAB as a delimiter between item names and distances. Without '-T' uses PHYLIP format of the first 9 chracters as an item name.  
+* -d [INT]  
+    0 : Jensen-Shannon Divergence  
+    1 : Jensen-Shannon Distance = sqrt(Jensen-Shannon Divergence)  
+    2 : Jaccord Distance, which account a number of shared features but not their frequencies  
 * -s  
     Output a symmetric matrix instead of a low triangular matrix which is default output.  
-    
+
 ### [Note]
-[-r] input previously generated low triangular divergence or distance matrix. This requires all pair-wise output of 'FF Profiler'. Aware to specify "TAB" delimited and "PHYLIP" formatted distance matrices.  
+[-r] input previously generated low triangular divergence or distance matrix. This requires all pair-wise output of 'FF Profiler'. Aware to specify "TAB" delimited and "PHYLIP" formatted distance matrices.
 
 ### [Input]
 zlib compressed Feature Frequency Profiles (FFPs).  
