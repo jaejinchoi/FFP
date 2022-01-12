@@ -78,7 +78,7 @@ Run example: [Program path][options][input files path] > [output file path (stan
 * -T 
     Use TAB as a delimiter between item names and distances. Without '-T' uses PHYLIP format of the first 9 chracters as an item name.  
 * -d [INT]  
-    0 : Jensen-Shannon Divergence  
+    0 : Jensen-Shannon Divergence (default)  
     1 : Jensen-Shannon Distance = sqrt(Jensen-Shannon Divergence)  
     2 : Jaccord Distance, which account a number of shared features but not their frequencies  
 * -s  
