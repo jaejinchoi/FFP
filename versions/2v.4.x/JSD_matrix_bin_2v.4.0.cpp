@@ -727,7 +727,7 @@ int read_reserved_matrix(stringstream &output_stream
     {
         item_name_str = (*it).substr((*it).rfind('/')+1);
 
-        if (item_name_str.length()>9)
+        if (item_name_str.length()>9 && item_tab_flag==false)
         {
             item_name_str.erase(item_name_str.begin()+9, item_name_str.end()); ///in c++, string variable end with 'string/' so require -1
 
