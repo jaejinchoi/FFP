@@ -9,10 +9,10 @@
 * 2v.3.0 fully supports user-defined option [-k] 
 
 2022-4-5  
-* JSD matrix; add option to use TAB a row name separater, instead of PHYLIP format that limit row names up to 9 characters
+* FFP distance; add option to use TAB a row name separater, instead of PHYLIP format that limit row names up to 9 characters
 
 2020-2-24  
-* In JSD_matrix calculation, a valid-time of 'q_f_buf' may cause adverse consequences and so there was a code rearrangement.  
+* FFP distance; a valid-time of 'q_f_buf' may cause adverse consequences and so there was a code rearrangement.  
 
 2020-1-13  
 * Unadvised to input large genome files. It shown to loss/malfunction during zlib compression.  
