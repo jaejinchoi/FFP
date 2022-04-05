@@ -770,7 +770,7 @@ void show_help()
     cout << "-r [path], input reserved distance matrix\n";
 
     cout << "-s, output a symmetric matrix; default is a low triangular matrix\n";
-    cout << "-T, Disable PHYLIP matrix format limiting item names to the first 9 characters, and accept full item names using tab as a separator\n";
+    cout << "-T, use TAB as a row name separator, instead of PHYLIP format that limit row names up to the first 9 characters\n";
 
     cout << "-d [int], type of distance metric\n";
     cout << "\t0 : Jensen-Shannon Divergence (JS divergence)\n";
@@ -803,7 +803,7 @@ int main(int argc, char** argv)
     string reserve_matrix_path="";
 
     int distance_type=0; //default is 0:JSD divergence
-    bool item_tab_flag=false; //default is false, limit item name length by 9 characters, in PHYLIP format. true accept full item names and use tab as a separator
+    bool item_tab_flag=false; //default is false: PHYLIP format that limit row names by 9 characters; true: use tab as a separate to use any lengths of row names
 
     while ((opt = getopt(argc, argv, "ht:r:d:vsT")) !=EOF) // EOF = -1
     {
