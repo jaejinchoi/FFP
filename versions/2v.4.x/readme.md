@@ -76,7 +76,7 @@ Run example: [Program path][options][input files path] > [output file path (stan
 * -r [PATH]  
     Input previous matrix and append more items. Should match previous matrix format (e.g., PHYLIP or tab)  
 * -T 
-    Use TAB as a delimiter between item names and distances. Without '-T' uses PHYLIP format of the first 9 chracters as an item name.  
+    Use TAB as a separator between row names and distances. Default is PHYLIP format that limit row names up to 9 characters.  
 * -d [INT]  
     0 : Jensen-Shannon Divergence (default)  
     1 : Jensen-Shannon Distance = sqrt(Jensen-Shannon Divergence)  

@@ -1,6 +1,8 @@
 ###The latest release version: 2v.4.x   
 Note, in version, the first and second numbering indicate compatibility, for instance 2v.2.x and 2v.3.x are not compatible.
 
+### Listed only a major version update. Minor updates listed in an individual version "readme" file.   
+
 ## 2v.x-unreleased (experimental)
 * Reduce a point of maximum memory usage by partial decompress of zlib, in trade-off of speed.
 
