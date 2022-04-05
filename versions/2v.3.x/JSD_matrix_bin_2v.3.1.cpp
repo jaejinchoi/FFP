@@ -325,13 +325,21 @@ void to_square_matrix_output(stringstream &output_stream) ///convert a low trian
 
 
 
-void print_value_vector_str(stringstream &output_stream, vector< vector<double> > &fut_value_vector, vector<string> &load_path_vector,
-    int start_item_n, bool js_distance_flag, bool symmetric_flag)
+void print_value_vector_str(stringstream &output_stream
+    , vector< vector<double> > &fut_value_vector
+    , vector<string> &load_path_vector
+    , int start_item_n
+    , bool js_distance_flag
+    , bool symmetric_flag
+    , bool item_tab_flag
+    )
 {
     size_t stream_size_t=0;
     char* stream_buf=NULL;
 
     string base_name_str; //basename of path(file name)
+
+    double n_value=0.0;
 
     if (start_item_n==0)
     {
@@ -340,7 +348,7 @@ void print_value_vector_str(stringstream &output_stream, vector< vector<double> 
 
         snprintf(stream_buf, size_t(stream_buf), "%d\n", (int)load_path_vector.size());
         output_stream << stream_buf; //item_size
-
+		//free(stream_buf);
     }
 
 
@@ -349,43 +357,53 @@ void print_value_vector_str(stringstream &output_stream, vector< vector<double> 
         base_name_str = load_path_vector[r_it].substr(load_path_vector[r_it].rfind('/')+1);
 
         ///9 characters maximum; for PHYLIP format
-        if (base_name_str.length()>9)
+        if (item_tab_flag==false) //go for phylip format
         {
-            base_name_str.erase(base_name_str.begin()+9, base_name_str.end()); //in c++, string variable end with 'string/' so require -1
+            if (base_name_str.length()>9)
+            {
+                base_name_str.erase(base_name_str.begin()+9, base_name_str.end()); //in c++, string variable end with 'string/' so require -1
 
+            }
+
+            stream_size_t = snprintf(NULL, 0, "%-10s", base_name_str.c_str()); ///item names, with a character limit 10(or 9)
+            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+
+            snprintf(stream_buf, size_t(stream_buf), "%-10s", base_name_str.c_str());
+
+        } else //use tab
+        {
+            stream_size_t = snprintf(NULL, 0, "%s\t", base_name_str.c_str()); ///item names, with no length limit and use tab as a separator
+            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+
+            snprintf(stream_buf, size_t(stream_buf), "%s\t", base_name_str.c_str());
         }
 
-        stream_size_t = snprintf(NULL, 0, "%-10s", base_name_str.c_str()); ///item names. character limits 10(or 9)
-        stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-
-        snprintf(stream_buf, size_t(stream_buf), "%-10s", base_name_str.c_str());
         output_stream << stream_buf;
 
 
         for (vector<double>::size_type c_it=0; c_it<fut_value_vector[r_it].size(); c_it++)
         {
 
-            ///print, a point below 8 decimal places
             if (js_distance_flag==true) ///sqrt(JS divergence)=JS distance; output JS distance instead of JS divergence
             {
-                stream_size_t = snprintf(NULL, 0, "%.8g\t", sqrt(fut_value_vector[r_it][c_it]));
-                stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-
-                snprintf(stream_buf, size_t(stream_buf), "%.8g\t", sqrt(fut_value_vector[r_it][c_it]));
+                n_value = sqrt(fut_value_vector[r_it][c_it]);
 
             } else
             {
-                stream_size_t = snprintf(NULL, 0, "%.8g\t", fut_value_vector[r_it][c_it]);
-                stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-
-                snprintf(stream_buf, size_t(stream_buf), "%.8g\t", fut_value_vector[r_it][c_it]);
+                n_value = fut_value_vector[r_it][c_it];
 
             }
+
+            ///print, a point below 8 decimal places
+            stream_size_t = snprintf(NULL, 0, "%.8g\t", n_value);
+            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+            snprintf(stream_buf, size_t(stream_buf), "%.8g\t", n_value);
 
             output_stream << stream_buf;
 
         }
 
+        //diagonal self distance, is 0 and not actually calculated
         stream_size_t = snprintf(NULL, 0, "%.8g\n", 0.0);
         stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
 
@@ -393,12 +411,11 @@ void print_value_vector_str(stringstream &output_stream, vector< vector<double> 
         output_stream << stream_buf;
 
         fut_value_vector[r_it].clear(); //empty vector
-
     }
 
     free(stream_buf);
 
-    fut_value_vector.clear();
+    //fu`t_value_vector.clear();
 
     if (symmetric_flag==true)
     {
@@ -448,22 +465,6 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
 
         }
 
-        /* #unnecessary code
-        ///independent per thread
-        for (int cy1=0; cy1!=thread_n_limit; ++cy1)
-        {
-            if (fut_struct[cy1].in_act==true)
-            {
-                n_row=fut_struct[cy1].n_row;
-                n_col=fut_struct[cy1].n_col;
-                fut_value_vector[n_row][n_col]=fut_struct[cy1].n_fut.get();
-
-                fut_struct[cy1].in_act=false;
-
-            }
-
-        }
-        */
 
         if (!q_f_buf.empty()) ///clear a constant reference
         {
@@ -543,7 +544,11 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector, vector<stri
 }
 
 
-int read_reserved_matrix(stringstream &output_stream, vector<string> &load_path_vector, string &reserve_matrix_path)
+int read_reserved_matrix(stringstream &output_stream
+    , vector<string> &load_path_vector
+    , string &reserve_matrix_path
+    , bool item_tab_flag
+    )
 {
     ifstream read_f;
     string read_line;
@@ -559,10 +564,15 @@ int read_reserved_matrix(stringstream &output_stream, vector<string> &load_path_
 
     output_stream << to_string(load_path_vector.size()) << '\n'; //item number
 
-    while (getline(read_f, read_line, '\n'))
+	std::size_t str_delim = 0;
+
+
+    while (getline(read_f, read_line, '\n')) //2021-1 needed to change
     {
-        item_name_str = read_line.substr(0, 10); //first 10 characters
-        item_name_str.erase(remove(item_name_str.begin(), item_name_str.end(), ' '), item_name_str.end());
+		str_delim = (item_tab_flag==false) ? 10 : read_line.find("\t"); ///phylip, the first 10 letters, or no length limit, separated by tab
+
+		item_name_str = read_line.substr(0, str_delim); //first 10 characters
+        item_name_str.erase(remove(item_name_str.begin(), item_name_str.end(), ' '), item_name_str.end()); //trim spaces
 
         resv_load_path_vector.push_back(item_name_str);
 
@@ -581,7 +591,7 @@ int read_reserved_matrix(stringstream &output_stream, vector<string> &load_path_
     {
         item_name_str = (*it).substr((*it).rfind('/')+1);
 
-        if (item_name_str.length()>9)
+        if (item_name_str.length()>9 && item_tab_flag==false)
         {
             item_name_str.erase(item_name_str.begin()+9, item_name_str.end()); ///in c++, string variable end with 'string/' so require -1
 
@@ -622,15 +632,17 @@ void show_help()
     cout << "-h, show help\n";
     cout << "-t [int], set number of threads (default=5)\n";
     cout << "-r [path], input reserved distance matrix\n";
-    cout << "-s, output a symmetric matrix; default is a low triangular matrix\n";
-    cout << "-d, distance metric convert: JS-Divergence to JS-Distance; square-root(JS-divergence) = JS distance\n";
 
+    cout << "-s, output a symmetric matrix; default is a low triangular matrix\n";
+    cout << "-T, use TAB as a row name separator, instead of PHYLIP format that limit row names up to the first 9 characters\n";
+
+    cout << "-d, distance metric convert: JS-Divergence to JS-Distance; square-root(JS-divergence) = JS distance\n";
 }
 
 
 void show_profile()
 {
-    cout << "FFP distance calculate; 2v.3.1\n";
+    cout << "FFP distance calculate; 2v.3.2\n";
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
     cout << "Value presentation: a point below 8 decimal places (%.8g)\n";
 
@@ -648,9 +660,11 @@ int main(int argc, char** argv)
 
     bool symmetric_flag=false; ///default, output a low triangular matrix
     bool js_distance_flag=false; ///default, output JS divergence
+    bool item_tab_flag=false; //default is false: PHYLIP format that limit row names by 9 characters; true: use tab as a separate to use any lengths of row names
+
     string reserve_matrix_path="";
 
-    while ((opt = getopt(argc, argv, "ht:r:dvs")) !=EOF) // EOF = -1
+    while ((opt = getopt(argc, argv, "ht:r:dvsT")) !=EOF) // EOF = -1
     {
         switch (opt)
         {
@@ -672,6 +686,10 @@ int main(int argc, char** argv)
 
             case 's':
                 symmetric_flag=true;
+                break;
+
+            case 'T':
+                item_tab_flag=true; //enable TAB as an item name separator; disable PHYLIP format
                 break;
 
             case 'v':
@@ -709,7 +727,7 @@ int main(int argc, char** argv)
         if (reserve_matrix_path!="")
         {
             ///print reserved matrix(or given), replace original load_path_vector order and element
-            start_item_n = read_reserved_matrix(output_stream, load_path_vector, reserve_matrix_path);
+            start_item_n = read_reserved_matrix(output_stream, load_path_vector, reserve_matrix_path, item_tab_flag);
 
         }
 
@@ -721,7 +739,7 @@ int main(int argc, char** argv)
         {
             multi_thread_manage(fut_value_vector, load_path_vector, thread_n_limit, delimiter_int, start_item_n); ///multi-threading; calculate JS Divergence
 
-            print_value_vector_str(output_stream, fut_value_vector, load_path_vector, start_item_n, js_distance_flag, symmetric_flag); ///final output (standard output)
+            print_value_vector_str(output_stream, fut_value_vector, load_path_vector, start_item_n, js_distance_flag, symmetric_flag, item_tab_flag); ///final output (standard output)
 
         }
 

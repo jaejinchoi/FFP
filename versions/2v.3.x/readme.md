@@ -8,6 +8,9 @@
 * Option [-v] shows a program profile  
 * 2v.3.0 fully supports user-defined option [-k] 
 
+2022-4-5  
+* JSD matrix; add option to use TAB a row name separater, instead of PHYLIP format that limit row names up to 9 characters
+
 2020-2-24  
 * In JSD_matrix calculation, a valid-time of 'q_f_buf' may cause adverse consequences and so there was a code rearrangement.  
 
@@ -96,7 +99,9 @@ Run example: [Program path][options][input files path] > [output file path (stan
 * -r [PATH]  
     Input previous matrix and append more items. Should match previous matrix format (e.g., PHYLIP or tab)  
 * -d  
-    Convert Jensen-Shannon Divergence to Jensen-Shannon Distance, which is equivalent to square root of Jesen-Shannon Divergence.  
+    Convert Jensen-Shannon Divergence to Jensen-Shannon Distance, which is equivalent to square root of Jesen-Shannon Divergence.
+* -T 
+    Use TAB as a separator between row names and distances. Default is PHYLIP format that limit row names up to 9 characters.  
 * -s  
     Output a symmetric matrix instead of a low triangular matrix which is default output.  
     
