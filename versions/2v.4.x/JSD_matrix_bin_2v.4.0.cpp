@@ -325,7 +325,7 @@ double calculate_distance(string p_path, string q_f_buf
             break;
 
         case 2: //Jaccard distance
-            r_value = (Hp + Hq) / (Hp + Hq + Hm);
+            r_value = (Hm) / (Hp + Hq + Hm);
             break;
 
         default: //fool proof
