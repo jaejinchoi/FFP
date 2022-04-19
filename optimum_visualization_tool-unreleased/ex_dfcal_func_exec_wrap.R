@@ -6,9 +6,6 @@
 
 ## load "dfcal_func.R" and execute without web-visualization
 
-source("/home/jjchoi/ShinyApps/ffp_optimum/dfcal_func_ods.R") #load custom R script for graphics
-# source("/home/jjchoi/ShinyApps/ffp_optimum/dfcal_func.R") #load custom R script for graphics
-
 require(optparse) #R optget in python-style
 opt_list = list(
   make_option(c("-a", "--all"), type="character", action="store_true", default=F, help="Check and run all projects enlisted in project_load_list (.ods or .txt)")
@@ -28,10 +25,6 @@ opt_list = list(
 
 
 opt <- parse_args(OptionParser(option_list=opt_list), positional_arguments = TRUE) #for trailing others
-
-
-# load_path <- "/home/jjchoi/ShinyApps/ffp_optimum/project_load_list.ods"
-project_list_load_path="https://docs.google.com/spreadsheets/d/1Zxcg_1GcdQ4QsFVt9Wnv1atpleId8U6kY2kfOy2bFcc/edit?usp=sharing" #googledrive (remote)
 
 # standalone_run_all(project_list_load_path)
 
