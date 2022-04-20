@@ -134,23 +134,23 @@ void JSD_divergence(string &p_key
 
     if ((p_key > q_key && q_value!=0) || p_value==0) ///add q_value
     {
-        Hq-=q_value * log(q_value) / log(2);
-        Hm-=q_value * log(0.5 * q_value) / log(2); ///p_value==0
+        Hq-=q_value * log2(q_value);
+        Hm-=q_value * log2(0.5 * q_value); ///p_value==0
 
         q_value=0;
 
     } else if ((p_key < q_key && p_value!=0) || q_value==0) ///add p_value
     {
-        Hp-=p_value * log(p_value) / log(2);
-        Hm-=p_value * log(0.5 * p_value) / log(2); ///q_value==0
+        Hp-=p_value * log2(p_value);
+        Hm-=p_value * log2(0.5 * p_value); ///q_value==0
 
         p_value=0;
 
     } else if (p_key==q_key && p_value!=0 && q_value!=0) ///p_key==q_key neither values are 0
     {
-        Hm-=(p_value + q_value) * log(0.5 * (p_value + q_value)) / log(2);
-        Hp-=p_value * log(p_value) / log(2);
-        Hq-=q_value * log(q_value) / log(2);
+        Hm-=(p_value + q_value) * log2(0.5 * (p_value + q_value));
+        Hp-=p_value * log2(p_value);
+        Hq-=q_value * log2(q_value);
 
         p_value=0;
         q_value=0;
@@ -325,7 +325,7 @@ double calculate_distance(string p_path, string q_f_buf
             break;
 
         case 2: //Jaccard distance
-            r_value = (Hm) / (Hp + Hq + Hm);
+            r_value = (Hp + Hq) / (Hp + Hq + Hm); // Jaccard similarity = Hm / (Hp + Hq + Hm)
             break;
 
         default: //fool proof
