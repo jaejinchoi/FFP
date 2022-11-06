@@ -20,7 +20,7 @@ Welcome to have questions or opinions regarding the program codes, bug, and usag
 * Incompatibility is due to output file format change during improvement or adding more functions which is difficult to resolve. Thus, please, beware using different versions.  
 
 ## Versions
-* The latest ![2v.4.0](versions/2v.4.x)  
+* The latest ![2v.4](versions/2v.4.x)  
 * For usage and compiling options, check individual version folder.  
 * Old text based ![FFP 2v.1.0 (before 2018-8)](versions/2v.1.0)  
 * ![update history](versions/update_history.txt), list all versions ![versions](versions)  
