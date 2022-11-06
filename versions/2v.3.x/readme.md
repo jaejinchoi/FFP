@@ -8,6 +8,9 @@
 * Option [-v] shows a program profile  
 * 2v.3.0 fully supports user-defined option [-k] 
 
+2022-11-5  
+* An option '-p' to print features and the count in plain format, which takes more space
+
 2022-4-5  
 * FFP distance; add option to use TAB a row name separater, instead of PHYLIP format that limit row names up to 9 characters
 
@@ -52,6 +55,9 @@ Each input file represent one operational taxon unit (OTU) in a tree.
     Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
     Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement accounting  
+    Default is off; e.g., AAA -> 122, then the reverse complement is TTT -> 122 but not shown  
+* -p  
+    Print plain features and the counts without binary compression  
 * -n  
     Output frequency, i.e., feature count / total feature count  
 * -u  

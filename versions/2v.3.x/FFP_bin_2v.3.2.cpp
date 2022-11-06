@@ -9,11 +9,11 @@ using namespace std;
 using std::toupper;
 
 #include <cstring>
+
 #include <string>
 using std::string;
 
 #include <sstream>
-//using std:stringstream ///is this required?
 
 #include <getopt.h>
 
@@ -37,6 +37,7 @@ using std::reverse;
 using google::sparse_hash_map;
 
 #include <bitset>
+
 #include <zlib.h>
 #include <stdexcept>
 #include <climits>
@@ -45,7 +46,6 @@ using google::sparse_hash_map;
 ///2013.3.13, no calling external hash
 using std::hash;
 
-//#define HASH_CONTAINER_LIMIT    1048576 //maybe this is useful
 /* or
 using ext::hash;reverse
 using __gnu_cxx::hash;
@@ -62,15 +62,89 @@ using __gnu_cxx::hash;
 ///Found this one here: http://panthema.net/2007/0328-ZLibString.html, author is Timo Bingmann
 /** Compress a STL string using zlib with given compression level and return
   * the binary data. */
+std::string compress_deflate(const std::string& str, int compressionlevel = Z_BEST_COMPRESSION)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
+
+    if (deflateInit(&zs, compressionlevel) != Z_OK) {
+        cerr << "deflateInit failed while compressing" << endl;
+    }
+
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();           // set the z_stream's input
+
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+
+    // retrieve the compressed bytes blockwise
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+
+        ret = deflate(&zs, Z_FINISH);
+
+        if (outstring.size() < zs.total_out) {
+            // append the block to the output string
+            outstring.append(outbuffer, zs.total_out - outstring.size());
+        }
+    } while (ret == Z_OK);
+
+    deflateEnd(&zs);
+
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        cerr << "Exception during zlib compression: (" << ret << ") " << zs.msg << endl;
+        outstring.clear();
+    }
+
+    //cout << outstring.size() << endl;
+
+    return outstring;
+}
 
 
-///different buffer size result different compression rate
-//#define BLOCK_SIZE 33554432 //32MB
-#define BLOCK_SIZE  131072 //128*1024 = 128KB
-//#define BLOCK_SIZE 655036//64*1024 = 64KB
+/* //to test and verifiy outputs
+std::string decompress_deflate(const std::string& str)
+{
+    z_stream zs;                        // z_stream is zlib's control structure
+    memset(&zs, 0, sizeof(zs));
 
+    if (inflateInit(&zs) != Z_OK)
+        throw(std::runtime_error("inflateInit failed while decompressing."));
 
-#define HASH_CONTAIN_SIZE   INT_MAX-1
+    zs.next_in = (Bytef*)str.data();
+    zs.avail_in = str.size();
+
+    int ret;
+    char outbuffer[32768];
+    std::string outstring;
+
+    // get the decompressed bytes blockwise using repeated calls to inflate
+    do {
+        zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
+        zs.avail_out = sizeof(outbuffer);
+
+        ret = inflate(&zs, 0);
+
+        if (outstring.size() < zs.total_out) {
+            outstring.append(outbuffer, zs.total_out - outstring.size());
+        }
+
+    } while (ret == Z_OK);
+
+    inflateEnd(&zs);
+
+    if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
+        std::ostringstream oss;
+        oss << "Exception during zlib decompression: (" << ret << ") "
+            << zs.msg;
+        throw(std::runtime_error(oss.str()));
+    }
+
+    return outstring;
+}
+*/
 
 
 struct compare_char
@@ -93,162 +167,6 @@ struct compare_string //compare string
 
     }
 };
-
-
-//zlib manual page
-//https://www.zlib.net/manual.html
-///*
-void compress_fragment(z_stream &zs, int &ret, int &fflush, string &inbuffer, stringstream &output_stream)
-{
-	char outbuffer[BLOCK_SIZE];
-
-	//do zlib compression per each segment / memory save
-	zs.next_in = (Bytef*)(inbuffer.data());
-	zs.avail_in = inbuffer.size(); ///count actual bytes not structure
-
-	do { //flexible output buffer
-		zs.next_out = reinterpret_cast<Bytef*>(outbuffer);
-		zs.avail_out = BLOCK_SIZE;
-
-		ret = deflate(&zs, fflush); //update avail_out
-
-		assert(ret!=Z_STREAM_ERROR);
-
-		output_stream.write(outbuffer, BLOCK_SIZE - zs.avail_out);
-
-	} while (zs.avail_out==0); //accept except Z_STREAM_ERROR
-
-
-}
-//*/
-
-//container output, compression integrated
-int feature_container_output(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash
-    , vector<string> &max_index_key_vector
-    , unsigned long &bits_per_feature
-    , double &feature_hit_cnt
-    , bool ratio_flag
-    , int feature_length,
-     stringstream &output_stream)
-{
-
-	//remove any debuging elements
-	output_stream.str(string());
-	output_stream.clear();
-
-    ///first, header
-    ///first byte define the length of feature(as bits)
-    unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
-    unsigned long bytes_per_value = 0;
-
-	bytes_per_value = ratio_flag==true ? sizeof(double) : sizeof(long long);
-
-	//initiate zlib stream
-    z_stream zs;                        // z_stream is zlib's control structure
-    memset(&zs, 0, sizeof(zs));
-
-    string inbuffer;
-	//string inbuffer_stack;
-
-    stringstream feed_stream(ios::in|ios::out|ios::binary);
-
-	int ret, fflush;
-	int compressionlevel=-1; //-1: balance compression and speed, 9: maximum compression
-
-    ret = deflateInit(&zs, compressionlevel);
-    if (ret != Z_OK)
-	{
-    	cerr << "deflateInit failed while compressing (" << ret << ") " << zs.msg << endl;
-		return 0;
-	}
-
-
-    if (!prim_index_hash.empty())
-    {
-        feed_stream.write(reinterpret_cast<const char*>(&bytes_per_feature), sizeof(bytes_per_feature)); //8 bytes
-        feed_stream.write(reinterpret_cast<const char*>(&bytes_per_value), sizeof(bytes_per_value)); //8 bytes
-        feed_stream.write(reinterpret_cast<const char*>(&feature_length), sizeof(feature_length)); //4 bytes
-
-    }
-
-    ///second, actual data
-    ///[feature (string)][value (long long or double)]
-    double value_is_double=0.0;
-    long long value_is_lld=0;
-
-
-	int key_stack_cnt=0;
-
-    vector<string> sub_index_vector;
-    prim_index_hash.set_deleted_key(string());
-
-    for (vector<string>::iterator it=max_index_key_vector.begin(); it!=max_index_key_vector.end(); ++it)
-    {
-        for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
-        {
-            sub_index_vector.push_back(sub_it->first);
-
-        }
-
-        sort(sub_index_vector.begin(), sub_index_vector.end());
-        //prim_index_hash[*it].set_deleted_key(string());
-
-        for (vector<string>::iterator vector_it=sub_index_vector.begin(); vector_it!=sub_index_vector.end(); ++vector_it)
-        {
-            ///put feature
-			feed_stream.write(reinterpret_cast<const char*>((*vector_it).c_str()), bytes_per_feature); ///since *vector_it assign string
-
-            ///put feature value
-            if (ratio_flag==true)
-            {
-                value_is_double = (double)(prim_index_hash[*it])[*vector_it] / feature_hit_cnt;
-                feed_stream.write(reinterpret_cast<char*>(&value_is_double), sizeof(double));
-
-            } else
-            {
-                value_is_lld = (prim_index_hash[*it])[*vector_it];
-                feed_stream.write(reinterpret_cast<char*>(&value_is_lld), sizeof(long long));
-
-            }
-
-        }
-
-
-        fflush = (*it)!=max_index_key_vector.back() ? Z_NO_FLUSH : Z_FINISH; //Z_NO_FLUSH : Z_FINISH;
-        ///*
-        inbuffer = feed_stream.str();
-        compress_fragment(zs, ret, fflush, inbuffer, output_stream);
-
-        //inbuffer_stack.append(inbuffer);
-        feed_stream.str(string());
-        feed_stream.clear();
-
-        prim_index_hash.erase(*it);
-        sub_index_vector.clear();
-
-
-	}
-
-
-	deflateEnd(&zs);
-
-    if (ret != Z_STREAM_END) {
-        cerr << "Exception during zlib compression: (" << ret << ") " << zs.msg << endl;
-		//refresh output_stream once compression trun failed.
-		output_stream.str(string());
-		output_stream.clear();
-		return 0;
-
-    }
-
-	///compact containers
-    prim_index_hash.clear_deleted_key();
-    prim_index_hash.resize(0);
-
-    //return inbuffer_stack;
-    return 1;
-
-}
 
 
 
@@ -318,6 +236,7 @@ string integer_to_bit_string(unsigned long &bits_per_alphabet, int int_size) ///
 
     for (int cy1=bits_per_alphabet-1; cy1!=-1; cy1--)
     {
+        //cout << cy1 << "\t" << pow(2, cy1) << endl;
         if (int_size >= pow(2, cy1))
         {
             int_size-=pow(2, cy1);
@@ -352,7 +271,7 @@ void key_hash_register(string &key_str, sparse_hash_map<char, string, hash<char>
 
 }
 
-
+///advanced; flip replace
 ///bits_per_feature should be 7 multiple
 string feature_string_binary_compact(string str_feature, unsigned long &bits_per_feature,
     sparse_hash_map<char, string, hash<char>, compare_char> &key_reg_hash)
@@ -370,18 +289,24 @@ string feature_string_binary_compact(string str_feature, unsigned long &bits_per
 
     key_bit_string.resize(bits_per_feature, '0'); ///filling empty spaces with '0'
 
-
     for (size_t it=0; it<key_bit_string.length(); it+=7) ///0 base
     {
+        //char_bit.reset(); //unnecessary, replace
         char_bit = bitset<8>(key_bit_string.substr(it, 7)); ///convert 7 digits to 8 digits (into byte format)
-        char_bit[7]=1; //spacer for seven zeros cases
+        //cout << "cut: " << it << "-"<< it+7 << "\t" << key_bit_string.substr(it, 7) << endl;
+
+        if (char_bit.none()) ///error-proof; avoid empty '' char; add 1 at 7th place as a spacer
+        {
+            char_bit[7]=1; //spacer for 0 base
+
+        }
 
         converted_key_string+=char(char_bit.to_ulong());
 
     }
 
+    //cout << "converted: " << converted_key_string << endl;
     return converted_key_string;
-
 }
 
 
@@ -421,21 +346,6 @@ double feature_string_entropy(string &key_str, string &str_key) ///determine fea
 }
 
 
-long long vocab_size_measure(sparse_hash_map<string, sparse_hash_map<string,  long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash)
-{
-    long long vocab_size=0; //long long or double?
-
-    for (sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string>::iterator it=prim_index_hash.begin(); it!=prim_index_hash.end(); ++it)
-    {
-        vocab_size+=(long long)(it->second).size();
-
-    }
-
-    return vocab_size;
-
-}
-
-
 ///filter feature counts
 void filter_feature_count(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string>  &prim_index_hash,
     long long bottom_count_limit, long long top_count_limit, double &feature_hit_cnt)
@@ -464,30 +374,30 @@ void filter_feature_count(sparse_hash_map<string, sparse_hash_map<string, long l
 }
 
 
-void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash
-    , vector<string> &max_index_key_vector
-    , const string str_key
-    )
+void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash,
+    vector<string> &max_index_key_vector, string str_key)
 {
     bool key_insert_flag=false;
 
     for (vector<string>::iterator it=max_index_key_vector.begin(); it!=max_index_key_vector.end(); ++it)
     {
-        if ((str_key == *it) || (str_key < *it && prim_index_hash[*it].size() < INT_MAX -1 )) //HASH_CONTAIN_SIZE)) ///alternatives?: prim_index_hash[*it].max_size(), INT_MAX, LONG_MAX, INT_MAX+1 cuase error because it defined max, is using INT_MAX cause overflow? (see if this works) 2020-1-5
+        if ((str_key == *it) || (str_key < *it && prim_index_hash[*it].size() < INT_MAX)) ///alternatives?: prim_index_hash[*it].max_size(), INT_MAX, LONG_MAX
         {
             prim_index_hash[*it][str_key]++;
+            //cout << str_key << "\t" << max_index_key_vector.size() << endl;
             key_insert_flag=true;
             break;
 
-        } else if (str_key < *it) ///split and migrate to a new hash (which is costly process)
+        } else if (str_key < *it)
         {
+            //prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
             prim_index_hash[*it].set_deleted_key(string()); //or string()
 
             for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
             {
                 if (sub_it->first <= str_key)
                 {
-                    prim_index_hash[str_key][sub_it->first]=sub_it->second; //+= for self add
+                    prim_index_hash[str_key][sub_it->first]+=sub_it->second; //+= for self add
                     prim_index_hash[*it].erase(sub_it); //or prim_index_hash[*it].erase(sub_it->first)
 
                 }
@@ -498,19 +408,23 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
             prim_index_hash[*it].clear_deleted_key(); //off delete key call
             prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element
 
-			prim_index_hash[str_key][str_key]+=1; //add 1 after moving a migration-triger str_key
+            prim_index_hash[str_key][str_key]+=1;
 
             max_index_key_vector.push_back(str_key); ///add new represent key to front, and deque iteration become invalid? and invalid after all?
 
             key_insert_flag=true;
             break;
 
+        } else
+        {
+            prim_index_hash[*it].resize(0); ///shrink to fit, minimum one element; compact as much as possible
+
         }
 
-	}
+    }
 
 
-    if (key_insert_flag==false) ///add new key hash
+    if (key_insert_flag==false) ///new feature
     {
         //prim_index_hash[str_key].resize(INT_MAX-1); ///reserve max capacity
         prim_index_hash[str_key][str_key]=1; //<string, long long>
@@ -519,6 +433,158 @@ void feature_container_input(sparse_hash_map<string, sparse_hash_map<string, lon
     }
 
     sort(max_index_key_vector.begin(), max_index_key_vector.end()); //sorting invalidate iterator
+    //cout << "index_key" << "\t" << str_key << "\t" << max_index_key_vector.size() << endl;
+}
+
+
+void feature_container_output(sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash,
+    vector<string> &max_index_key_vector, unsigned long &bits_per_feature, double &feature_hit_cnt, bool ratio_flag, int feature_length, stringstream &output_stream)
+{
+    ///first, header
+    ///first byte define the length of feature(as bits)
+    unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
+    unsigned long bytes_per_value = 0;
+
+    bytes_per_value = (ratio_flag==true) ? bytes_per_value = sizeof(double) : bytes_per_value = sizeof(long long);
+
+    if (!prim_index_hash.empty())
+    {
+        output_stream << static_cast<unsigned char>(bytes_per_feature); //feature bytes size, 1 byte
+        output_stream << static_cast<unsigned char>(bytes_per_value); //value bytes size, 1 byte
+        output_stream << static_cast<unsigned char>(feature_length); //feature length, 1 byte
+
+    }
+
+    ///second, actual data
+    ///[feature (string)][value (long long or double)]
+    double value_is_double=0.0;
+    long long value_is_lld=0;
+
+    vector<string> sub_index_vector;
+    prim_index_hash.set_deleted_key(string());
+
+    for (vector<string>::iterator it=max_index_key_vector.begin(); it!=max_index_key_vector.end(); ++it)
+    {
+        for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
+        {
+            sub_index_vector.push_back(sub_it->first);
+
+        }
+
+        sort(sub_index_vector.begin(), sub_index_vector.end());
+        prim_index_hash[*it].set_deleted_key(string());
+
+        for (vector<string>::iterator vector_it=sub_index_vector.begin(); vector_it!=sub_index_vector.end(); ++vector_it)
+        {
+            ///put feature
+            output_stream << (*vector_it);
+
+            ///put feature value
+            if (ratio_flag==true)
+            {
+                value_is_double = (double)(prim_index_hash[*it])[*vector_it] / feature_hit_cnt;
+                output_stream.write(reinterpret_cast<char*>(&value_is_double), sizeof(double));
+
+
+            } else
+            {
+                value_is_lld = (prim_index_hash[*it])[*vector_it];
+                output_stream.write(reinterpret_cast<char*>(&value_is_lld), sizeof(long long));
+
+            }
+
+            prim_index_hash[*it].erase(*vector_it);
+
+        }
+
+        ///compact containers
+        prim_index_hash[*it].clear_deleted_key();
+        prim_index_hash[*it].resize(0);
+
+        prim_index_hash.erase(*it);
+        sub_index_vector.clear();
+
+    }
+
+    ///compact containers
+    prim_index_hash.clear_deleted_key();
+    prim_index_hash.resize(0);
+
+}
+
+
+///print unpacked features and the values (long long); 03-NOV-2022
+void unpacked_feature_container_output(
+    sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash
+    , vector<string> &max_index_key_vector
+    , sparse_hash_map<char, string, hash<char>, compare_char> &key_reg_hash
+    , unsigned long &bits_per_alphabet
+    , int feature_length
+    , long long bottom_count_limit
+    , long long top_count_limit
+    , stringstream &output_stream
+    )
+{
+
+    bitset<8> char_bit;
+    string packed_feature="";
+    string packed_binary_string="";
+    string unpacked_feature="";
+    int read_pos=0;
+
+    //register binkey_reg_hash, reverse of key_reg_hash; bin_string | letter
+    sparse_hash_map<string, char, hash<string>, compare_string> binkey_reg_hash;
+    
+    for (sparse_hash_map<char, string, hash<char>, compare_char>::iterator key_it= key_reg_hash.begin(); key_it!=key_reg_hash.end(); ++key_it)
+    {
+        binkey_reg_hash[key_it->second] = key_it->first; //*key_it raise error ///reverse; bin_string | char
+        //cout << key_it->second << "\t" << key_it->first << endl;
+    }
+
+    // read and iterate features and the values
+    prim_index_hash.set_deleted_key(string());
+
+    for (vector<string>::iterator it=max_index_key_vector.begin(); it!=max_index_key_vector.end(); ++it)
+    {
+        for (sparse_hash_map<string, long long, hash<string>, compare_string>::iterator sub_it=prim_index_hash[*it].begin(); sub_it!=prim_index_hash[*it].end(); ++sub_it)
+        {
+            if ((sub_it->second >= bottom_count_limit) && (sub_it->second <= top_count_limit || top_count_limit==0))
+            {
+                packed_feature = sub_it->first;
+                packed_binary_string="";
+
+                //create packed_key_string comprise of binary (1 or 0)
+                for (string::iterator it=packed_feature.begin(); it!=packed_feature.end(); ++it) //each character is 8 bit
+                {
+                    char_bit = bitset<8>((unsigned long)*it); ///char to unsigned long
+                    packed_binary_string+=(char_bit.to_string()).substr(1, 7); ///omitt the first digit (spacer)
+
+                }
+
+                //recover unpacked feature from binary string(string)
+                unpacked_feature="";
+
+                for (int it=0; it<feature_length; ++it)
+                {
+                    read_pos = it*bits_per_alphabet;
+                    unpacked_feature+=binkey_reg_hash[packed_binary_string.substr(read_pos, bits_per_alphabet)]; ///should read last bits digit places! no
+                    //cout << it*bits_per_alphabet << "\t" << packed_binary_string.substr(read_pos, bits_per_alphabet) << "\t" << binkey_reg_hash[packed_binary_string.substr(read_pos, bits_per_alphabet)] << endl;
+                }
+
+            } ///skip any feature that count out of a declared range.
+
+            //output_stream << feature_string_binary_unpack(sub_it->first, bits_per_alphabet, binkey_reg_hash) << '\n';
+            output_stream << unpacked_feature <<  "\t" << sub_it->second <<'\n';
+
+        }
+
+        prim_index_hash.erase(*it);
+
+    }
+
+    ///compact containers
+    prim_index_hash.clear_deleted_key();
+    prim_index_hash.resize(0);
 
 }
 
@@ -538,7 +604,7 @@ int seq_read_window(stringstream &read_f, int feature_length, bool backward_flag
 
     bool fasta_head_flag=false;
 
-	while (read_f.get(read_char))
+    while (read_f.get(read_char))
     {
         if (read_char=='>' || read_f.eof())
         {
@@ -570,40 +636,62 @@ int seq_read_window(stringstream &read_f, int feature_length, bool backward_flag
 
                 if (forward_index_str.length() == feature_length)
                 {
-                    str_entropy = (bottom_entropy_limit==0.0 && top_entropy_limit==1.0) ? 0.5 : feature_string_entropy(key_str, forward_index_str);
+
+                    if (bottom_entropy_limit==0.0 && top_entropy_limit==1.0)
+                    {
+                        str_entropy = 0.5; ///force fix; continue
+
+                    } else ///or calculate
+                    {
+                        str_entropy = feature_string_entropy(key_str, forward_index_str);
+
+                    }
 
                     if (str_entropy >= bottom_entropy_limit && str_entropy <= top_entropy_limit)
                     {
-                        backward_index_str = backward_flag==true ? rev_comp_str_convert(forward_index_str) : forward_index_str;
+                        if (backward_flag==true) ///consider complement strands
+                        {
+                            backward_index_str = rev_comp_str_convert(forward_index_str);
 
-                        ///* ///conditional simplified
-                        key_index_str = forward_index_str > backward_index_str ?
-                            feature_string_binary_compact(backward_index_str, bits_per_feature, key_reg_hash) : feature_string_binary_compact(forward_index_str, bits_per_feature, key_reg_hash);
-                            //backward_index_str : forward_index_str; //without character conversion
-                        //*/
+                            if (forward_index_str > backward_index_str) ///select based on feature lexicographical order (the one comes first)
+                            {
+                                key_index_str = feature_string_binary_compact(backward_index_str, bits_per_feature, key_reg_hash);
+
+                            } else
+                            {
+                                key_index_str = feature_string_binary_compact(forward_index_str, bits_per_feature, key_reg_hash);
+
+                            }
+
+                        } else ///no complement strands
+                        {
+                            key_index_str = feature_string_binary_compact(forward_index_str, bits_per_feature, key_reg_hash);
+
+                        }
 
                         feature_container_input(prim_index_hash, max_index_key_vector, key_index_str);
+
                         feature_hit_cnt+=1;
 
                     }
 
                     forward_index_str.erase(0, 1);
-
+                    //cout << forward_index_str << endl;
                 }
 
 
             } else
             {
                 forward_index_str.clear();
+                backward_index_str.clear();
 
             }
 
         }
 
     }
-
     forward_index_str.clear();
-    backward_index_str.clear();
+
 
     if (!prim_index_hash.empty())
     {
@@ -614,6 +702,24 @@ int seq_read_window(stringstream &read_f, int feature_length, bool backward_flag
     return 0; //if prim_index_hash is empty
 
 }
+
+
+
+
+long long vocab_size_measure(sparse_hash_map<string, sparse_hash_map<string,  long long, hash<string>, compare_string>, hash<string>, compare_string> &prim_index_hash)
+{
+    long long vocab_size=0; //long long or double?
+
+    for (sparse_hash_map<string, sparse_hash_map<string, long long, hash<string>, compare_string>, hash<string>, compare_string>::iterator it=prim_index_hash.begin(); it!=prim_index_hash.end(); ++it)
+    {
+        vocab_size+=(long long)(it->second).size();
+
+    }
+
+    return vocab_size;
+
+}
+
 
 
 unsigned long count_bits_per_alphabet(int n_key_type)
@@ -665,6 +771,7 @@ void show_help()
     cout << "-r, disable reverse complement counting(given -a will turn off reverse complement)" << endl;
     cout << "-n, output freqeuncy into ratio(of sum of all frequency)" << endl;
     cout << "-u, unmasked_treat, also accept lower letters(default; accept only upper letters)" << endl;
+    cout << "-p, print plain (in non-binary format) features and the values" << endl;
 
     cout << endl << "Vocabulary size measure;" << endl;
     cout << "-V, measure vocabular size; will stop when total size decreases; affect by 'feature count limit' and 'feature entropy limit' condition" << endl;
@@ -681,15 +788,12 @@ void show_help()
 
 void show_profile()
 {
-    //cout << "FFP binary version; update 2018-9-21\n";
-    cout << "FF-Profiler\n";
-    cout << "2v.4.0; updated 01-11-2021\n";
+    cout << "FF-Profiler (2v.3.2; updated 04-NOV-2022)\n";
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
-
-    cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
-    cout << "Required; google-sparse-hash\n";
-    cout << "Required; zlib 1.2.8+\n";
-
+    //cout << "Value presentation: a point below 4 decimal places (%.4e)\n"; //stored in double binary format
+    //cout << "compile; g++ -std=c++11 -o (output) (this script) -lz\n";
+    //cout << "Required; google-sparse-hash\n";
+    //cout << "Required; zlib 1.2.8+\n";
 }
 
 
@@ -704,6 +808,7 @@ int main(int argc, char** argv)
     bool max_vocab_find_flag=false;
     bool ry_code_flag=false;
 
+    bool print_plain_feature_flag=false;
 
     ///feature count range (1.0 ~ 0.0 = maximum)
     long long bottom_count_limit=1; ///in general, use bottom_count_limit=2 to find a point where vocabulary start to diverge
@@ -719,7 +824,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "hvs:e:ack:rnub:t:VB:T:")) !=EOF) // EOF = -1
+    while ((opt = getopt(argc, argv, "hvs:e:ack:rnub:t:VB:T:p")) !=EOF) // EOF = -1
     {
         switch (opt)
         {
@@ -729,7 +834,7 @@ int main(int argc, char** argv)
 
             case 'v':
                 show_profile();
-                exit(EXIT_SUCCESS);
+                exit(1);
 
             case 's':
                 feature_length = atoi(optarg);
@@ -753,6 +858,10 @@ int main(int argc, char** argv)
 
             case 'r':
                 backward_flag=false;
+                break;
+
+            case 'p':
+                print_plain_feature_flag=true;
                 break;
 
             case 'n':
@@ -818,8 +927,10 @@ int main(int argc, char** argv)
     }
 
     ///prepare necessary parameters / declare variables
-    int additional_bit=0; ///0 base accepted
+    //int additional_bit=1; ///key index start from 1 to avoid 00000000: empty char
+    int additional_bit=0; ///key index start from 1 to avoid 00000000: empty char; 0 base accepted
     unsigned long bits_per_alphabet = count_bits_per_alphabet(key_str.length() + additional_bit);
+    //unsigned long bits_per_feature = (unsigned long)(ceil(((double)(bits_per_alphabet*feature_length) / 8)) * 8);
     unsigned long bits_per_feature = (unsigned long)(ceil(((double)(bits_per_alphabet*feature_length) / 7)) * 7); ///use 7 digits per byte
 
     sparse_hash_map<char, string, hash<char>, compare_char> key_reg_hash;
@@ -833,12 +944,13 @@ int main(int argc, char** argv)
 
     vector<string> max_index_key_vector;
 
-    ifstream read_f; ///read input FASTA file
-    ofstream write_f; ///output compressed FFP profile
+    ifstream read_f;
+    vector<string> str_block_vector; ///store string blocks of a file
 
+    ofstream write_f; //profile save
 
     stringstream read_str_f(ios::in|ios::out);
-    stringstream output_stream(ios::out|ios::in|ios::binary); //omitting ios::ate might solve?
+    stringstream output_stream(ios::out|ios::in|ios::ate);
 
     string output_total_string="";
 
@@ -846,43 +958,42 @@ int main(int argc, char** argv)
     long long past_vocab_size=0;
     long long recent_vocab_size=0;
 
-    //string raw_total_string;
 
     char* stream_buf = NULL;
     size_t stream_size_t=0;
 
+
     if (argc - optind == 2) ///[input file path][save file path]
     {
         read_f.open(argv[optind], ios::in); ///load fasta input path
-        write_f.open(argv[optind+1], ios::out|ios::binary); ///save path
+        write_f.open(argv[optind+1], ios::out|ios::binary); ///save output path
 
         if (!read_f)
         {
-            cerr << "Unable to open file: " << argv[optind] << endl;
+            cout << "Unable to open file: " << argv[optind] << endl;
             return 1;
 
         } else
         {
 
-			read_str_f << read_f.rdbuf(); ///load a whole file at once
-            //file_to_string_blocks(str_block_vector, read_f); ///dealing large files; fragmentate into each fasta
+            file_to_string_blocks(str_block_vector, read_f); ///dealing large files; fragmentate into each fasta
             read_f.close();
 
             while (1)
             {
-                if (seq_read_window(read_str_f, feature_length, backward_flag, feature_hit_cnt, unmasked_treat_flag,
-                    ratio_output_flag, ry_code_flag, key_reg_hash, prim_index_hash, max_index_key_vector,
-                    bits_per_feature, key_str, bottom_entropy_limit, top_entropy_limit)!=1
-                )
+                for (vector<string>::iterator it=str_block_vector.begin(); it!=str_block_vector.end(); ++it)
                 {
-                    cerr << "Empty FFP output using " << argv[optind] << endl;
-                    break; //break while()
+                    read_str_f.rdbuf()->pubsetbuf(&(*it)[0], (*it).size()); //load content
+                    read_str_f.seekg(0, ios_base::beg); //go to the beginning
+
+                    seq_read_window(read_str_f, feature_length, backward_flag, feature_hit_cnt, unmasked_treat_flag,
+                                        ratio_output_flag, ry_code_flag, key_reg_hash, prim_index_hash, max_index_key_vector,
+                                        bits_per_feature, key_str, bottom_entropy_limit, top_entropy_limit);
+
+                    read_str_f.str(string()); //clear content
+                    read_str_f.clear(); //clear flag
 
                 }
-
-                ///return to the beginning of stream
-                read_str_f.clear(); //clear badbit or eofbit
-                read_str_f.seekg(0, ios::beg); //set after clear. not seekp (for write)
 
                 ///feature count filter
                 if (bottom_count_limit>1 || top_count_limit!=0)
@@ -892,7 +1003,7 @@ int main(int argc, char** argv)
                 }
 
 
-                if (max_vocab_find_flag==true) //&& (feature_length <= feature_length_end || feature_length_end==0))
+                if (max_vocab_find_flag==true && !prim_index_hash.empty()) //&& (feature_length <= feature_length_end || feature_length_end==0))
                 {
                     recent_vocab_size = vocab_size_measure(prim_index_hash);
 
@@ -900,10 +1011,9 @@ int main(int argc, char** argv)
                     stream_buf = (char*)realloc(stream_buf, (stream_size_t + 1)*sizeof(char *)); //+1 at the end(/0)
                     snprintf(stream_buf, size_t(stream_buf), "l-mer; %d, vocab_size; %lld\n", feature_length, recent_vocab_size); //format char*
 
-                    output_stream.write(stream_buf, stream_size_t); //output_stream << stream_buf;
+                    output_stream << stream_buf;
 
-					//if ((feature_length < feature_length_end || feature_length_end==0)) // || past_vocab_size <= recent_vocab_size)
-					if ((feature_length < feature_length_end || feature_length_end==0) && past_vocab_size <= recent_vocab_size)
+                    if ((feature_length < feature_length_end || feature_length_end==0) && past_vocab_size <= recent_vocab_size)
                     {
                         ///prepare and clear variables and containers for next cycle
                         max_index_key_vector.clear();
@@ -918,22 +1028,52 @@ int main(int argc, char** argv)
 
                     } else
                     {
-						//output_stream.seekg(0, ios::beg);
-						//write_f << output_stream.str(); //output_stream.rdbuf();
-						write_f.write(output_stream.str().data(), output_stream.tellp());
-
+                        write_f << output_stream.str(); //<< '\n'; //additional linebreak un necessary
                         break; //break while()
+
                     }
 
-                } else if (max_vocab_find_flag==false &&
-                    feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream)==1) ///write FFP to file
+                } else if (print_plain_feature_flag==true) //print unpacked features and the values (count; long long)
                 {
-                    ///for checking content recovery
-                    //raw_total_string = feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream);
-					//write_f << output_stream.str(); //compression integrated output_stream
-					write_f.write(output_stream.str().data(), output_stream.tellp());
 
-                    break; //break while()
+                    if (backward_flag==false) //fool proof (reverse complement accounted?)
+                    {
+                        output_stream << "# reverse compliment not accounted" << endl;
+
+                    } else
+                    {
+                        output_stream << "# reverse complement accounted (showing lexicographically prior features)" << endl;
+                        output_stream << "# e.g., AAA -> 122, then the reverse complement is TTT -> 122 (masked; not shown)" << endl;
+                    }
+
+                    unpacked_feature_container_output(
+                        prim_index_hash
+                        , max_index_key_vector
+                        , key_reg_hash
+                        , bits_per_alphabet
+                        , feature_length
+                        , bottom_count_limit
+                        , top_count_limit
+                        , output_stream
+                        );
+
+                    write_f.write(output_stream.str().data(), output_stream.tellp());
+
+                    break;
+
+                } else if (max_vocab_find_flag==false && !prim_index_hash.empty()) ///write FFP to file
+                {
+                    feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream);
+
+                    write_f << compress_deflate(output_stream.str(), Z_BEST_COMPRESSION);
+                    //write_f << output_stream.str(); //<< '\n'; //without zlib compression
+
+                    break; //break while(1)
+
+                } else ///no output, escape loop
+                {
+                    cout << "Empty FFP output: " << argv[optind] << endl;
+                    break;
 
                 }
 
@@ -947,20 +1087,19 @@ int main(int argc, char** argv)
             //prim_index_hash.resize(INT_MAX);
             feature_hit_cnt=0;
 
-            ///flush stringstream read_str_f
-            read_str_f.str(string()); //clear content
-            read_str_f.clear(); //clear flag
+            output_stream.str(string());
+            output_stream.clear();
+
+            str_block_vector.clear();
 
         }
 
         write_f.close();
 
-        output_stream.str(string());
-        output_stream.clear();
 
     } else
     {
-        cerr << "Please input load_path, and then save_path" << endl;
+        cout << "Please input load_path, and then save_path" << endl;
         exit(EXIT_SUCCESS);
 
     }

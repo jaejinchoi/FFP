@@ -611,7 +611,6 @@ if __name__=='__main__':
                             l_end+=1
 
                             ## also check if matrix has the maximum JSD value to prevent searching endless and meaningless
-
                     else:
                         continue
 

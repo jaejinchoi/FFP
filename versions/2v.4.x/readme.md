@@ -5,6 +5,10 @@
 * FFP distance calculate option [-d] supports various distances. See the manual below.  
 * Add the option [-t] to choose tab separated OTU labels, in addition to PHYLIP style OTU labels that limits up to 9 characters.  
 
+2022-11-5  
+* An option '-p' to print features and the count in plain format, which takes more space
+
+
 ## FF Profile(FFP); FFP_x.cpp
 **Compile:** g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz  
 May replace 'x' with corresponding version.  
@@ -27,7 +31,10 @@ Each input file represent one operational taxon unit (OTU) in a tree.
 * -k [STR]  
     Manual input of alphabet base string. For example input 'HJKL' is ['H', 'J', 'K', 'L'] bases  
 * -r  
-    Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement accounting  
+    Disable reverse complement accounting. Any bases set other than AGCT code will disable reverse complement accounting
+    Default is off; e.g., AAA -> 122, then the reverse complement is TTT -> 122 but not shown  
+* -p  
+    Print plain features and the counts without binary compression      
 * -n  
     Output frequency, i.e., feature count / total feature count  
 * -u  
