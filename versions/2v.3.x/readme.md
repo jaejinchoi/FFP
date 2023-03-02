@@ -36,8 +36,15 @@ b. floor(1,785 / bits_per_letter) >= your maximum l-mer
 **Compile:** g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz  
 May replace 'x' with a corresponding version.  
 
-Run example: [Program path][options][input file path][output file path]  
+Run example: [Program path][arguments][input file path][output file path]  
 Each input file represent one operational taxon unit (OTU) in a tree.  
+
+### [Input]
+FASTA format sequence files.  
+
+### [Output]
+zlib compressed Feature Frequency Profile.  
+
 ### [Arguments]
 * -h  
     Show options  
@@ -84,19 +91,20 @@ Use [-r] option to turn off reverse compliment accounting if input is single str
 
 Use [-V] option along with [-s], [-e] and feature filtering arguments to estimate a range of optimal l-mer. In general, use [-b 2], remove any feature count less than 2, to determine a l-mer where vocabulary complexity started to maximize. FF Profiler will determine and stop to a point where vocabular size drops in range of [-s] and [-e], or without giving [-e] (default value is 0) will continue search the point by incrementing the l-mer.  
 
-### [Input]
-FASTA format sequence files.  
-
-### [Output]
-zlib compressed Feature Frequency Profile.  
-
 
 
 ## FFP distance calculate; JSD_matrix_x.cpp  
 **Compile:** g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4.x JSD_matrix_bin.2v.4.x.cpp -lz  
 May replace 'x' with a corresponding version.  
 
-Run example: [Program path][options][input files path] > [output file path (standard output)]  
+Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
+
+### [Input]
+zlib compressed Feature Frequency Profiles (FFPs).  
+
+### [Output]
+Standard output of a low triangular distance matrix.  
+
 ### [Arguments]
 * -h  
     Show options  
@@ -113,9 +121,3 @@ Run example: [Program path][options][input files path] > [output file path (stan
     
 ### [Note]
 [-r] input previously generated low triangular divergence or distance matrix. This requires all pair-wise output of 'FF Profiler'. Aware to specify "TAB" delimited and "PHYLIP" formatted distance matrices.  
-
-### [Input]
-zlib compressed Feature Frequency Profiles (FFPs).  
-
-### [Output]
-Standard output of a low triangular distance matrix.  
