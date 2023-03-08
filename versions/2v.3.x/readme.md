@@ -107,7 +107,9 @@ Standard output of a low triangular distance matrix.
 
 ### [Arguments]
 * -h  
-    Show options  
+    Show options
+* -v  
+    Show version
 * -t [INT]  
     Number of threads for multiprocessing. An adequate thread number is a total cpu thread - 1. Default is set to 5.    
 * -r [PATH]  
