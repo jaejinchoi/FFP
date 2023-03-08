@@ -99,11 +99,11 @@ Standard output of a low triangular distance matrix.
     jacc : Jaccord Distance, which account a number of shared features but not their frequencies  
     kls : Symmetrized relative entropy; Kullback-Leibler (KL)  
         
-    (Experimental)
+    (Experimental)  
     jsda : Size-weighted Jensen-Shannon Divergence  
         Weighted by vocabulary size; Dist(P||Q) = a\*KL(P||a\*P + b\*Q) + b\*KL(P||a\*P + b\*Q); a+b = 1.0, a <> b, a and b are vocabulary size ratio  
 * --symmetric | -s  
-    Output a symmetric matrix instead of a low triangular matrix which is default output.  
+    Output a symmetric matrix instead of a low triangular matrix which is default output  
 
 ### [Note]
 [-r] input previously generated low triangular divergence or distance matrix. This requires all pair-wise output of 'FF Profiler'. Aware to specify "TAB" delimited and "PHYLIP" formatted distance matrices.
