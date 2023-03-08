@@ -47,7 +47,7 @@ zlib compressed Feature Frequency Profile.
 
 ### [Arguments]
 * -h  
-    Show options  
+    Show help  
 * -v  
     Show version 
 * -s [INT]  

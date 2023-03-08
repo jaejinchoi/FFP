@@ -94,12 +94,20 @@ void read_binary_block(stringstream &t_stream
     , int &feature_length
     , string &n_key
     , double &n_value
+    , unsigned long &vocab_size
     )
 {
 	char t_chars[64];
 
     if (bytes_per_feature==0 && bytes_per_value==0) ///read header information
 	{
+        // determine vocab size can be done using file size (in bytes)
+        // in bytes. (file_size - (header: sizeof(bytes_per_feature) + sizeof(bytes_per_value) + sizeof(feature_length)) ) / (bytes_per_feature + bytes_per_value)
+        t_stream.seekg(0, ios::end);
+        vocab_size = (unsigned long)(t_stream.tellg()) - sizeof(bytes_per_feature) - sizeof(bytes_per_value) - sizeof(feature_length);
+        t_stream.seekg(0, ios::beg);
+
+
 		t_stream.read(t_chars, sizeof(bytes_per_feature));
 		bytes_per_feature = *reinterpret_cast<const unsigned long*>(t_chars);
 		memset(&(t_chars[0]), 0, sizeof(t_chars)); //is this necessary?
@@ -113,7 +121,10 @@ void read_binary_block(stringstream &t_stream
 		memset(&(t_chars[0]), 0, sizeof(t_chars));
 
 		n_key.resize(bytes_per_feature);
-		//cout << "bytes_per_feature | bytes_per_value | feature_length : " << bytes_per_feature << "\t" << bytes_per_value << "\t" << feature_length << endl;
+        
+        // calculate vocab_size
+        vocab_size = vocab_size / (bytes_per_feature + bytes_per_value);
+
 	}
 
     t_stream.read(reinterpret_cast<char*>(&n_key[0]), bytes_per_feature); ///read feature
@@ -160,6 +171,116 @@ void JSD_divergence(string &p_key
 }
 
 
+void JSD_divergence_size_adjustment(
+    string &p_key
+    , string &q_key
+    , double &p_value
+    , double &q_value
+    , double &Hp
+    , double &Hq
+    , double &Hm
+    //, double &Hm_p
+    //, double &Hm_q
+    , double &p_vratio
+    , double &q_vratio
+    )
+{
+
+    if ((p_key > q_key && q_value!=0) || p_value==0) ///add q_value
+    {
+        //Hq-=q_value * log(q_value) / log(2);
+        //Hm-=q_value * log(q_vratio * q_value) / log(2); ///p_value==0
+
+        Hq-=q_value * log2(q_value);
+        Hm-=q_vratio * q_value * log2(q_vratio * q_value); ///p_value==0
+
+        q_value=0;
+        
+        //q_cnt+=1.0;
+
+    } else if ((p_key < q_key && p_value!=0) || q_value==0) ///add p_value
+    {
+        //Hp-=p_value * log(p_value) / log(2);
+        //Hm-=p_value * log( p_vratio * p_value) / log(2); ///q_value==0
+
+        Hp-=p_value * log2(p_value);
+        Hm-=p_vratio * p_value * log2(p_vratio * p_value);
+
+        p_value=0;
+        
+        //p_cnt+=1.0;
+
+    } else if (p_key==q_key && p_value!=0 && q_value!=0) ///p_key==q_key neither values are 0
+    {
+        //Hm-=(p_value + q_value) * log(0.5 * (p_value + q_value)) / log(2);
+        //Hm-=( (p_vratio * p_value) + (q_vratio * q_value) ) * log( (p_vratio * p_value) + (q_vratio * q_value) ) / log(2);
+
+        Hm-=( (p_vratio * p_value) + (q_vratio * q_value) ) * log2( (p_vratio * p_value) + (q_vratio * q_value) );
+
+        Hp-=p_value * log2(p_value);
+        Hq-=q_value * log2(q_value);
+
+        p_value=0;
+        q_value=0;
+        
+        //p_cnt+=1.0;
+        //q_cnt+=1.0;
+
+    }
+
+}
+
+
+///Kullback-Leibler distance. symmetrized relative entropy: ( KL(A||B) + KL(B||A) ) / 2
+// by definition KL cannot handle if P(i) or Q(i) is 0 inside log, for instance, log2(P(i)) or log2(Q(i))
+void KL_distance(string &p_key
+    , string &q_key
+    , double &p_value
+    , double &q_value
+    , double &Hp
+    , double &Hq
+    , double &Hm
+    )
+{
+
+    //cout << std::numeric_limits<double>::min() << endl; //hte smallest double number defined
+    //to use KL, set 0 probability to the smallest double number (laplace's pseudo number)
+    ///*
+    if ((p_key > q_key && q_value!=0) || p_value==0) ///add q_value, p_value
+    {
+        Hq-=q_value * log2(q_value);
+
+        Hp-=std::numeric_limits<double>::min() * log2(q_value);
+        Hm-=q_value * log2(std::numeric_limits<double>::min()) + std::numeric_limits<double>::min()*log2(q_value);
+
+        q_value=0;
+
+    } else if ((p_key < q_key && p_value!=0) || q_value==0) ///add p_value
+    {
+        Hp-=p_value * log2(p_value);
+
+        Hq-=std::numeric_limits<double>::min() * log2(p_value);
+        Hm-=p_value * log2(std::numeric_limits<double>::min()) + std::numeric_limits<double>::min()*log2(p_value);
+
+        p_value=0;
+
+    } else if (p_key==q_key) // && p_value!=0 && q_value!=0) ///p_key==q_key neither values are 0
+    {
+        Hm-=(p_value + q_value) * log2(0.5 * (p_value + q_value));
+        Hm-=( p_value * log2(q_value) + q_value * log2(p_value) );
+
+        Hp-=p_value * log2(p_value);
+        Hq-=q_value * log2(q_value);
+
+        p_value=0;
+        q_value=0;
+
+    }
+    //*/
+
+}
+
+
 ///Jaccard distance: 1 - ( n(intersection set) / n(union set) )
 void JACCARD_distance(string &p_key
     , string &q_key
@@ -198,7 +319,7 @@ void JACCARD_distance(string &p_key
 
 double calculate_distance(string p_path, string q_f_buf
     , int delimiter_int
-    , int distance_type
+    , string distance_type
     )
 {
     ///p -> istringstream, q -> cref, istringstream
@@ -209,6 +330,10 @@ double calculate_distance(string p_path, string q_f_buf
     string q_key="";
 
     double Hm=0.0;
+    //size adjustment variatns
+    double Hm_p=0.0;
+    double Hm_q=0.0;
+
     double Hp=0.0;
     double Hq=0.0;
     double r_value=0.0; //return distance value
@@ -217,11 +342,15 @@ double calculate_distance(string p_path, string q_f_buf
     unsigned long p_bytes_per_feature=0;
     unsigned long p_bytes_per_value=0;
 	int p_feature_length=0;
+    // double p_cnt=0.0; //p(x) vocabulary size
+    unsigned long p_vocab_size = 0;
 
 	//int q_zs_ret=0;
     unsigned long q_bytes_per_feature=0;
     unsigned long q_bytes_per_value=0;
 	int q_feature_length=0;
+    // double q_cnt=0.0; //q(x) vocabulary size
+    unsigned long q_vocab_size = 0;
 
     ///set read_p_f
     ifstream read_f;
@@ -235,7 +364,6 @@ double calculate_distance(string p_path, string q_f_buf
     read_f.close();
 
     stringstream read_p_f(decompress_deflate(p_f_buf, p_zs_ret), ios::in|ios::out|ios::binary);
-
     read_p_f.seekg(0, ios::beg);
     p_f_buf.clear(); // possible?
 
@@ -244,9 +372,13 @@ double calculate_distance(string p_path, string q_f_buf
     stringstream read_q_f(q_f_buf, ios::in|ios::out|ios::binary);
     read_q_f.seekg(0, ios::beg);
 
-    ///check feature length
-    read_binary_block(read_p_f, p_bytes_per_feature, p_bytes_per_value, p_feature_length, p_key, p_value);
-    read_binary_block(read_q_f, q_bytes_per_feature, q_bytes_per_value, q_feature_length, q_key, q_value);
+    ///read header info and check feature length
+    read_binary_block(read_p_f, p_bytes_per_feature, p_bytes_per_value, p_feature_length, p_key, p_value, p_vocab_size);
+    read_binary_block(read_q_f, q_bytes_per_feature, q_bytes_per_value, q_feature_length, q_key, q_value, q_vocab_size);
+
+    // should be converted to double before division
+    double p_vratio = double(p_vocab_size) / double(p_vocab_size + q_vocab_size);
+    double q_vratio = double(q_vocab_size)/ double(p_vocab_size + q_vocab_size);
 
     ///anything wrong during inflation/decompression step, or comparing with different feature lengths, should output an error value (-1)
     if (p_feature_length!=q_feature_length) //fool proof
@@ -269,33 +401,38 @@ double calculate_distance(string p_path, string q_f_buf
     {
         if (p_value==0 && !read_p_f.eof())
         {
-            read_binary_block(read_p_f, p_bytes_per_feature, p_bytes_per_value, p_feature_length, p_key, p_value);
+            read_binary_block(read_p_f, p_bytes_per_feature, p_bytes_per_value, p_feature_length, p_key, p_value, p_vocab_size);
 
         }
 
         if (q_value==0 && !read_q_f.eof())
         {
-            read_binary_block(read_q_f, q_bytes_per_feature, q_bytes_per_value, q_feature_length, q_key, q_value);
+            read_binary_block(read_q_f, q_bytes_per_feature, q_bytes_per_value, q_feature_length, q_key, q_value, q_vocab_size);
 
         }
 
         if (p_value!=0 || q_value!=0) //requires to avoid nan
         {
             ///support various distances (or dissimilarity); can add more in future
-            switch(distance_type)
+            if (distance_type=="jsdiv" || distance_type=="jsdist") //JS-divergence
             {
-                case 0: //case 0 and 1 are using JSD_divergence metric (case 1 for JSD_distance)
-                case 1:
-                    JSD_divergence(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
-                    break;
+                JSD_divergence(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
 
-                case 2:
-                    JACCARD_distance(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
-                    break;
+            } else if (distance_type=="jacc") //JS-distance
+            {
+                JACCARD_distance(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
+
+            } else if (distance_type=="jsda") //JS-distance
+            {
+                JSD_divergence_size_adjustment(p_key, q_key, p_value, q_value, Hp, Hq, Hm, p_vratio, q_vratio);
+
+            } else if (distance_type=="kls") //KL relative entropy symmetrized
+            {
+                KL_distance(p_key, q_key, p_value, q_value, Hp, Hq, Hm);
 
             }
-		}
 
+        }
     }
 
     ///clear variables and containers
@@ -314,23 +451,26 @@ double calculate_distance(string p_path, string q_f_buf
 	}
 
 
-    switch(distance_type)
+    if (distance_type=="jsdiv")
     {
-        case 0: //JSD divergence
-            r_value = 0.5*(Hm - Hp - Hq);
-            break;
+        r_value = 0.5*(Hm - Hp - Hq); //[0,1] bound
 
-        case 1: //JSD distance  = sqrt(JSD_divergence)
-            r_value = sqrt(0.5*(Hm - Hp - Hq));
-            break;
+    } else if (distance_type=="jsdist") //JS-divergence
+    {
+        r_value = sqrt(0.5*(Hm - Hp - Hq)); //[0,1] bound
 
-        case 2: //Jaccard distance
-            r_value = (Hp + Hq) / (Hp + Hq + Hm); // Jaccard similarity = Hm / (Hp + Hq + Hm)
-            break;
+    } else if (distance_type=="jacc") //JS-distance
+    {
+        r_value = (Hp + Hq) / (Hp + Hq + Hm);
 
-        default: //fool proof
-            r_value = -1;
-            break;
+    } else if (distance_type=="jsda") //size-weighted JS-distance
+    {
+        r_value = Hm - (p_vratio*Hp) - (q_vratio*Hq);
+
+    } else if (distance_type=="kls") //KL relative entropy symmetrized
+    {
+        r_value = 0.5*(Hm - Hp - Hq); //[0, x) lower bounded
+
     }
 
 	return r_value;
@@ -542,7 +682,7 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
     , int thread_n_limit
     , int delimiter_int
     , int start_item_n
-    , int distance_type
+    , string distance_type
     )
 {
     ///prepare multi-threading
@@ -764,18 +904,31 @@ int read_reserved_matrix(stringstream &output_stream
 void show_help()
 {
     cout << "Parameters: [option][load_paths(requires full path)]\n";
-    cout << "-h, show help\n";
+    cout << "--help | -h, show help\n";
+    cout << "--version | -v, show help\n";
+    cout << "--thread | -t [int], set number of threads (default = 5)\n";
+    cout << "--reserved | -r [path], input reserved distance matrix\n";
+    cout << "--symmetric | -s, output a symmetric matrix; default is a low triangular matrix\n";
+    cout << "-T, Use TAB as a separator between row names and distances. Default is PHYLIP format that limit row names up to 9 characters\n";
+    
+    // various distances
+    cout << "--distance | -d [str], type of distance or dissimilarity metric\n";
 
-    cout << "-t [int], set number of threads (default = 5)\n";
-    cout << "-r [path], input reserved distance matrix\n";
+    cout << "\tjsdiv : Jensen-Shannon Divergence (JS divergence)\n";
+    
+    cout << "\tjsdist: Jensen-Shannon Distance (JS distance = square_root(JS divergence))\n";
+    
+    cout << "\tjacc : Jaccard Distance\n";
+    
+    // https://stats.stackexchange.com/questions/97938/calculate-the-kullback-leibler-divergence-in-practice
+    cout << "\tkls : Symmetrized (Kullback-Leibler) relative entropy; [0, inf)\n";
+    cout << "\t\tKL assumes (P(i) or Q(i) !=0 or 1) and cannot define 0 probability\n";
+    cout << "\t\tThus, use Laplace's pseudonumber to improvise (std::numeric_limits<double>::min() !=0)\n";
 
-    cout << "-s, output a symmetric matrix; default is a low triangular matrix\n";
-    cout << "-T, use TAB as a row name separator, instead of PHYLIP format that limit row names up to the first 9 characters\n";
-
-    cout << "-d [int], type of distance metric\n";
-    cout << "\t0 : Jensen-Shannon Divergence (JS divergence)\n";
-    cout << "\t1 : Jensen-Shannon Distance (JS distance = square_root(JS divergence))\n";
-    cout << "\t2 : Jaccard Distance\n";
+    //experimental feature
+    cout << "\t(Experimental distances)\n";
+    cout << "\tjsda : Size-weighted Jensen-Shannon Divergence\n";
+    cout << "\t\tWeighted by vocabulary size; Dist(P||Q) = a*KL(P||a*P + b*Q) + b*KL(P||a*P + b*Q); a+b = 1.0, a <> b, a and b are vocabulary size ratio\n";
 
 }
 
@@ -795,6 +948,7 @@ int main(int argc, char** argv)
 {
 
     int opt;
+    //int opt_index;
     int delimiter_int = 10; //char(10)=="\n"
     int thread_n_limit=5; ///default, 5 threads
 
@@ -802,10 +956,32 @@ int main(int argc, char** argv)
     bool js_distance_flag=false; ///default, output JS divergence
     string reserve_matrix_path="";
 
-    int distance_type=0; //default is 0:JSD divergence
-    bool item_tab_flag=false; //default is false: PHYLIP format that limit row names by 9 characters; true: use tab as a separate to use any lengths of row names
+    bool item_tab_flag=false; //default is false, limit item name length by 9 characters, in PHYLIP format. true accept full item names and use tab as a separator
 
-    while ((opt = getopt(argc, argv, "ht:r:d:vsT")) !=EOF) // EOF = -1
+    ///check supported distance_type
+    string distance_type="jsdiv"; //default is jsd : js-divergence. using string form
+    vector<string> able_distance_type = {
+        "jsdiv" //JS-divergence
+        , "jsdist" //JS-distance
+        , "jacc" //Jaccard
+        , "jsda" //JS-divergence weighted (experimental)
+        , "kls" //KL relative entropy symmetrized
+        };
+
+    //using getopt_long (requires struct defining long form options)
+    static struct option long_options[] = {
+        {"thread", required_argument, NULL, 't'}, //NULL or nullptr?
+        {"reserved", required_argument, NULL, 'r'}, //using long-form only
+        {"distance", required_argument, NULL, 'd'},
+        {"symmetric", no_argument, NULL, 's'},
+        {"tab", no_argument, NULL, 'T'},
+        {"help", no_argument, NULL, 'h'},
+        {"version", no_argument, NULL, 'v'},
+        {0, 0, 0, 0}
+    };
+
+    // while ((opt = getopt(argc, argv, "ht:r:d:vsT")) !=EOF) #simple argument take
+    while ((opt = getopt_long(argc, argv, "ht:r:d:vsT", long_options, NULL)) !=EOF) // EOF = -1
     {
         switch (opt)
         {
@@ -821,12 +997,14 @@ int main(int argc, char** argv)
                 thread_n_limit=max(1, atoi(optarg)); ///least 1 thread or not run
                 break;
 
+            ///*
             case 'r':
-                reserve_matrix_path=optarg;
+                reserve_matrix_path=string(optarg);
                 break;
+            //*/
 
             case 'd':
-                distance_type = atoi(optarg);
+                distance_type = string(optarg);
                 break;
 
             case 's':
@@ -837,14 +1015,17 @@ int main(int argc, char** argv)
                 item_tab_flag=true; //enable TAB as an item name separator; disable PHYLIP format
                 break;
 
+            //*
+            case '?':
             default:
-                show_help();
+                //show_help();
                 exit(0);
+
+            //*/
         }
     }
 
-    ///check supported distance_type
-    if (distance_type < 0 || distance_type > 2)
+    if (std::find(able_distance_type.begin(), able_distance_type.end(), distance_type)==able_distance_type.end()) //not in
     {
         cerr << "Unsupported distance type requested: " << distance_type << endl;
         exit(0);

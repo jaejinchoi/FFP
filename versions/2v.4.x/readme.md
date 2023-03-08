@@ -85,17 +85,24 @@ Standard output of a low triangular distance matrix.
 ### [Arguments]
 * -h  
     Show options  
-* -t [INT]  
+* -v  
+    Show version  
+* --thread | -t [INT]  
     Number of threads for multiprocessing. An adequate thread number is a total cpu thread - 1. Default is set to 5.    
-* -r [PATH]  
+* --reserved | -r [PATH]  
     Input previous matrix and append more items. Should match previous matrix format (e.g., PHYLIP or tab)  
 * -T 
     Use TAB as a separator between row names and distances. Default is PHYLIP format that limit row names up to 9 characters.  
-* -d [INT]  
-    0 : Jensen-Shannon Divergence (default)  
-    1 : Jensen-Shannon Distance = sqrt(Jensen-Shannon Divergence)  
-    2 : Jaccord Distance, which account a number of shared features but not their frequencies  
-* -s  
+* --distance | -d [STR]  
+    jsdiv : Jensen-Shannon Divergence (default)  
+    jsdist : Jensen-Shannon Distance = sqrt(Jensen-Shannon Divergence)  
+    jacc : Jaccord Distance, which account a number of shared features but not their frequencies  
+    kls : Symmetrized relative entropy; Kullback-Leibler (KL)  
+        
+    (Experimental)
+    jsda : Size-weighted Jensen-Shannon Divergence  
+        Weighted by vocabulary size; Dist(P||Q) = a\*KL(P||a\*P + b\*Q) + b\*KL(P||a\*P + b\*Q); a+b = 1.0, a <> b, a and b are vocabulary size ratio  
+* --symmetric | -s  
     Output a symmetric matrix instead of a low triangular matrix which is default output.  
 
 ### [Note]
