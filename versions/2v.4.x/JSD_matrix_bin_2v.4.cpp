@@ -266,11 +266,9 @@ void KL_distance(string &p_key
 
     } else if (p_key==q_key) // && p_value!=0 && q_value!=0) ///p_key==q_key neither values are 0
     {
-        Hm-=(p_value + q_value) * log2(0.5 * (p_value + q_value));
-        Hm-=( p_value * log2(q_value) + q_value * log2(p_value) );
-
         Hp-=p_value * log2(p_value);
         Hq-=q_value * log2(q_value);
+        Hm-=(p_value * log2(q_value) + q_value * log2(p_value));
 
         p_value=0;
         q_value=0;
