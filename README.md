@@ -3,6 +3,8 @@ Program codes deposit for
 * "Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS.  
 * "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.  
 
+Please cite one of the publications above.  
+
 ## Requirements  
 - GCC(g++) version 4.7.1+  
 - Google sparse hash library. Look here: https://github.com/sparsehash/sparsehash  
