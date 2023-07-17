@@ -1002,7 +1002,27 @@ int main(int argc, char** argv)
 
                     } else
                     {
-						//output_stream.seekg(0, ios::beg);
+                        ///explicitly show the l at maximum vabulary size on given conditions
+                        stream_size_t = snprintf(NULL, 0, "#Vocab_max at l-mer; %d, (-b %lld -t %lld -B %f -T %f)\n"
+                                                , feature_length-1
+                                                , bottom_count_limit
+                                                , top_count_limit
+                                                , bottom_entropy_limit
+                                                , top_entropy_limit
+                                                ); //find string(c) size
+
+                        stream_buf = (char*)realloc(stream_buf, (stream_size_t + 1)*sizeof(char *)); //+1 at the end(/0)
+
+                        snprintf(stream_buf, size_t(stream_buf), "#Vocab_max at l-mer; %d, (-b %lld -t %lld -B %f -T %f)\n"
+                                , feature_length-1
+                                , bottom_count_limit
+                                , top_count_limit
+                                , bottom_entropy_limit
+                                , top_entropy_limit
+                                );
+
+                        output_stream.write(stream_buf, stream_size_t); //output_stream << stream_buf;
+
 						//write_f << output_stream.str(); //output_stream.rdbuf();
 						write_f.write(output_stream.str().data(), output_stream.tellp());
 
