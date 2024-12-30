@@ -13,12 +13,12 @@
 * Normalize output (frequency), -n  
 * Output folder is "./FFP_13", manually created  
 
-'''bash
+```bash
 ./FFP_compress -a -s 13 -n 931890 ./FFP_13/931890  
 ./FFP_compress -a -s 13 -n 332648 ./FFP_13/332648  
 ./FFP_compress -a -s 13 -n 367775 ./FFP_13/367775  
 ./FFP_compress -a -s 13 -n 418459 ./FFP_13/418459  
-'''
+```
 ./..  
 ./..  
 ./..  
@@ -29,9 +29,9 @@
 * Using 3 threads, -t 3  
 * Standard output to "16_items_13.matrix", is a symmetric matrix using [-s]  
 
-'''bash
+```bash
 ./JSD_maxtrix -s -t 3 ./FFP_13/* > 16_items_13.matrix  
-'''
+```
 * Sample output: "![16_items_13.matrix](16_items_13.matrix)" (the symmetric matrix input for BIONJ input)  
 
 
@@ -39,9 +39,9 @@
 * You can use either BIONJ or NJ. However, BIONJ requires to input a symmetric matrix  
 * For this example, we use BIONJ provided here (http://www.atgc-montpellier.fr/bionj/) but any method that takes distance/divergence matrix works  
 
-'''bash
+```bash
 ./BIONJ 16_items_13.matrix 16_items_tree.newick  
-'''
+```
 * Sample output: "![16_items_tree.newick](16_items_tree.newick)"  
 
 
