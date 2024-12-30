@@ -33,7 +33,10 @@ b. floor(1,785 / bits_per_letter) >= your maximum l-mer
 
 
 ## FF Profile(FFP); FFP_x.cpp
-**Compile:** g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz  
+**Compile:** 
+```bash
+g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz
+```
 May replace 'x' with a corresponding version.  
 
 Run example: [Program path][arguments][input file path][output file path]  
@@ -94,7 +97,10 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 
 
 ## FFP distance calculate; JSD_matrix_x.cpp  
-**Compile:** g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4.x JSD_matrix_bin.2v.4.x.cpp -lz  
+**Compile:** 
+```bash
+g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4.x JSD_matrix_bin.2v.4.x.cpp -lz
+```
 May replace 'x' with a corresponding version.  
 
 Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
