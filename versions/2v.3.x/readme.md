@@ -109,7 +109,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
-g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.cpp -lz
+g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.3.cpp -lz
 ```
 
 Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
