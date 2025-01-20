@@ -17,7 +17,6 @@ from Bio import Phylo
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor, DistanceMatrix
 #from Bio.Phylo.TreeConstruction import DistanceCalculator
 
-
 #2012.9.28, act as qsub-cluster function(limit core number- input job) using multiprocessing
 #2017-5 using Pool
 def spontaneous_process(proc_name, args_list=[], n_cpu=0):
