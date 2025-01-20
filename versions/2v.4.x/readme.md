@@ -84,7 +84,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 
 ```console
 wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.4.x/JSD_matrix_bin_2v.4.cpp
-g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4 JSD_matrix_bin.2v.4.cpp -lz
+g++ -std=c++11 -pthread -o JSD_matrix_bin_2v.4 JSD_matrix_bin_2v.4.cpp -lz
 ```
 
 May replace 'x' with corresponding version.  

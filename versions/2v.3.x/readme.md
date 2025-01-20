@@ -111,7 +111,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 
 ```console
 wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.3.x/JSD_matrix_bin_2v.3.cpp
-g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.3.cpp -lz
+g++ -std=c++11 -pthread -o JSD_matrix_bin_2v.3 JSD_matrix_bin_2v.3.cpp -lz
 ```
 
 Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
