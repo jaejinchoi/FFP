@@ -45,7 +45,7 @@ Do for each file up to ...
 * You can use either BIONJ or NJ. However, BIONJ requires to input a symmetric matrix  
 * For this example, we use BIONJ provided here (http://www.atgc-montpellier.fr/bionj/) but any method that takes distance/divergence matrix works  
 
-```bash
+```console
 ./BIONJ 16_items_13.matrix 16_items_tree.newick  
 ```
 

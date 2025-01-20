@@ -42,10 +42,8 @@ b. floor(1,785 / bits_per_letter) >= your maximum l-mer
 **Compile:**
 
 ```console
-g++ -std=c++11 -o FFP_bin_2v.4.x FFP_bin_2v.4.x -lz
+g++ -std=c++11 -o FFP_bin_2v.3 FFP_bin_2v.3.cpp -lz
 ```
-
-May replace 'x' with a corresponding version.  
 
 Run example: [Program path][arguments][input file path][output file path]  
 Each input file represent one operational taxon unit (OTU) in a tree.  
@@ -111,10 +109,8 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
-g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4.x JSD_matrix_bin.2v.4.x.cpp -lz
+g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.cpp -lz
 ```
-
-May replace 'x' with a corresponding version.  
 
 Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
 
