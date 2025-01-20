@@ -15,7 +15,7 @@
 **Compile:**
 
 ```console
-wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/FFP_bin_2v.3.cpp
+wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/FFP_bin_2v.4.cpp
 g++ -std=c++11 -o FFP_bin_2v.4 FFP_bin_2v.4.cpp -lz
 ```
 
