@@ -8,7 +8,7 @@
 
 ## Follow
 
-Using the latest program version (once compiled and so executable) in example codes, under termina environment (e.g., linux) or use Cygwin for windows.
+Using the latest program version (once compiled and so executable) in example codes (see "![2v.4](FFP/versions/2v.4.x)"), under terminal environment (e.g., linux) or use Cygwin for windows.
 
 ### 1. Run FFP Profiler
 
