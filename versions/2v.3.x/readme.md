@@ -42,7 +42,7 @@ b. floor(1,785 / bits_per_letter) >= your maximum l-mer
 **Compile:**
 
 ```console
-wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.3.x/FFP_bin_2v.3.cpp
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.3.x/FFP_bin_2v.3.cpp
 g++ -std=c++11 -o FFP_bin_2v.3 FFP_bin_2v.3.cpp -lz
 ```
 
@@ -110,7 +110,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
-wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.3.x/JSD_matrix_bin_2v.3.cpp
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.3.x/JSD_matrix_bin_2v.3.cpp
 g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.3.cpp -lz
 ```
 

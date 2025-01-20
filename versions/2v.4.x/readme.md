@@ -15,7 +15,7 @@
 **Compile:**
 
 ```console
-wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/FFP_bin_2v.4.cpp
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.4.x/FFP_bin_2v.4.cpp
 g++ -std=c++11 -o FFP_bin_2v.4 FFP_bin_2v.4.cpp -lz
 ```
 
@@ -83,7 +83,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
-wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/JSD_matrix_bin_2v.4.cpp
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions/2v.4.x/JSD_matrix_bin_2v.4.cpp
 g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4 JSD_matrix_bin.2v.4.cpp -lz
 ```
 
