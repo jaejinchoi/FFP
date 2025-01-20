@@ -4,7 +4,7 @@
 
 * Maximum feature length (l-mer) now depends on machine's maximum integer size (e.g., 32 or 64 bits).  
 * FFP distance calculate option [-d] supports various distances. See the manual below.  
-* Add the option [-t] to choose tab separated OTU labels, in addition to PHYLIP style OTU labels that limits up to 9 characters.  
+* Add the option [-t] to choose tab separated taxon labels, in addition to PHYLIP style taxon labels that limits up to 9 characters.  
 
 2022-11-5
 
@@ -15,11 +15,12 @@
 **Compile:**
 
 ```console
+wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/FFP_bin_2v.3.cpp
 g++ -std=c++11 -o FFP_bin_2v.4 FFP_bin_2v.4.cpp -lz
 ```
 
 Run example: [Program path][arguments][input file path][output file path]  
-Each input file represent one operational taxon unit (OTU) in a tree.  
+Each input file (name) represents one taxon in a tree.  
 
 ### [Input]
 
@@ -82,6 +83,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
+wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/JSD_matrix_bin_2v.4.cpp
 g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.4 JSD_matrix_bin.2v.4.cpp -lz
 ```
 

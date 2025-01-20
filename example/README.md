@@ -8,7 +8,7 @@
 
 ## Follow
 
-Using the latest program version in this tutorial (see "![2v.4](../versions/2v.4.x)"), under terminal environment (e.g., linux) or use Cygwin for windows.
+Using the latest program version in this tutorial (see "![2v.4](../versions/2v.4.x)"), under terminal environment (e.g., Linux, or Cygwin for Window).
 
 ### 1. Run FFP Profiler
 

@@ -7,7 +7,7 @@
   A variable byte definition dependent on platforms because it is byte based.
 * JSD_matrix_bin's value presentation is up to 8 significant figures below a decimal point (%.8g)  
 * Option [-v] shows a program profile  
-* 2v.3.0 fully supports user-defined option [-k] 
+* 2v.3.0 fully supports user-defined option [-k]
 
 2022-11-5
 
@@ -42,11 +42,12 @@ b. floor(1,785 / bits_per_letter) >= your maximum l-mer
 **Compile:**
 
 ```console
+wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.4.x/FFP_bin_2v.3.cpp
 g++ -std=c++11 -o FFP_bin_2v.3 FFP_bin_2v.3.cpp -lz
 ```
 
 Run example: [Program path][arguments][input file path][output file path]  
-Each input file represent one operational taxon unit (OTU) in a tree.  
+Each input file (name) represents one taxon in a tree.  
 
 ### [Input]
 
@@ -109,6 +110,7 @@ Use [-V] option along with [-s], [-e] and feature filtering arguments to estimat
 **Compile:**
 
 ```console
+wget https://github.com/jaejinchoi/FFP/blob/master/versions/2v.3.x/JSD_matrix_bin_2v.3.cpp
 g++ -std=c++11 -pthread -o JSD_matrix_bin.2v.3 JSD_matrix_bin.2v.3.cpp -lz
 ```
 
