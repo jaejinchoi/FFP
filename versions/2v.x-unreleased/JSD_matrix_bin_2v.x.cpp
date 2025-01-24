@@ -361,7 +361,6 @@ struct future_handle
 
 };
 
-
 /// considering to remove the option [-s] symmetric output option
 void to_square_matrix_output(stringstream &output_stream) ///convert a low triangular matrix to a square matrix
 {

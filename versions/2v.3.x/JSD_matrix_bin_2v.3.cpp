@@ -228,7 +228,7 @@ struct future_handle
 
 
 
-void to_square_matrix_output(stringstream &output_stream) ///convert a low triangular matrix to a square matrix
+void to_square_matrix_output(stringstream &output_stream, bool item_tab_flag) ///convert a low triangular matrix to a square matrix
 {
 
     output_stream.seekg(0, ios::beg);
@@ -251,10 +251,18 @@ void to_square_matrix_output(stringstream &output_stream) ///convert a low trian
 
     while (getline(output_stream, read_line)) ///read each line; line break as a delimiter
     {
-        item_name = read_line.substr(0, 10); ///front 10 letters are item_name
-        line_vector.push_back(item_name);
+        if (item_tab_flag==true)
+        {
+            item_name = read_line.substr(0, read_line.find("\t"));
+            value_string = read_line.substr(read_line.find("\t")+1);
 
-        value_string = read_line.substr(10);
+        } else //fixed phylip format
+        {
+            item_name = read_line.substr(0, 10); ///front 10 letters are item_name
+            value_string = read_line.substr(10);
+        }
+
+        line_vector.push_back(item_name);
 
         for (string::iterator s_it=value_string.begin(); s_it!=value_string.end(); s_it++) ///tab tokenize
         {
@@ -296,6 +304,8 @@ void to_square_matrix_output(stringstream &output_stream) ///convert a low trian
     for (int r_cnt=0; r_cnt!=item_count; r_cnt++) ///row
     {
         output_stream << matrix_vector[r_cnt][0]; ///first column is item_name (not value)
+
+        if (item_tab_flag==true) output_stream << "\t"; //add tab after the item_name
 
         for (int c_cnt=1; c_cnt!=item_count+1; c_cnt++) ///1 based
         {
@@ -419,7 +429,7 @@ void print_value_vector_str(stringstream &output_stream
 
     if (symmetric_flag==true)
     {
-        to_square_matrix_output(output_stream); ///convert a low triangular matrix to a square matrix
+        to_square_matrix_output(output_stream, item_tab_flag); ///convert a low triangular matrix to a square matrix
 
     }
 
