@@ -36,6 +36,7 @@ The maximum l-mer is calculated by two steps, include a number of customized let
 a. Estimate bits_per_letter, for instance, 2 bits (2^2=4) required for 4 letters and 5 bits (2^5=32) required for 20 letters  
 b. floor(1,785 / bits_per_letter) >= your maximum l-mer  
 
+<br>
 
 ## FF Profile(FFP); FFP_x.cpp
 
@@ -46,7 +47,7 @@ wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions
 g++ -std=c++11 -o FFP_bin_2v.3 FFP_bin_2v.3.cpp -lz
 ```
 
-Run example: [Program path][arguments][input file path][output file path]  
+Run example: [Program path] [arguments] [input file path] [output file path]  
 Each input file (name) represents one taxon in a tree.  
 
 ### [Input]
@@ -114,7 +115,7 @@ wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions
 g++ -std=c++11 -pthread -o JSD_matrix_bin_2v.3 JSD_matrix_bin_2v.3.cpp -lz
 ```
 
-Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
+Run example: [Program path] [arguments] [input files path] > [output file path (capture print output)]  
 
 ### [Input]
 

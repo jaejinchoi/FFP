@@ -19,7 +19,7 @@ wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/versions
 g++ -std=c++11 -o FFP_bin_2v.4 FFP_bin_2v.4.cpp -lz
 ```
 
-Run example: [Program path][arguments][input file path][output file path]  
+Run example: [Program path] [arguments] [input file path] [output file path]  
 Each input file (name) represents one taxon in a tree.  
 
 ### [Input]
@@ -89,7 +89,7 @@ g++ -std=c++11 -pthread -o JSD_matrix_bin_2v.4 JSD_matrix_bin_2v.4.cpp -lz
 
 May replace 'x' with corresponding version.  
 
-Run example: [Program path][arguments][input files path] > [output file path (standard output)]  
+Run example: [Program path] [arguments] [input files path] > [output file path (capture print output)]  
 
 ### [Input]
 
