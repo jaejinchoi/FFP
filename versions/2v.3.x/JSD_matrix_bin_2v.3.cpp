@@ -584,9 +584,11 @@ int read_reserved_matrix(stringstream &output_stream
 		item_name_str = read_line.substr(0, str_delim); //first 10 characters
         item_name_str.erase(remove(item_name_str.begin(), item_name_str.end(), ' '), item_name_str.end()); //trim spaces
 
-        resv_load_path_vector.push_back(item_name_str);
-
-        output_stream << read_line << '\n';
+        if (item_name_str!="") //avoid empty item name, likely due to last blank line
+        {
+            resv_load_path_vector.push_back(item_name_str);
+            output_stream << read_line << '\n';
+        }
 
     }
 
