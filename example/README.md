@@ -113,7 +113,7 @@ Construct Neighbor-Joining (NJ) tree using Dendropy package by default, but you 
 
 Search and increment _l_ until reaches to upperbound where a distane between any two taxons reached maximum (e.g., Jesen-Shannon Divergence maximum is 1.0), which assumes those taxons share a common ancestor (either in- or out-group).
 
-If outgroup is composed of artifically generated taxons and have no _evolutionary relatationship_ to _natural_ taxons, then, all distances from outgroup to ingroup should be maximum; therefore, such a point of _l_ act as lowerbound of optiumal _l_ search
+If outgroup is composed of artificially generated taxons and have no _evolutionary relatationship_ to _natural_ taxons, then, all distances from outgroup to ingroup should be maximum; therefore, such a point of _l_ act as lowerbound of optiumal _l_ search
 
 Upperbound is practically more important in defining search boundary because not all studies include artifical taxons (outgroup) for tree rooting and the fact lowerbound is hard-capped (to _l_=1).
 
