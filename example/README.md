@@ -14,7 +14,7 @@ For convenience, you can run locally with a provided (Python) wrapper script to 
 
 Please (click to) copy, paste, and execute code blocks in your terminal.
 
-## Download _preprocessed_ dataset
+## Download _preprocessed_ dataset (pending)
 
 ```console {check the github file location}
 wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600-proteome-in-taxid.zip
