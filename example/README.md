@@ -61,7 +61,7 @@ Resulting matrix: "![matrix.fp_8](matrix.fp_8)"
 
 ## Python wrapper to automate iteration
 
-Essentially, the wrapper script orchestrate the core comamnds to automate iteration of searching feature lengths. Please check you have already downloaded and compiled core programs in "Instruction logistic" to proceed.
+Essentially, the wrapper script automate iteration of searching feature lengths. Please check if you have downloaded and compiled core programs.
 
 ### Requirements
 
@@ -84,7 +84,7 @@ wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/
 python3 ffp_wrapper.py --help
 ```
 
-You should see the wrapper script's arguments/options needed and supported (--help). Move compiled core programs and unzipped dataset folder to the tutorial working folder, "./ffp_tutorial".
+You should see the wrapper script's arguments/options available (--help). Move compiled core programs and unzipped dataset folder to the tutorial working folder, "./ffp_tutorial".
 
 Now let's iterate/search feature length from 4 to 12.
 
@@ -111,7 +111,7 @@ Construct Neighbor-Joining (NJ) tree using Dendropy package by default, but you 
 
 ## Workflow
 
-Search and increment _l_ until reaches to upperbound where a distane between any two taxons reached maximum (e.g., Jesen-Shannon Divergence maximum is 1.0), which assumes those taxons share a common ancestor (either in- or out-group).
+Search and increment _l_ until reaches to upperbound where a distane between any two taxons reached maximum (e.g., Jensen-Shannon Divergence maximum is 1.0), which assumes those taxons share a common ancestor (either in- or out-group).
 
 If outgroup is composed of artificially generated taxons and have no _evolutionary relatationship_ to _natural_ taxons, then, all distances from outgroup to ingroup should be maximum; therefore, such a point of _l_ act as lowerbound of optiumal _l_ search
 

@@ -9,11 +9,11 @@ Please cite one of the publications below if you are utilzing programs provided 
 
 ## Requirements
 
-Mainly developed and tested in linux environment (Ubuntu 20.04+), and so the code blocks provided below.  
+Mainly developed and tested in linux environment (Ubuntu 20.04+), and so the command blocks provided below.  
 Please contact JaeJin Choi (<jaejinchoi@berkeley.edu>) if you have questions or comments regarding the program codes, bug, or usage.
 
 * GCC (g++) version 4.7.1+  
-Any recent g++ versions that supports c++11
+Any recent g++ versions that support c++11
 
 * Google sparse hash library  
 <https://github.com/sparsehash/sparsehash>
