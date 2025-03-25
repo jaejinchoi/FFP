@@ -32,13 +32,16 @@ def multi_process(proc_name, args_list=[], n_cpu=0): #args_list is a list of tup
     ret_list=[]
 
     with Pool(processes=n_cpu) as proc_pool:
-        ret_proc = proc_pool.starmap_async(proc_name, args_list, chunksize=int(len(args_list) / n_cpu))
+        ret_proc = proc_pool.starmap_async(
+            proc_name
+            , args_list
+            , chunksize=int(len(args_list) / n_cpu)+1
+            )
 
         proc_pool.close()
         proc_pool.join()
 
         ret_list = ret_proc.get()
-
 
     return(ret_list)
 
@@ -108,7 +111,7 @@ def ftp_download_unit(
     bfile_io.truncate(0)
     bfile_io.close()
     
-
+    #print(f"# {ftp_address}/{ftp_path} -> {save_path}, item size = {filtered_fasta_item_cnt} / {total_fasta_item_cnt}")
     return([f"{ftp_address}/{ftp_path}", total_fasta_item_cnt, filtered_fasta_item_cnt])
 
 
@@ -168,7 +171,12 @@ if __name__=='__main__':
             download_flag=True
 
         elif (opt=='-e' and opt=='--exclude_keywords'):
-            exclude_fasta_keywords_list = [n_item.strip().lower() for n_item in arg.split(',')]
+
+            if (str(args).strip()==""):
+                exclude_fasta_keywords_list=[]
+            
+            else:
+                exclude_fasta_keywords_list = [n_item.strip().lower() for n_item in arg.split(',')]
 
 
     combine_df=pd.DataFrame()
@@ -192,11 +200,11 @@ if __name__=='__main__':
             io=load_path
             , comment="#" #skip the line begin with comment (single char)
             , header=0
-            #, skip_blank_lines=True
-            #, sep="\t"
             , na_values=['na', 'NA', 'none', 'None', 'N//A', 'n//a', '', 'nan', '-']
             , dtype=str
             )
+        
+        #print(pd_df)
 
         if (combine_df.empty):
             combine_df = pd_df
@@ -221,19 +229,22 @@ if __name__=='__main__':
             [ftp_address, ftp_path, save_path, exclude_fasta_keywords_list, download_flag]
         )
 
-
     if (len(args_list)>0):
 
         if (os.path.exists(save_folder_path)==False):
             os.makedirs(save_folder_path)
 
-        ret_list = multi_process(ftp_download_unit, args_list, n_cpu)
+        ret_list = multi_process(
+            ftp_download_unit
+            , args_list
+            , min(n_cpu, len(args_list))
+            )
 
         pd_df = pd.DataFrame(
             ret_list
             , columns=[attribute_colname, "total_fasta_item_cnt", "filtered_fasta_item_cnt"]
             )
-        #print(pd_df.columns)
+        
         #print(combine_df.columns)
 
         combine_df = combine_df.join(
@@ -249,10 +260,10 @@ if __name__=='__main__':
             , inplace=True
         )
 
-        print(f"# Run result, obtained / submitted = {len(pd_df[pd_df['filtered_fasta_item_cnt'] > 0])} / {len(pd_df)}")
-        print(f"## excluded/preprocessed by excluding FASTA header (and the sequence) that contains keywords,")
-        print(f"##\t{'; '.join(exclude_fasta_keywords_list)}")
-        print(f"## success if 'filtered_fasta_item_cnt' > 0")
+        #print(f"# Run result, obtained / submitted = {len(pd_df[pd_df['filtered_fasta_item_cnt'] > 0])} / {len(pd_df)}")
+        #print(f"## excluded/preprocessed by excluding FASTA header (and the sequence) that contains keywords,")
+        #print(f"##\t{'; '.join(exclude_fasta_keywords_list)}")
+        #print(f"## success if 'filtered_fasta_item_cnt' > 0")
 
         log_summary_path = f"{save_folder_path}.report.log"
         
@@ -271,6 +282,6 @@ if __name__=='__main__':
             )
             
         print(f'# Log saved at {log_summary_path}')
-        print("")
+        print("# Work done")
 
-    print("# Work done")
+    
