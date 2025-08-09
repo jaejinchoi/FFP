@@ -522,6 +522,8 @@ void unpacked_feature_container_output(
     , int feature_length
     , long long bottom_count_limit
     , long long top_count_limit
+    , double &feature_hit_cnt
+    , bool ratio_output_flag
     , stringstream &output_stream
     )
 {
@@ -574,8 +576,7 @@ void unpacked_feature_container_output(
             } ///skip any feature that count out of a declared range.
 
             //output_stream << feature_string_binary_unpack(sub_it->first, bits_per_alphabet, binkey_reg_hash) << '\n';
-            output_stream << unpacked_feature <<  "\t" << sub_it->second <<'\n';
-
+            output_stream << unpacked_feature <<  "\t" << (ratio_output_flag==true ? (double)(sub_it->second) / feature_hit_cnt : sub_it->second) <<'\n';
         }
 
         prim_index_hash.erase(*it);
@@ -1046,6 +1047,11 @@ int main(int argc, char** argv)
                         output_stream << "# e.g., AAA -> 122, then the reverse complement is TTT -> 122 (masked; not shown)" << endl;
                     }
 
+                    if (ratio_output_flag==true)
+                    {
+                        output_stream << "# normalized output enabled" << endl;
+                    }
+
                     unpacked_feature_container_output(
                         prim_index_hash
                         , max_index_key_vector
@@ -1054,6 +1060,8 @@ int main(int argc, char** argv)
                         , feature_length
                         , bottom_count_limit
                         , top_count_limit
+                        , feature_hit_cnt
+                        , ratio_output_flag
                         , output_stream
                         );
 
@@ -1064,7 +1072,7 @@ int main(int argc, char** argv)
                 } else if (max_vocab_find_flag==false && !prim_index_hash.empty()) ///write FFP to file
                 {
                     feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream);
-
+                    
                     write_f << compress_deflate(output_stream.str(), Z_BEST_COMPRESSION);
                     //write_f << output_stream.str(); //<< '\n'; //without zlib compression
 

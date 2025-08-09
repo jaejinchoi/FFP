@@ -1,9 +1,15 @@
 # Feature Frequency Profile (FFP)
 
-An alignment-free sequence comparison based on natural language analysis in information theory (e.g., k-mer), which is primary developed to compare whole-genomic sequences such as genomes, proteomes and transcriptome, but it can also compare sequences of English alpabets (books or scripts) and custom alphabet sets other than nucleotide (four letters) or amino acids (20 letters). It constructs reprensenting profiles and determines their distances for further visualization and interpretation.
+An alignment-free sequence comparison based on natural language analysis in information theory (e.g., k-mer), which is primary developed to compare whole-genomic sequences such as genomes, proteomes and transcriptome, but it can also compare  sequences of English alpabets (books or scripts) and custom alphabet sets other than nucleotide (four letters) or amino acids (20 letters). It constructs representing profiles and determines their distances for further visualization and interpretation.
+
+Early FFP application was explored in 2009 (Sims GE, Jun S-R, Wu GA, Kim S-H; https://doi.org/10.1073/pnas.0909377106
+) and addressed its conceptual background and then demonstrated the potential in studying Nucleotide and Amino acids sequences. So I would like to show my appreciation to the early explorers and developers.
+
+After some years, I re-developed from scratch to improve overall performance, focus on genericity (e.g., able to compare non-genomic sequences) and harnessing multicore or parallel compute environments; thus, evolving independent from Sims GE's FFP program version.
 
 Please cite one of the publications below if you are utilzing programs provided here for your publication.
 
+* JJ. Choi, “Whole-genomic sequence comparison for evolutionary studies based on a natural-language analysis of information theory,”  UC Berkeley. (2024).
 * "Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS.
 * "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.
 

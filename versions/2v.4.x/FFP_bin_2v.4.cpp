@@ -127,7 +127,7 @@ int feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lon
     , vector<string> &max_index_key_vector
     , unsigned long &bits_per_feature
     , double &feature_hit_cnt
-    , bool ratio_flag
+    , bool ratio_output_flag
     , int feature_length,
      stringstream &output_stream)
 {
@@ -141,7 +141,7 @@ int feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lon
     unsigned long bytes_per_feature = bits_per_feature / 7; //convert unit bits to bytes
     unsigned long bytes_per_value = 0;
 
-	bytes_per_value = ratio_flag==true ? sizeof(double) : sizeof(long long);
+	bytes_per_value = ratio_output_flag==true ? sizeof(double) : sizeof(long long);
 
 	//initiate zlib stream
     z_stream zs;                        // z_stream is zlib's control structure
@@ -199,7 +199,7 @@ int feature_container_output(sparse_hash_map<string, sparse_hash_map<string, lon
 			feed_stream.write(reinterpret_cast<const char*>((*vector_it).c_str()), bytes_per_feature); ///since *vector_it assign string
 
             ///put feature value
-            if (ratio_flag==true)
+            if (ratio_output_flag==true)
             {
                 value_is_double = (double)(prim_index_hash[*it])[*vector_it] / feature_hit_cnt;
                 feed_stream.write(reinterpret_cast<char*>(&value_is_double), sizeof(double));
@@ -533,6 +533,8 @@ void unpacked_feature_container_output(
     , int feature_length
     , long long bottom_count_limit
     , long long top_count_limit
+    , double &feature_hit_cnt
+    , bool ratio_output_flag
     , stringstream &output_stream
     )
 {
@@ -585,7 +587,7 @@ void unpacked_feature_container_output(
             } ///skip any feature that count out of a declared range.
 
             //output_stream << feature_string_binary_unpack(sub_it->first, bits_per_alphabet, binkey_reg_hash) << '\n';
-            output_stream << unpacked_feature <<  "\t" << sub_it->second <<'\n';
+            output_stream << unpacked_feature <<  "\t" << (ratio_output_flag==true ? (double)(sub_it->second) / feature_hit_cnt : sub_it->second) <<'\n';
 
         }
 
@@ -1043,6 +1045,11 @@ int main(int argc, char** argv)
                         output_stream << "# e.g., AAA -> 122, then the reverse complement is TTT -> 122 (masked; not shown)" << endl;
                     }
 
+                    if (ratio_output_flag==true)
+                    {
+                        output_stream << "# normalized output enabled" << endl;
+                    }
+
                     unpacked_feature_container_output(
                         prim_index_hash
                         , max_index_key_vector
@@ -1051,6 +1058,8 @@ int main(int argc, char** argv)
                         , feature_length
                         , bottom_count_limit
                         , top_count_limit
+                        , feature_hit_cnt
+                        , ratio_output_flag
                         , output_stream
                         );
 
@@ -1059,7 +1068,15 @@ int main(int argc, char** argv)
                     break;
 
                 } else if (max_vocab_find_flag==false &&
-                    feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream)==1) ///write FFP to file
+                    feature_container_output(
+                        prim_index_hash
+                        , max_index_key_vector
+                        , bits_per_feature
+                        , feature_hit_cnt
+                        , ratio_output_flag
+                        , feature_length
+                        , output_stream)==1
+                    ) ///write FFP to file
                 {
                     ///for checking content recovery
                     //raw_total_string = feature_container_output(prim_index_hash, max_index_key_vector, bits_per_feature, feature_hit_cnt, ratio_output_flag, feature_length, output_stream);
