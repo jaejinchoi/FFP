@@ -1039,7 +1039,7 @@ int main(int argc, char** argv)
 
                     if (backward_flag==false) //fool proof (reverse complement accounted?)
                     {
-                        output_stream << "# reverse compliment not accounted" << endl;
+                        output_stream << "# reverse complement not accounted" << endl;
 
                     } else
                     {
