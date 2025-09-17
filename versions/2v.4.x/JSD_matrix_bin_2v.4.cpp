@@ -487,117 +487,9 @@ struct future_handle
 };
 
 
-void to_square_matrix_output(stringstream &output_stream, bool item_tab_flag) ///convert a low triangular matrix to a square matrix
-{
-
-    output_stream.seekg(0, ios::beg);
-    string read_line="";
-
-    vector<string> line_vector;
-    vector<vector<string>> matrix_vector;
-
-    int item_count=0;
-    string item_count_str="";
-
-    std:getline(output_stream, item_count_str); ///first line is a number of items
-    item_count = atoi(item_count_str.c_str());
-
-    string item_name="";
-
-    string value_string=""; ///values + tabs string chunck
-    string each_value_string=""; ///individual value string
-
-
-    while (getline(output_stream, read_line)) ///read each line; line break as a delimiter
-    {
-        if (item_tab_flag==true)
-        {
-            item_name = read_line.substr(0, read_line.find("\t"));
-            value_string = read_line.substr(read_line.find("\t")+1);
-
-        } else //fixed phylip format
-        {
-            item_name = read_line.substr(0, 10); ///front 10 letters are item_name
-            value_string = read_line.substr(10);
-        }
-
-        line_vector.push_back(item_name);
-
-        for (string::iterator s_it=value_string.begin(); s_it!=value_string.end(); s_it++) ///tab tokenize
-        {
-            if (*s_it=='\t' && each_value_string!="") ///tab as a delimiter
-            {
-                line_vector.push_back(each_value_string);
-                each_value_string=""; ///each_value_string.clear(); clear
-
-            } else
-            {
-                each_value_string+=(*s_it); ///sum
-
-            }
-
-        }
-
-        if (each_value_string!="")
-        {
-            line_vector.push_back(each_value_string);
-            each_value_string=""; ///each_value_string.clear(); clear
-
-        }
-
-        line_vector.resize(item_count+1, ""); ///resize container (item_name + values); extra spaces remain empty ""
-        matrix_vector.push_back(line_vector);
-
-        line_vector.clear();
-
-    }
-
-
-    output_stream.clear();
-    output_stream.str(""); //clear previous contents
-    output_stream.seekg(0, ios::beg);
-
-    output_stream << item_count_str << endl; ///a number of items
-
-    ///check and reform to a sqaure matrix (symmetric)
-    for (int r_cnt=0; r_cnt!=item_count; r_cnt++) ///row
-    {
-        output_stream << matrix_vector[r_cnt][0]; ///first column is item_name (not value)
-
-        if (item_tab_flag==true) output_stream << "\t"; //add tab after the item_name
-
-        for (int c_cnt=1; c_cnt!=item_count+1; c_cnt++) ///1 based
-        {
-            if (matrix_vector[r_cnt][c_cnt]=="" && matrix_vector[c_cnt-1][r_cnt+1]!="") ///if empty find a corresponding value; the corresponding value shouldn't be empty (either low or high triangular matrix)
-            {
-                output_stream << matrix_vector[c_cnt-1][r_cnt+1];
-
-            } else
-            {
-                output_stream << matrix_vector[r_cnt][c_cnt];
-
-            }
-
-            if (c_cnt!=item_count) ///if not the last
-            {
-                output_stream << "\t"; ///add delimiters between values
-
-            }
-
-        }
-
-        output_stream << "\n"; ///add line breaks
-
-    }
-
-}
-
-
-
 void print_value_vector_str(stringstream &output_stream
     , vector< vector<double> > &fut_value_vector
     , vector<string> &load_path_vector
-    , int start_item_n
     , bool symmetric_flag
     , bool item_tab_flag
     )
@@ -606,78 +498,63 @@ void print_value_vector_str(stringstream &output_stream
     char* stream_buf=NULL;
 
     string base_name_str; //basename of path(file name)
+    double n_value=0.0; //to store each value
 
-    if (start_item_n==0)
-    {
-        stream_size_t = snprintf(NULL, 0, "%d\n", (int)load_path_vector.size());
-        stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+    // a number of taxons at the first line of distance matrix (file)
+    stream_size_t = snprintf(NULL, 0, "%d\n", (int)load_path_vector.size());
+    stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
 
-        snprintf(stream_buf, size_t(stream_buf), "%d\n", (int)load_path_vector.size());
-        output_stream << stream_buf; //item_size
-		//free(stream_buf);
-    }
+    snprintf(stream_buf, size_t(stream_buf), "%d\n", (int)load_path_vector.size());
+    output_stream << stream_buf; //item_size
 
 
-    for (vector< vector<double> >::size_type r_it=start_item_n; r_it<load_path_vector.size(); r_it++)
+    for (vector< vector<double> >::size_type r_it=0; r_it<load_path_vector.size(); r_it++)
     {
         base_name_str = load_path_vector[r_it].substr(load_path_vector[r_it].rfind('/')+1);
 
         ///9 characters maximum; for PHYLIP format
-        if (item_tab_flag==false) //go for phylip format
+        if (item_tab_flag==false && base_name_str.length()>9) //and original item name is longer than 9 characters
         {
-            if (base_name_str.length()>9)
-            {
-                base_name_str.erase(base_name_str.begin()+9, base_name_str.end()); //in c++, string variable end with 'string/' so require -1
-
-            }
-
-            stream_size_t = snprintf(NULL, 0, "%-10s", base_name_str.c_str()); ///item names, with a character limit 10(or 9)
-            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-
-            snprintf(stream_buf, size_t(stream_buf), "%-10s", base_name_str.c_str());
-
-        } else //use tab
-        {
-            stream_size_t = snprintf(NULL, 0, "%s\t", base_name_str.c_str()); ///item names, with no length limit and use tab as a separator
-            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-
-            snprintf(stream_buf, size_t(stream_buf), "%s\t", base_name_str.c_str());
+            base_name_str.erase(base_name_str.begin()+9, base_name_str.end()); //in c++, string variable end with 'string/' so require -1
         }
 
-        output_stream << stream_buf;
-
-
-        for (vector<double>::size_type c_it=0; c_it<fut_value_vector[r_it].size(); c_it++)
-        {
-
-            ///print, a point below 8 decimal places
-            stream_size_t = snprintf(NULL, 0, "%.8g\t", fut_value_vector[r_it][c_it]);
-            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
-            snprintf(stream_buf, size_t(stream_buf), "%.8g\t", fut_value_vector[r_it][c_it]);
-
-            output_stream << stream_buf;
-
-        }
-
-        //diagonal self distance, is 0 and not actually calculated
-        stream_size_t = snprintf(NULL, 0, "%.8g\n", 0.0);
+        stream_size_t = snprintf(NULL, 0, (item_tab_flag==false) ? "%-10s" : "%s\t", base_name_str.c_str()); ///item names, with a character limit 10(or 9)
         stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+        snprintf(stream_buf, size_t(stream_buf), (item_tab_flag==false) ? "%-10s" : "%s\t", base_name_str.c_str());
 
-        snprintf(stream_buf, size_t(stream_buf), "%.8g\n", 0.0);
-        output_stream << stream_buf;
+        output_stream << stream_buf; //feed item name
+
+
+        for (vector<double>::size_type c_it=0; c_it<fut_value_vector.size(); c_it++)
+        {
+            if (symmetric_flag==false && c_it>r_it) break; ///only print low triangular matrix, including self-distance
+
+            //find and access low triangular matrix value to symmetrize, if required
+            //self-distance is 0, thus, not actually calculated
+            n_value = (r_it==c_it) ? 0.0 : fut_value_vector[ (r_it > c_it) ? r_it : c_it ][ (r_it > c_it) ? c_it : r_it ];
+
+            ///print below 8 decimal places of (double) precision
+            //true: no tab after self-distance, in lower triangular distance, false: tab after each value
+            stream_size_t = snprintf(NULL, 0, "%.8g", n_value);
+            stream_buf = (char*)realloc(stream_buf, (stream_size_t+1)*sizeof(char *));
+            snprintf(stream_buf, size_t(stream_buf), "%.8g", n_value);
+
+            output_stream << stream_buf; //feed values
+
+            // add a tab after each value except the last value in each row
+            if ((symmetric_flag==false && c_it<r_it) || (symmetric_flag==true && c_it<fut_value_vector.size()))
+            {
+                output_stream << "\t"; ///add delimiters between values
+            }
+                
+
+        }
+        output_stream << "\n"; ///always add line break after each row
 
         fut_value_vector[r_it].clear(); //empty vector
     }
 
     free(stream_buf);
-
-    //fu`t_value_vector.clear();
-
-    if (symmetric_flag==true)
-    {
-        to_square_matrix_output(output_stream, item_tab_flag); ///convert a low triangular matrix to a square matrix
-
-    }
 
     cout << output_stream.str(); ///output a matrix
 
@@ -790,7 +667,14 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
                         fut_struct[cy1].n_col=c_it;
 
                         ///input is [feature][feature value] format
-                        fut_struct[cy1].n_fut=async(launch::async, calculate_distance, load_path_vector[c_it], std::cref(q_decompress_buf), delimiter_int, distance_type);
+                        fut_struct[cy1].n_fut=async(
+                            launch::async
+                            , calculate_distance
+                            , load_path_vector[c_it]
+                            , std::cref(q_decompress_buf)
+                            , delimiter_int
+                            , distance_type
+                        );
 
                         fut_struct[cy1].in_act=true;
                         input_occur=true;
@@ -828,7 +712,9 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
 
 }
 
-int read_reserved_matrix(stringstream &output_stream
+
+int read_reserved_matrix(
+    vector< vector<double> > &fut_value_vector //fill in distance matrix values and update load_path_vector (ordered index)
     , vector<string> &load_path_vector
     , string &reserve_matrix_path
     , bool item_tab_flag
@@ -836,79 +722,101 @@ int read_reserved_matrix(stringstream &output_stream
 {
     ifstream read_f;
     string read_line;
-    int start_item_n=0;
+
+    string taxon_name;
+    vector<string> taxon_name_vector; ///to store item names, which is equivalent to file_name
+    
+    string each_value_str;
+    vector<double> row_value_vector; ///to store values in each row
+    int item_count=0; ///a number of items in a reserved matrix, also count rows
 
     read_f.open(reserve_matrix_path.c_str(), ios::in);
+    getline(read_f, read_line, '\n'); ///first line of matrix indicate the number of items #discard
 
-    getline(read_f, read_line, '\n'); ///first line of matrix indicate the number of items
-    start_item_n = stoi(read_line);
-
-    string item_name_str;
-    vector<string> resv_load_path_vector; /// in general item name is file name as taxonID
-
-    output_stream << to_string(load_path_vector.size()) << '\n'; //item number
-
-	std::size_t str_delim = 0;
-
-
-    while (getline(read_f, read_line, '\n')) //2021-1 needed to change
+    while (getline(read_f, read_line, '\n')) //iterate the remaining lines
     {
-		str_delim = (item_tab_flag==false) ? 10 : read_line.find("\t"); ///phylip, the first 10 letters, or no length limit, separated by tab
+        stringstream line_stream(read_line, ios::out|ios::in|ios::ate); //define and feed each read_line
 
-		item_name_str = read_line.substr(0, str_delim); //first 10 characters
-        item_name_str.erase(remove(item_name_str.begin(), item_name_str.end(), ' '), item_name_str.end()); //trim spaces
-
-        if (item_name_str!="") //avoid empty item name, likely due to last blank line
+        if (read_line!="") //skip empty lines
         {
-            resv_load_path_vector.push_back(item_name_str);
-            output_stream << read_line << '\n';
+            line_stream >> taxon_name; //delimit by white spaces; skip leading white spaces (consecutive spaces or tabs)
+
+            // if (item_tab_flag==false) taxon_name.erase(std::remove_if(taxon_name.begin(), taxon_name.end(), ::isspace), taxon_name.end());
+
+            /*
+            //process taxon_name (the first item in each row)
+            if (item_tab_flag==false)
+            {
+                line_stream.get(&taxon_name[0], 10); //get the first 10 characters
+                taxon_name.erase(std::remove_if(taxon_name.begin(), taxon_name.end(), ::isspace), taxon_name.end());
+
+            } else
+            {
+                line_stream >> taxon_name;
+            }
+            */
+           taxon_name_vector.push_back(taxon_name); //store item name in order
+
+            //process values (the remaining items in each row other than taxon_name)
+            // reform to triangular distance matrix
+            for (int i = 0; i < item_count; i++) //
+            {
+                line_stream >> each_value_str;
+                row_value_vector.push_back(stod(each_value_str)); //store each value as double
+            }
+
+            fut_value_vector.push_back(row_value_vector);
+            row_value_vector.clear();
+
+            item_count++; //cumulative; also count rows
         }
 
     }
-
     read_f.close();
 
-
-    vector<string>::iterator it_pos;
-    int replaced_path_cnt=0;
-    int reserve_matrix_cnt=resv_load_path_vector.size();
+    //rearrange load_path_vector based on the order taxon names in a reserved distance matrix
+    string file_name;
+    vector<string>::iterator corrs_name_pos; //iterator to find taxon name in taxon_name_vector
+    int filepath_replace_cnt=0; //count how many items in taxon_name_vector are replaced to corresponding file paths
 
     for (vector<string>::iterator it=load_path_vector.begin(); it!=load_path_vector.end(); ++it)
     {
-        item_name_str = (*it).substr((*it).rfind('/')+1);
+        //get filename(basename) equivalent
+        //https://stackoverflow.com/questions/8520560/get-a-file-name-from-a-path
+        file_name = (*it).substr((*it).find_last_of("/\\")+1);
 
-        if (item_name_str.length()>9 && item_tab_flag==false)
+        if (file_name.length()>9 && item_tab_flag==false) //trim when item_tab_flag is false and indicated to take only 9 characters
         {
-            item_name_str.erase(item_name_str.begin()+9, item_name_str.end()); ///in c++, string variable end with 'string/' so require -1
+            file_name.erase(file_name.begin()+9, file_name.end()); ///in c++, string variable end with 'string/' so require -1
 
         }
 
-        it_pos = find(resv_load_path_vector.begin(), resv_load_path_vector.end(), item_name_str);
+        corrs_name_pos = find(taxon_name_vector.begin(), taxon_name_vector.end(), file_name); //find a position where file (basename) matches to taxon_name_vector
 
-        if (it_pos!=resv_load_path_vector.end()) //exist
+        if (corrs_name_pos!=taxon_name_vector.end()) //exist
         {
-            resv_load_path_vector[int(distance(resv_load_path_vector.begin(), it_pos))] = *it; //replace item name to file path
-            replaced_path_cnt++;
+            //replace taxon name to file path
+            taxon_name_vector[int(distance(taxon_name_vector.begin(), corrs_name_pos))] = *it;
+            filepath_replace_cnt++; //count successfully replaced taxon_name -> file paths
 
-        } else //new
+        } else //not exist in the reserved matrix, thus, add as a new
         {
-            resv_load_path_vector.push_back(*it); //add new file path
-
+            taxon_name_vector.push_back(*it);
         }
 
     }
+    //
 
-    if (replaced_path_cnt!=reserve_matrix_cnt) //means not fully covering reserved matrix items
+    if (filepath_replace_cnt!=item_count) //means not fully covering reserved matrix items
     {
-        start_item_n=-1;
+        return(-1); //indicate failure
+
+    } else{
+        load_path_vector = taxon_name_vector; ///replace original load_path_vector to order reserved(including new) load_path_vector, named taxon_name_vector
+        return(item_count);
     }
 
-
-    load_path_vector = resv_load_path_vector; ///replace original load_path_vector to order reserved(including new) load_path_vector
-
-    return start_item_n; ///return starting point, 0 base
 }
-
 
 
 void show_help()
@@ -1061,31 +969,35 @@ int main(int argc, char** argv)
         }
 
         input_load_path_cnt=load_path_vector.size();
-
         sort(load_path_vector.begin(), load_path_vector.end());
 
         if (reserve_matrix_path!="")
         {
-            ///print reserved matrix(or given), replace original load_path_vector order and element
-            start_item_n = read_reserved_matrix(output_stream, load_path_vector, reserve_matrix_path, item_tab_flag);
-
+            start_item_n = read_reserved_matrix(fut_value_vector, load_path_vector, reserve_matrix_path, item_tab_flag);
+            
+            if (start_item_n == -1)
+            {
+                cerr << "Check if (taxon) items in the reserved matrix are all included in input files" << endl;
+                exit(0);
+            }
         }
 
-        if (start_item_n==-1)
-        {
-            printf("Check if items in reserved matrix are included in input files\n");
+        multi_thread_manage(
+            fut_value_vector
+            , load_path_vector
+            , thread_n_limit
+            , delimiter_int
+            , start_item_n
+            , distance_type
+        ); ///multi-threading; calculate JS Divergence
 
-        } else
-        {
-            multi_thread_manage(fut_value_vector, load_path_vector, thread_n_limit, delimiter_int, start_item_n, distance_type); ///multi-threading; calculate JS Divergence
-
-            print_value_vector_str(output_stream, fut_value_vector, load_path_vector, start_item_n, symmetric_flag, item_tab_flag); ///final output (standard output)
-
-        }
-
-        output_stream.str(string());
-        output_stream.clear();
-
+        print_value_vector_str(
+            output_stream
+            , fut_value_vector
+            , load_path_vector
+            , symmetric_flag
+            , item_tab_flag
+        ); ///final output (standard output)
 
     } else
     {
