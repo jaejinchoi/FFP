@@ -82,13 +82,13 @@ std::string decompress_deflate(const std::string& str, int &zs_ret)
 
     }
 
-
     return outstring;
 }
 
 
 
-void read_binary_block(stringstream &t_stream
+void read_binary_block(
+    stringstream &t_stream
     , unsigned long &bytes_per_feature
     , unsigned long &bytes_per_value
     , int &feature_length
@@ -376,7 +376,7 @@ double calculate_distance(string p_path, string q_f_buf
 
     // should be converted to double before division
     double p_vratio = double(p_vocab_size) / double(p_vocab_size + q_vocab_size);
-    double q_vratio = double(q_vocab_size)/ double(p_vocab_size + q_vocab_size);
+    double q_vratio = double(q_vocab_size) / double(p_vocab_size + q_vocab_size);
 
     ///anything wrong during inflation/decompression step, or comparing with different feature lengths, should output an error value (-1)
     if (p_feature_length!=q_feature_length) //fool proof
@@ -487,13 +487,16 @@ struct future_handle
 };
 
 
-void print_value_vector_str(stringstream &output_stream
+void print_value_vector_str(
+    stringstream &output_stream
     , vector< vector<double> > &fut_value_vector
     , vector<string> &load_path_vector
     , bool symmetric_flag
     , bool item_tab_flag
+    , string &output_file_path
     )
 {
+
     size_t stream_size_t=0;
     char* stream_buf=NULL;
 
@@ -556,13 +559,26 @@ void print_value_vector_str(stringstream &output_stream
 
     free(stream_buf);
 
+
     cout << output_stream.str(); ///output a matrix
+
+    if (output_file_path!="")
+    {
+        ofstream output_f(output_file_path.c_str(), ios::out|ios::trunc); //trunc: overwrite existing file; out: write to file
+        output_f << output_stream.rdbuf();
+        output_f.close();
+
+    } else
+    {
+        cout << output_stream.str(); ///output a matrix
+    }
 
 }
 
 
 ///calculate JS Divergence using multiple threads
-void multi_thread_manage(vector< vector<double> > &fut_value_vector
+void multi_thread_manage(
+    vector< vector<double> > &fut_value_vector
     , vector<string> &load_path_vector
     , int thread_n_limit
     , int delimiter_int
@@ -587,7 +603,7 @@ void multi_thread_manage(vector< vector<double> > &fut_value_vector
     int q_zs_ret=0;
 
 
-    for (vector<vector<double>>::size_type r_it=start_item_n; r_it<load_path_vector.size(); ++r_it)
+    for (vector< vector<double> >::size_type r_it=start_item_n; r_it<load_path_vector.size(); ++r_it)
     {
         fut_value_vector[r_it].resize(r_it);
 
@@ -740,22 +756,8 @@ int read_reserved_matrix(
         if (read_line!="") //skip empty lines
         {
             line_stream >> taxon_name; //delimit by white spaces; skip leading white spaces (consecutive spaces or tabs)
-
-            // if (item_tab_flag==false) taxon_name.erase(std::remove_if(taxon_name.begin(), taxon_name.end(), ::isspace), taxon_name.end());
-
-            /*
-            //process taxon_name (the first item in each row)
-            if (item_tab_flag==false)
-            {
-                line_stream.get(&taxon_name[0], 10); //get the first 10 characters
-                taxon_name.erase(std::remove_if(taxon_name.begin(), taxon_name.end(), ::isspace), taxon_name.end());
-
-            } else
-            {
-                line_stream >> taxon_name;
-            }
-            */
-           taxon_name_vector.push_back(taxon_name); //store item name in order
+            
+            taxon_name_vector.push_back(taxon_name); //store item name in order
 
             //process values (the remaining items in each row other than taxon_name)
             // reform to triangular distance matrix
@@ -821,21 +823,20 @@ int read_reserved_matrix(
 
 void show_help()
 {
-    cout << "Parameters: [option][load_paths(requires full path)]\n";
+    cout << "Usage: [option] [load_paths] > [save_path (standard output)]\n";
     cout << "--help | -h, show help\n";
     cout << "--version | -v, show help\n";
     cout << "--thread | -t [int], set number of threads (default = 5)\n";
     cout << "--reserved | -r [path], input reserved distance matrix\n";
     cout << "--symmetric | -s, output a symmetric matrix; default is a low triangular matrix\n";
+    cout << "--out | -o [path], override standard output and write to a file; recommend to use absolute path\n";
     cout << "-T, Use TAB as a separator between row names and distances. Default is PHYLIP format that limit row names up to 9 characters\n";
     
+
     // various distances
     cout << "--distance | -d [str], type of distance or dissimilarity metric\n";
-
     cout << "\tjsdiv : Jensen-Shannon Divergence (JS divergence)\n";
-    
     cout << "\tjsdist: Jensen-Shannon Distance (JS distance = square_root(JS divergence))\n";
-    
     cout << "\tjacc : Jaccard Distance\n";
     
     // https://stats.stackexchange.com/questions/97938/calculate-the-kullback-leibler-divergence-in-practice
@@ -854,7 +855,7 @@ void show_help()
 void show_profile()
 {
     cout << "JSD distance calculate; 2v.4.0\n";
-    cout << "Value presentation: a poin below 8 decimal places (%.8g)\n";
+    cout << "Value presentation: a point below 8 decimal places (%.8g)\n";
     cout << "Code by JaeJin Choi; https://github.com/jaejinchoi/FFP\n";
     // cout << "Compile; g++ -std=c++11 -pthread -o (output) (this script) -lz\n";
     cout << "Require; zlib 1.2.8+\n";
@@ -876,6 +877,8 @@ int main(int argc, char** argv)
 
     bool item_tab_flag=false; //default is false, limit item name length by 9 characters, in PHYLIP format. true accept full item names and use tab as a separator
 
+    string output_file_path=""; //default is empty, output to standard output; if not empty, write to a file
+
     ///check supported distance_type
     string distance_type="jsdiv"; //default is jsd : js-divergence. using string form
     vector<string> able_distance_type = {
@@ -895,11 +898,12 @@ int main(int argc, char** argv)
         {"tab", no_argument, NULL, 'T'},
         {"help", no_argument, NULL, 'h'},
         {"version", no_argument, NULL, 'v'},
+        {"out", required_argument, NULL, 'o'},
         {0, 0, 0, 0}
     };
 
     // while ((opt = getopt(argc, argv, "ht:r:d:vsT")) !=EOF) #simple argument take
-    while ((opt = getopt_long(argc, argv, "ht:r:d:vsT", long_options, NULL)) !=EOF) // EOF = -1
+    while ((opt = getopt_long(argc, argv, "ht:r:d:vsTo:", long_options, NULL)) !=EOF) // EOF = -1
     {
         switch (opt)
         {
@@ -933,6 +937,9 @@ int main(int argc, char** argv)
                 item_tab_flag=true; //enable TAB as an item name separator; disable PHYLIP format
                 break;
 
+            case 'o':
+                output_file_path = string(optarg); // Handle output file option
+                break;
             //*
             case '?':
             default:
@@ -965,7 +972,6 @@ int main(int argc, char** argv)
         {
             load_path_vector.push_back(argv[optind]);
             optind++;
-
         }
 
         input_load_path_cnt=load_path_vector.size();
@@ -997,7 +1003,11 @@ int main(int argc, char** argv)
             , load_path_vector
             , symmetric_flag
             , item_tab_flag
+            , output_file_path
         ); ///final output (standard output)
+
+        output_stream.str(string()); //clear stream
+        output_stream.clear(); //clear flag
 
     } else
     {
