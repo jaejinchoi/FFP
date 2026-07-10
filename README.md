@@ -7,16 +7,16 @@ Early FFP application was explored in 2009 (Sims GE, Jun S-R, Wu GA, Kim S-H; ht
 
 I re-developed from scratch to improve overall performance, focus on genericity (e.g., able to compare non-genomic sequences) and harnessing multicore or parallel compute environments; thus, evolving independent from Sims GE's version of FFP applications.
 
-Please cite one of the publications below if you are utilzing programs provided here for your publication.
+Please cite one of the publications below if you are utilizing programs provided here for your publication.
 
+* Choi, J., Kim, BJ., Kim, SH. (2026). Feature Frequency Profile (FFP) Method: A Language Model for Whole-Genome (“Organism”) Phylogeny. In: Caetano-Anollés, G. (eds) Evolutionary Genomics. Methods in Molecular Biology, vol 2981. Humana, New York, NY. https://doi.org/10.1007/978-1-0716-4836-0_12
 * JJ. Choi, “Whole-genomic sequence comparison for evolutionary studies based on a natural-language analysis of information theory,”  UC Berkeley. (2024).
 * "Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS.
-* "A genome Tree of Life for the Fungi kingdom", JaeJin Choi and Sung-Hou Kim (2017), PNAS.
 
 ## Requirements
 
 Mainly developed and tested in linux environment (Ubuntu 20.04+), and so the command blocks provided below.  
-Please contact JaeJin Choi (<jaejinchoi@berkeley.edu>) if you have questions or comments regarding the program codes, bug, or usage.
+Please contact JaeJin Choi (<jaejinchoi@berkeley.edu>) if you have questions or comments regarding the program codes, bugs, or usage.
 
 * GCC (g++) version 4.7.1+  
 Any recent g++ versions that support c++11
