@@ -10,7 +10,7 @@ I re-developed from scratch to improve overall performance, focus on genericity 
 Please cite one of the publications below if you are utilizing programs provided here for your publication.
 
 * Choi, J., Kim, BJ., Kim, SH. (2026). Feature Frequency Profile (FFP) Method: A Language Model for Whole-Genome (“Organism”) Phylogeny. In: Caetano-Anollés, G. (eds) Evolutionary Genomics. Methods in Molecular Biology, vol 2981. Humana, New York, NY. https://doi.org/10.1007/978-1-0716-4836-0_12
-* JJ. Choi, “Whole-genomic sequence comparison for evolutionary studies based on a natural-language analysis of information theory,”  UC Berkeley. (2024).
+* Choi, J. (2024). Whole-genomic sequence comparison for evolutionary studies based on a natural-language analysis of information theory. UC Berkeley. ProQuest ID: Choi_berkeley_0028E_22880. Merritt ID: ark:/13030/m5nm4qpn. Retrieved from https://escholarship.org/uc/item/77c3j1n3
 * "Whole-proteome tree of life suggests a deep burst of organism diversity", JaeJin Choi and Sung-Hou Kim (2019), PNAS.
 
 ## Requirements
