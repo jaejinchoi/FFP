@@ -14,17 +14,20 @@ For convenience, you can run locally with a provided (Python) wrapper script to 
 
 Please (click to) copy, paste, and execute code blocks in your terminal.
 
-## Download _preprocessed_ dataset <span style="color:red">(pending)</span>
+## Download and preprocess dataset
+
+### 1. Download a python wrapper script and a spread listing 600 FASTA proteome files provided by NCBI FTP depository
 
 ```console {check the github file location}
 wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600_tutorial_proteome/ncbi_ftp_download.py
 wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600_tutorial_proteome/600-taxons_NCBI-proteome-source.xlsx
 ```
 
+### 2. Download 600 FASTA proteome files using the provided python wrapper
+
 ```console {download 600 proteome FASTA files from NCBI FTP, and save to the folder, '600-proteome-in-taxid'}
 python ncbi_ftp_download.py -S 600-proteome-in-taxid -d ./600-taxons_NCBI-proteome-source.xlsx
 ```
-
 
 <br>
 
