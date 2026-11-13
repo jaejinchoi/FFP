@@ -98,7 +98,7 @@ Now let's iterate/search feature length from 4 to 12, given proteome FASTA files
 
 * Input proteome FASTA files, in "600-proteome-in-taxid"
 * FF-profile feature length (_l_)=4-12: -s 4 -e 12
-* Pairise distance matrix, Jensen-Shannon Divergence (JSDiv): --parg "-d jsdiv"
+* Pairwise distance matrix, in Jensen-Shannon Divergence (JSDiv): --parg "-d jsdiv"
 * Normalize tree distances when plotting: --rf_norm
 
 A whole process will proceed, passed through three subcommands: "profile" -> "distance" -> "optimum"
