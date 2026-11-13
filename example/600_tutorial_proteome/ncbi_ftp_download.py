@@ -12,7 +12,6 @@ from Bio import SeqIO
 from multiprocessing import cpu_count, Pool
 
 import pandas as pd
-
 import time
 
 
@@ -28,7 +27,6 @@ EXCLUDE_FASTA_KEYWORDS_LIST=[ #keywords to exclude; organelle related keywords
 
 
 def multi_process(proc_name, args_list=[], n_cpu=0): #args_list is a list of tuple arguments set
-
     ret_list=[]
 
     with Pool(processes=n_cpu) as proc_pool:
@@ -142,7 +140,7 @@ if __name__=='__main__':
     ftp_address = 'ftp.ncbi.nlm.nih.gov' #default
 
     primary_colname = "taxid"
-    attribute_colname = "NCBI FTP download links"
+    attribute_colname = "NCBI_FTP_PATH"
     
     download_flag=False
 
@@ -184,27 +182,14 @@ if __name__=='__main__':
     for n_arg in args:
         load_path = os.path.abspath(n_arg)
 
-        ''' #for tab separated text file
-        pd_df = pd.read_csv(
-            filepath_or_buffer=load_path
-            , comment="#" #skip the line begin with comment (single char)
-            , header=0
-            , skip_blank_lines=True
-            , sep="\t"
-            , na_values=['na', 'NA', 'none', 'None', 'N//A', 'n//a', '', 'nan', '-']
-            , dtype=str
-            )
-        '''
-
         pd_df = pd.read_excel(
             io=load_path
-            , comment="#" #skip the line begin with comment (single char)
+            #, comment="#" #skip the line begin with comment (single char)
             , header=0
+            #, skiprows=1
             , na_values=['na', 'NA', 'none', 'None', 'N//A', 'n//a', '', 'nan', '-']
             , dtype=str
             )
-        
-        #print(pd_df)
 
         if (combine_df.empty):
             combine_df = pd_df
@@ -230,21 +215,24 @@ if __name__=='__main__':
         )
 
     if (len(args_list)>0):
-
-        if (os.path.exists(save_folder_path)==False):
-            os.makedirs(save_folder_path)
+        
+        os.makedirs(save_folder_path, exist_ok=True)
 
         ret_list = multi_process(
             ftp_download_unit
-            , args_list
-            , min(n_cpu, len(args_list))
+            , args_list=args_list
+            , n_cpu=min(3, n_cpu) #maximum to 3 threads to avoid too many connections to NCBI FTP server
+            #, min(n_cpu, len(args_list))
             )
 
         pd_df = pd.DataFrame(
             ret_list
-            , columns=[attribute_colname, "total_fasta_item_cnt", "filtered_fasta_item_cnt"]
+            , columns=[
+                attribute_colname
+                , "total_fasta_item_cnt"
+                , "filtered_fasta_item_cnt"
+                ]
             )
-        
         #print(combine_df.columns)
 
         combine_df = combine_df.join(

@@ -17,9 +17,14 @@ Please (click to) copy, paste, and execute code blocks in your terminal.
 ## Download _preprocessed_ dataset <span style="color:red">(pending)</span>
 
 ```console {check the github file location}
-wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600-proteome-in-taxid.zip
-unzip 600-proteome-in-taxid.zip
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600_tutorial_proteome/ncbi_ftp_download.py
+wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/600_tutorial_proteome/600-taxons_NCBI-proteome-source.xlsx
 ```
+
+```console {download 600 proteome FASTA files from NCBI FTP, and save to the folder, '600-proteome-in-taxid'}
+python ncbi_ftp_download.py -S 600-proteome-in-taxid -d ./600-taxons_NCBI-proteome-source.xlsx
+```
+
 
 <br>
 
@@ -44,16 +49,14 @@ Do for each file for each feature length (_l_)...
 
 ### 2. Construct (symmetric) distance matrix, of Jensen-Shannon Divergence
 
-* -T; using tab as a separator of taxon names and the distance values. Taxon names fixed to first 10 characters by default (trimmed if exceed).
-* -t 3; using 3 threads or cores
-* -s; Print full square distance matrix (lower triangular matrix by default) since some tree building programs require fully square distance matrices
+* -T: using tab as a separator of taxon names and the distance values. Taxon names fixed to first 10 characters by default (trimmed if exceed).
+* -t 3: using 3 threads or cores
+* -s: Print full square distance matrix (lower triangular matrix by default) since some tree building programs require fully square distance matrices
 * The output is printed to screen, thus, '>' captures printed results to the following file path, here, save to "matrix.fp_8"
 
 ```console
 ./JSD_matrix_bin_2v.4 -T -s -t 3 ./FFP_8/* > matrix.fp_8
 ```
-
-Resulting matrix: "![matrix.fp_8](matrix.fp_8)"
 
 <hr>
 
@@ -61,18 +64,15 @@ Resulting matrix: "![matrix.fp_8](matrix.fp_8)"
 
 ## Python wrapper to automate iteration
 
-Essentially, the wrapper script automate iteration of searching feature lengths. Please check if you have downloaded and compiled core programs.
+Essentially, the wrapper script automate iteration of searching feature lengths. Please check if you have downloaded and compiled core programs. And provided python wrapper is largely dependent on standard packages need not to install; however, need some extra packages for core functions. Required packages can be easily find and install using PIP.
 
-### Requirements
-
-* Python3.3+
-* Pip3 # for easy Python package installation
-* Dendropy
-* Pandas
-* matplotlib # for Pandas plot backend
+* Python 3.12+ _# check the version with --version_
+* Pandas _# read distance matrices and summarize results_
+* Matplotlib _# plotting using pandas.dataframe()_
+* Dendropy _# build and compare trees_
 
 ```console
-pip3 install dendropy pandas matplotlib
+pip3 install pandas matplotlib dendropy
 ```
 
 Once requirements are met let's create new folder for tutorial, jump in, and download the wrapper script.
@@ -84,22 +84,23 @@ wget https://raw.githubusercontent.com/jaejinchoi/FFP/refs/heads/master/example/
 python3 ffp_wrapper.py --help
 ```
 
-You should see the wrapper script's arguments/options available (--help). Move compiled core programs and unzipped dataset folder to the tutorial working folder, "./ffp_tutorial".
+You should see the wrapper script's arguments (per subcommand) and options available (--help). Move compiled core programs and unzipped dataset folder to the tutorial working folder, "./ffp_tutorial".
 
-Now let's iterate/search feature length from 4 to 12.
+Now let's iterate/search feature length from 4 to 12, given proteome FASTA files, with conditions.
 
-* -s 4; (search) from _l_=4
-* -e 12; (till) to _l_=12
-* -S ./; do all works and saves in current directory
-* --thread 3; using 3 threads
-* --ffp_ppath ./FFP_bin_2v.4; here assumes FF-Profiling program is in current working folder
-* --ffp_parg "-a -n"; arguments to pass on to FF-Profilng program located by --ffp_ppath
-* --dmat_ppath ./JSD_matrix_bin_2v.4; here assumes distance calculating program is in current working folder
-* --dmat_parg "-T -s"; arguments to pass on to distance calculating program located by --dmat_ppath
-* --rf_norm; the option to normalize Robinson-Foulds metric (tree topology difference) when creating a plot to determine optimum feature length (_l_)
+* Input proteome FASTA files, in "600-proteome-in-taxid"
+* FF-profile feature length (_l_)=4-12: -s 4 -e 12
+* Pairise distance matrix, Jensen-Shannon Divergence (JSDiv): --parg "-d jsdiv"
+* Normalize tree distances when plotting: --rf_norm
+
+A whole process will proceed, passed through three subcommands: "profile" -> "distance" -> "optimum"
 
 ```console
-python3 ./ffp_wrapper.py -s 4 -e 12 -S ./ --thread 3 --ffp_ppath ./FFP_bin_2v.4 --ffp_parg "-a -n" --dmat_ppath ./JSD_matrix_bin_2v.4 --dmat_parg "-T -s" --rf_norm 600-proteome-in-taxid/*
+python3 ffp_wrapper.py profile -S ./ffp_proteome -s 4 -e 12 --ppath [path_to]/FFP_bin_2v.4 --parg "-a -n" 600-proteome-in-taxid/*
+
+python3 ffp_wrapper.py distance -S ./ffp_proteome -f --ppath [path_to]/JSD_matrix_bin_2v.4 --parg "-d jsdiv" ./ffp_proteome/fp.*
+
+python3 ffp_wrapper.py optimum -S ./ffp_proteome --rf_norm ./ffp_proteome/distance_matrix/matrix.jsdiv.*
 ```
 
 ### On tree construction
