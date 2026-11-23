@@ -113,8 +113,7 @@ python3 ffp_wrapper.py optimum -S ./ffp_proteome --rf_norm ./ffp_proteome/distan
 
 ### On tree construction
 
-Construct Neighbor-Joining (NJ) tree using Dendropy package by default, but you may want to use external tree building programs that take a distane matrix (e.g., BIONJ; <http://www.atgc-montpellier.fr/bionj/>). To do so, use --tree_ppath [path_to_program] and --tree_parg [arguments_to_pass], then, it will execute a command in this format:
-> [path_to_program] [arguments_to_pass] [input_path] [output_path]
+Construct Neighbor-Joining (NJ) tree using Dendropy package by default, but you may want to use external tree building programs that take a distane matrix (e.g., BIONJ; <http://www.atgc-montpellier.fr/bionj/>). To do so, use the "optimum" subcommand with --ppath [external-tree-build-program-path] and --parg [arguments-to-pass]
 
 <br>
 
